@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="zh-TW">
+<html class="theme-next muse use-motion" lang>
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -86,11 +86,11 @@
 <meta property="og:url" content="http://AlexFxw.github.io/2019/02/27/PR-Introduction/index.html">
 <meta property="og:site_name" content="Fan, Hsuan-Wei&#39;s Space">
 <meta property="og:description" content="模式識別介紹Preface這一篇（或是之後可能會有的系列記錄）博客是我現在在上模式識別課程的一個總結，剛佈置了Hexo感覺很酷所以就記錄了，希望不要三分鐘熱度哈哈，希望能讓博客多一點東西，自己也有所成長。由於算是個半課堂筆記，博客的觀點和圖片可能來自於清華大學計算機系陶霖密教授。 什麼是識別？當前的機器智能很大程度上可以歸結為分類問題，因此人工智能的智能化程度，可以視作是根據特征、模式對于物體的分">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="default">
 <meta property="og:image" content="http://alexfxw.github.io/2019/02/27/PR-Introduction/fish.png">
 <meta property="og:image" content="http://alexfxw.github.io/2019/02/27/PR-Introduction/fish_1.png">
 <meta property="og:image" content="http://alexfxw.github.io/2019/02/27/PR-Introduction/fish_2.png">
-<meta property="og:updated_time" content="2019-02-27T11:50:07.294Z">
+<meta property="og:updated_time" content="2019-02-27T12:47:01.288Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="模式識別介紹">
 <meta name="twitter:description" content="模式識別介紹Preface這一篇（或是之後可能會有的系列記錄）博客是我現在在上模式識別課程的一個總結，剛佈置了Hexo感覺很酷所以就記錄了，希望不要三分鐘熱度哈哈，希望能讓博客多一點東西，自己也有所成長。由於算是個半課堂筆記，博客的觀點和圖片可能來自於清華大學計算機系陶霖密教授。 什麼是識別？當前的機器智能很大程度上可以歸結為分類問題，因此人工智能的智能化程度，可以視作是根據特征、模式對于物體的分">
@@ -142,7 +142,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-TW">
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
   
   
@@ -339,8 +339,9 @@
 <li>從原始數據提取特征</li>
 <li>將特征轉換成特征向量</li>
 <li>計算特征向量、學習特征，模式識別的理論主要關於這個階段。</li>
-<li>給出分類/預測。<br>違反直覺的是，從這個角度來看分辨魚這個（對人類而言）「容易」的事實際上比起「困難」的棋類遊戲更為複雜。以圍棋為例，每一時刻圍棋棋盤的狀態天然地就是一個可處理的特征向量——可能是一個19<em> 19 </em> 2 維的張量，我們可以直接基於其去做計算。而魚這個簡單任務，則在提取特征并轉化為特征向量這個階段上有更多要考慮的，很多時候其直接影響分類結果。</li>
+<li>給出分類/預測。</li>
 </ol>
+<p>違反直覺的是，從這個角度來看分辨魚這個（對人類而言）「容易」的事實際上比起「困難」的棋類遊戲更為複雜。以圍棋為例，每一時刻圍棋棋盤的狀態天然地就是一個可處理的特征向量——可能是一個19<em> 19 </em> 2 維的張量，我們可以直接基於其去做計算。而魚這個簡單任務，則在提取特征并轉化為特征向量這個階段上有更多要考慮的，很多時候其直接影響分類結果。</p>
 <blockquote>
 <p>當然，圍棋AI的任務和分類問題並不相同，所以這樣的類比可能是不甚嚴謹的，此處僅是用其表達現實中的任務和一些人為場景的任務之間存在著特征提取這個重要的區別。對棋類AI有興趣的人可以查看AlphaGO相關論文，或是參閱我之前一個關於四子棋的課程小作業（如果我有整理上來的話(:з」∠)）  </p>
 </blockquote>
