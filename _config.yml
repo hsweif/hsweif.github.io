@@ -110,3 +110,10 @@ feed:
     content_limit_delim: ' '
     order_by: -date
     icon: icon.png
+
+# Sitemap
+Plugins:
+- hexo-generator-sitemap
+
+sitemap:
+    path: sitemap.xml

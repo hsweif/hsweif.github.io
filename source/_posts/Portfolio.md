@@ -28,7 +28,7 @@ Besides, Arena X provides these features:
 * Source code is maintained on the private GitLab repo of Tsinghua CST.
 * The new website is still in progress and it will be released with Arena X when the AI competition of 2019 starts. This is the link to old website and the first generation platform: [Arena 9](https://arena.net9.org/).
 
-# Troy Uncalm: An AI War chess
+# Troy Uncalm: An AI war chess game
 
 ![](Portfolio/troy_1.jpg)
 
@@ -36,7 +36,7 @@ Besides, Arena X provides these features:
 
 Troy Uncalm was one of the game for 22th A.I. competition of Tsinghua University. It was a war chess game for A.I. player. I was one of the four member team and I wrote most code related to the Unity3D. We designed the rules and testing the game balance by our own. Troy Uncalm was deployed on Arena 9 and used for the first round competition.
 
-**Programming Skill**: C# / Unity3D / C++(SDK)
+**Programming Skill**: C# / Unity3D
 
 # Air Typing
 
