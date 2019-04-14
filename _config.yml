@@ -3,7 +3,7 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: A.I.EX-World 
+title: Alexology 
 subtitle: Act tells.
 description: We reject kings, presidents and voting. We believe in rough consensus and running code. 
 keywords: Tsinghua, Computer Science, Programmer
@@ -117,3 +117,10 @@ Plugins:
 
 sitemap:
     path: sitemap.xml
+
+math:
+  engine: 'mathjax' # or 'katex'
+  mathjax:
+    # src: custom_mathjax_source
+    config:
+      # MathJax config
