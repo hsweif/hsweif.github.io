@@ -1,14 +1,15 @@
 ---
 title: Portfolio
-date: 2019-03-22 20:30:19
-tags: Portfolio
+date: 2019-04-23 20:15:39
+comments: false
+type: "portfolio"
 ---
 
 > This is a simple portfolio of my projects and I will gradually implement the detail of them. If the portfolio gets too long in the future, I will consider to construct another website to demonstrate it, but I think it hasn't been a problem yet. If you're browsing with desktop mode, please use the table of the content on the left to directly access a specific paragraph.
 
 # Arena X
 
-![](Portfolio/Arena9.png)
+![](/uploads/portfolio/Arena9.png)
 
 It is the second generation platform for the Artificial Intelligence Competition of Tsinghua University. Arena X was mainly maintained by Student Science Association of the Department of Computer Science and Technology. It aims to provide a flexible and easy-to-use platform to hold A.I. competition. I was the main developer of the game-server module and its CI/CD, which enables the developer to deploy their A.I. game in any programming language on the platform.
 
@@ -30,9 +31,9 @@ Besides, Arena X provides these features:
 
 # Troy Uncalm: An AI war chess game
 
-![](Portfolio/troy_1.jpg)
+![](/uploads/portfolio/troy_1.jpg)
 
-![](Portfolio/troy_2.jpg)
+![](/uploads/portfolio/troy_2.jpg)
 
 Troy Uncalm was one of the game for 22th A.I. competition of Tsinghua University. It was a war chess game for A.I. player. I was one of the four member team and I wrote most code related to the Unity3D. We designed the rules and testing the game balance by our own. Troy Uncalm was deployed on Arena 9 and used for the first round competition.
 
@@ -86,7 +87,7 @@ It was a 2-week homework for AI introduction course which was able to recognize 
 
 # THINPAD
 
-![](Portfolio/thinpad.jpg)
+![](/uploads/portfolio/thinpad.jpg)
 
 THINPAD was a hardware project. It was the course project of Computer Architecture lesson which required us to wrote a basic CPU that supports MIPS. I finished it with another 2 classmates in three weeks. Our THINPAD supports most features of a "computer", includes:
 
@@ -102,7 +103,7 @@ THINPAD was a hardware project. It was the course project of Computer Architectu
 
 # Sudoko Game
 
-![](Portfolio/Sudoko.jpg)
+![](/uploads/portfolio/Sudoko.jpg)
 
 A simple Sudoko game and solver based on Qt. It was a 1-week homework for summer semester. 
 

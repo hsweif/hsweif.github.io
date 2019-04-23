@@ -1,5 +1,5 @@
 ---
-title: about
+title: About me
 date: 2019-02-27 23:27:02
 type: "about"
 comments: false
@@ -12,4 +12,3 @@ My research interest is mainly about human-computer interaction. The project I'm
 
 
 {% centerquote %}[Resume](https://cloud.tsinghua.edu.cn/f/4dd33c7f977045e69e69/){% endcenterquote %}
-
