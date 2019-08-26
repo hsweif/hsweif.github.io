@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en,zh-TW,default">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="AI,模式識別,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Alexology" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="這一篇（或是之後可能會有的系列記錄）博客是我現在在上模式識別課程的一個總結，剛佈置了Hexo感覺很酷所以就記錄了，希望不要三分鐘熱度哈哈，希望能讓博客多一點東西，自己也有所成長。由於算是個半課堂筆記，博客的觀點和圖片可能來自於清華大學計算機系陶霖密教授。 什麼是識別？當前的機器智能很大程度上可以歸結為分類問題，因此人工智能的智能化程度，可以視作是根據特征、模式對于物體的分類能力強弱。很多時候，我們">
+<meta name="keywords" content="AI,模式識別">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模式識別介紹">
+<meta property="og:url" content="http://AlexFxw.github.io/2019/02/27/PR-Introduction/index.html">
+<meta property="og:site_name" content="Alexology">
+<meta property="og:description" content="這一篇（或是之後可能會有的系列記錄）博客是我現在在上模式識別課程的一個總結，剛佈置了Hexo感覺很酷所以就記錄了，希望不要三分鐘熱度哈哈，希望能讓博客多一點東西，自己也有所成長。由於算是個半課堂筆記，博客的觀點和圖片可能來自於清華大學計算機系陶霖密教授。 什麼是識別？當前的機器智能很大程度上可以歸結為分類問題，因此人工智能的智能化程度，可以視作是根據特征、模式對于物體的分類能力強弱。很多時候，我們">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://alexfxw.github.io/2019/02/27/PR-Introduction/fish.png">
+<meta property="og:image" content="http://alexfxw.github.io/2019/02/27/PR-Introduction/fish_1.png">
+<meta property="og:image" content="http://alexfxw.github.io/2019/02/27/PR-Introduction/fish_2.png">
+<meta property="og:updated_time" content="2019-08-09T23:29:29.587Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="模式識別介紹">
+<meta name="twitter:description" content="這一篇（或是之後可能會有的系列記錄）博客是我現在在上模式識別課程的一個總結，剛佈置了Hexo感覺很酷所以就記錄了，希望不要三分鐘熱度哈哈，希望能讓博客多一點東西，自己也有所成長。由於算是個半課堂筆記，博客的觀點和圖片可能來自於清華大學計算機系陶霖密教授。 什麼是識別？當前的機器智能很大程度上可以歸結為分類問題，因此人工智能的智能化程度，可以視作是根據特征、模式對于物體的分類能力強弱。很多時候，我們">
+<meta name="twitter:image" content="http://alexfxw.github.io/2019/02/27/PR-Introduction/fish.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://AlexFxw.github.io/2019/02/27/PR-Introduction/">
+
+
+
+
+
+  <title>模式識別介紹 | Alexology</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Alexology</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Act tells.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-portfolio">
+          <a href="/portfolio/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            Portfolio
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://AlexFxw.github.io/2019/02/27/PR-Introduction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Fan, Hsuan-Wei">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/we.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Alexology">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">模式識別介紹</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-27T19:36:16-08:00">
+                2019-02-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Computer-Science/" itemprop="url" rel="index">
+                    <span itemprop="name">Computer Science</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/02/27/PR-Introduction/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/02/27/PR-Introduction/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-eye"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>read times
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>這一篇（或是之後可能會有的系列記錄）博客是我現在在上模式識別課程的一個總結，剛佈置了Hexo感覺很酷所以就記錄了，希望不要三分鐘熱度哈哈，希望能讓博客多一點東西，自己也有所成長。<br>由於算是個半課堂筆記，博客的觀點和圖片可能來自於清華大學計算機系陶霖密教授。</p>
+<h1 id="什麼是識別？"><a href="#什麼是識別？" class="headerlink" title="什麼是識別？"></a>什麼是識別？</h1><p>當前的機器智能很大程度上可以歸結為分類問題，因此人工智能的智能化程度，可以視作是根據特征、模式對于物體的分類能力強弱。很多時候，我們判定AI能力時僅考慮他們能否正確地區分A和B，即機器的工作可以描述為separate object(s) from other objects, and/or background 的分類問題。<br>對於這個工作而言，語義信息並非關注的重點——不難想象，從一群狼里分辨出一隻狗所需要的信息應該小於精確定義「何為一隻狗」的信息量。因此，即使當前新的深度學習方法在分類的效率上有了顯著的進步，我們仍應當注意到語義信息的描述于人類智能里的重要地位以及當前機器在這一方面的缺失。</p>
+<h1 id="Classification"><a href="#Classification" class="headerlink" title="Classification"></a>Classification</h1><blockquote>
+<p>Classification: to use the feature vector provided by the feature extractor to assign the object to a category.  </p>
+</blockquote>
+<p>Classification是人工智能的一個典型應用場景，例如一個遠洋漁夫在工作時會將捕獲到的不同魚種扔到不同箱子中，這樣的分類問題有時可以運用計算機視覺完成。然而現實中往往會遇到更為複雜的分類問題，例如考慮以下這張圖：</p>
+<p><img src="/2019/02/27/PR-Introduction/fish.png" alt></p>
+<p>不難發現，照片中有三條不同的魚，然而三條魚的邊界是重疊的，這讓前後景和目標物的切割變得困難。假定我們能切割出三條魚，仍有另一個問題妨礙機器完成分類任務。<br>以分類魚的問題為例，我們可以將人工智能的分類流程描述為以下幾個階段：</p>
+<ol>
+<li>根據Sensor獲得原始數據（例如照片），這個階段的傳感器確定了所能獲取的信息量</li>
+<li>從原始數據提取特征</li>
+<li>將特征轉換成特征向量</li>
+<li>計算特征向量、學習特征，模式識別的理論主要關於這個階段。</li>
+<li>給出分類/預測。</li>
+</ol>
+<p>違反直覺的是，從這個角度來看分辨魚這個（對人類而言）「容易」的事實際上比起「困難」的棋類遊戲更為複雜。以圍棋為例，每一時刻圍棋棋盤的狀態天然地就是一個可處理的特征向量——可能是一個19<em> 19 </em> 2 維的張量，我們可以直接基於其去做計算。而魚這個簡單任務，則在提取特征并轉化為特征向量這個階段上有更多要考慮的，很多時候其直接影響分類結果。</p>
+<blockquote>
+<p>當然，圍棋AI的任務和分類問題並不相同，所以這樣的類比可能是不甚嚴謹的，此處僅是用其表達現實中的任務和一些人為場景的任務之間存在著特征提取這個重要的區別。對棋類AI有興趣的人可以查看AlphaGO相關論文，或是參閱我之前一個關於四子棋的課程小作業（如果我有整理上來的話(:з」∠)）  </p>
+</blockquote>
+<h1 id="特征選取的重要性"><a href="#特征選取的重要性" class="headerlink" title="特征選取的重要性"></a>特征選取的重要性</h1><p>在人工智能領域，廣為被人關注的問題是：什麼是一個好的學習算法？梯度會消失嗎？如何降低learning cost等等。人們對於網路結構以及超參數投入了大量的熱情，相對而言較少引人注意的是特征選取對結果的影響，然而這件事在解決現實問題時也是至關重要的。<br>一個顯而易見的例子是，如果以人的衣服為特征來識別人，不管用什麼算法都難以完成人的分類問題——畢竟人可以換衣服。所以在人工智能的優化上，一個容易被忽視的困難問題是：如何正確地理解并提取目標物的核心特征。再以魚為例子，對於新鮮的魚和腐敗的魚的分類問題，從計算機視覺解決這個問題會變得十分困難（當然，這還是可能的），然而如果使用化學傳感器以氣味為特征，顯然分類效果會好很多（即使使用的是樸素的算法）。<br>像是下面這張圖說明了，當特征選取合適時（例如 lightness, width），分類函數可能相當簡單優美。</p>
+<p><img src="/2019/02/27/PR-Introduction/fish_1.png" alt="Simple function"></p>
+<p>而如果想要優化效果時有兩個方法：</p>
+<ol>
+<li>選取更代表性的特征，可能這兩種魚類的寬度並沒有那麼顯著的區別，或許換個特征重新繪圖后直線兩側錯誤歸類的樣本會下降。</li>
+<li>換個算法，重新挑選一個可以讓cost下降的函數。</li>
+</ol>
+<p><img src="/2019/02/27/PR-Introduction/fish_2.png" alt="Tricky function"></p>
+<p>可以看到新的分類函數複雜且似乎有點tricky，但是實際上這種tricky的做法很多時候是work的，也有很多人研究出好些東西。不過仍然需注意到，那並不是人工智能的全部。模式識別將更多地關注特征提取的問題，即最前面提及的語義問題。<br>之後會閱讀幾篇關於Feature extraction 的論文，并且總結一下他們的方法（吧</p>
+<blockquote>
+<p> Sensation, Perception, Recognition </p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Thanks for you donation!</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/uploads/wechat_pay.JPG" alt="Fan, Hsuan-Wei WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/uploads/alipay.jpg" alt="Fan, Hsuan-Wei Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    Fan, Hsuan-Wei
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="http://AlexFxw.github.io/2019/02/27/PR-Introduction/" title="模式識別介紹">http://AlexFxw.github.io/2019/02/27/PR-Introduction/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-na/4.0/" rel="external nofollow" target="_blank">CC BY-NC-NA 4.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/AI/" rel="tag"># AI</a>
+          
+            <a href="/tags/模式識別/" rel="tag"># 模式識別</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/28/1984-Review/" rel="prev" title="1984 讀後感">
+                1984 讀後感 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5c79319c01a6d23b" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/we.JPG" alt="Fan, Hsuan-Wei">
+            
+              <p class="site-author-name" itemprop="name">Fan, Hsuan-Wei</p>
+              <p class="site-description motion-element" itemprop="description">A junior in Tsinghua CST.<br>Lives in Beijing and comes from Taiwan.<br>Interested in HCI/BCI and VR/AR.<br>Coding and thinking.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/AlexFxw" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:f.hsuanwei@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/profile.php?id=100003713956403" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>FB Page</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://instagram.com/alex93179" target="_blank" title="Instagram">
+                      
+                        <i class="fa fa-fw fa-instagram"></i>Instagram</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什麼是識別？"><span class="nav-number">1.</span> <span class="nav-text">什麼是識別？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Classification"><span class="nav-number">2.</span> <span class="nav-text">Classification</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#特征選取的重要性"><span class="nav-number">3.</span> <span class="nav-text">特征選取的重要性</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Fan, Hsuan-Wei</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      visitors
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      visit times
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://alexfxw.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://AlexFxw.github.io/2019/02/27/PR-Introduction/';
+          this.page.identifier = '2019/02/27/PR-Introduction/';
+          this.page.title = '模式識別介紹';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://alexfxw.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

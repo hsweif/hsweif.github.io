@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Alexology</title>
+  
+  <subtitle>Act tells.</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://AlexFxw.github.io/"/>
+  <updated>2019-08-26T05:10:06.319Z</updated>
+  <id>http://AlexFxw.github.io/</id>
+  
+  <author>
+    <name>Fan, Hsuan-Wei</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Vuex 的單元測試（基於 Jest 框架）</title>
+    <link href="http://AlexFxw.github.io/2019/08/22/Vue-UnitTest/"/>
+    <id>http://AlexFxw.github.io/2019/08/22/Vue-UnitTest/</id>
+    <published>2019-08-22T21:17:52.000Z</published>
+    <updated>2019-08-26T05:10:06.319Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;暑假在 UCLA 做項目時基本成為了全棧工程師（帶我的 Ph.D. 學長是搞機器學習的，所以除了 ML
+        
+      
+    
+    </summary>
+    
+      <category term="Programming" scheme="http://AlexFxw.github.io/categories/Programming/"/>
+    
+    
+      <category term="Vue.js" scheme="http://AlexFxw.github.io/tags/Vue-js/"/>
+    
+      <category term="Front-end" scheme="http://AlexFxw.github.io/tags/Front-end/"/>
+    
+      <category term="Unit Test" scheme="http://AlexFxw.github.io/tags/Unit-Test/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>一些實用的科研工具</title>
+    <link href="http://AlexFxw.github.io/2019/05/09/ResearchTool/"/>
+    <id>http://AlexFxw.github.io/2019/05/09/ResearchTool/</id>
+    <published>2019-05-10T05:41:50.000Z</published>
+    <updated>2019-08-09T23:29:29.595Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;隨著進入本科高年級，許多人應該都開始了在實驗室參與科研（打雜）的生活。這篇博客將介紹一些我覺得還不錯的工具，可以一定程度地節約時間成本，讓你將心力專注在知識本身。希望對於剛開始在實驗室搬磚或是目前用土方法管理各種課程論文的你有所幫助，如果你已經有成套的研究管理工具的話繼續用
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Research" scheme="http://AlexFxw.github.io/tags/Research/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>基于Delaunay Triangulation 的 Image Morphing</title>
+    <link href="http://AlexFxw.github.io/2019/04/21/FaceMorphing/"/>
+    <id>http://AlexFxw.github.io/2019/04/21/FaceMorphing/</id>
+    <published>2019-04-21T08:15:00.000Z</published>
+    <updated>2019-08-09T23:29:29.573Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;原理&quot;&gt;&lt;a href=&quot;#原理&quot; class=&quot;headerlink&quot; title=&quot;原理&quot;&gt;&lt;/a&gt;原理&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;/2019/04/21/FaceMorphing/result_1.png&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Computer Science" scheme="http://AlexFxw.github.io/categories/Computer-Science/"/>
+    
+    
+      <category term="Image Processing" scheme="http://AlexFxw.github.io/tags/Image-Processing/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>泊松图像编辑(Poisson Image Editing)</title>
+    <link href="http://AlexFxw.github.io/2019/04/14/PoissonEditing/"/>
+    <id>http://AlexFxw.github.io/2019/04/14/PoissonEditing/</id>
+    <published>2019-04-14T18:30:34.000Z</published>
+    <updated>2019-08-09T23:29:29.591Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;相关论文: Perez, P., Gangnet, M., &amp;amp; Blake, A. (2003). Poisson Image Editing. ACM SIGGRAPH 2003.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2
+        
+      
+    
+    </summary>
+    
+      <category term="Computer Science" scheme="http://AlexFxw.github.io/categories/Computer-Science/"/>
+    
+    
+      <category term="Image Processing" scheme="http://AlexFxw.github.io/tags/Image-Processing/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>如何優雅地架設個人網站？Hexo博客教學</title>
+    <link href="http://AlexFxw.github.io/2019/03/01/Hexo-blog/"/>
+    <id>http://AlexFxw.github.io/2019/03/01/Hexo-blog/</id>
+    <published>2019-03-01T21:29:31.000Z</published>
+    <updated>2019-08-09T23:29:29.580Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Tutorial" scheme="http://AlexFxw.github.io/categories/Tutorial/"/>
+    
+    
+      <category term="Hexo" scheme="http://AlexFxw.github.io/tags/Hexo/"/>
+    
+      <category term="Front-End" scheme="http://AlexFxw.github.io/tags/Front-End/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>1984 讀後感</title>
+    <link href="http://AlexFxw.github.io/2019/02/28/1984-Review/"/>
+    <id>http://AlexFxw.github.io/2019/02/28/1984-Review/</id>
+    <published>2019-02-28T08:21:14.000Z</published>
+    <updated>2019-08-09T23:29:29.573Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Review" scheme="http://AlexFxw.github.io/categories/Review/"/>
+    
+    
+      <category term="Book Review" scheme="http://AlexFxw.github.io/tags/Book-Review/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>模式識別介紹</title>
+    <link href="http://AlexFxw.github.io/2019/02/27/PR-Introduction/"/>
+    <id>http://AlexFxw.github.io/2019/02/27/PR-Introduction/</id>
+    <published>2019-02-28T03:36:16.000Z</published>
+    <updated>2019-08-09T23:29:29.587Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;這一篇（或是之後可能會有的系列記錄）博客是我現在在上模式識別課程的一個總結，剛佈置了Hexo感覺很酷所以就記錄了，希望不要三分鐘熱度哈哈，希望能讓博客多一點東西，自己也有所成長。&lt;br&gt;由於算是個半課堂筆記，博客的觀點和圖片可能來自於清華大學計算機系陶霖密教授。&lt;/p&gt;
+&lt;
+        
+      
+    
+    </summary>
+    
+      <category term="Computer Science" scheme="http://AlexFxw.github.io/categories/Computer-Science/"/>
+    
+    
+      <category term="AI" scheme="http://AlexFxw.github.io/tags/AI/"/>
+    
+      <category term="模式識別" scheme="http://AlexFxw.github.io/tags/%E6%A8%A1%E5%BC%8F%E8%AD%98%E5%88%A5/"/>
+    
+  </entry>
+  
+</feed>

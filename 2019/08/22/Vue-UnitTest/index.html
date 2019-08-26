@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en,zh-TW,default">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Vue.js,Front-end,Unit Test,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Alexology" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="前言暑假在 UCLA 做項目時基本成為了全棧工程師（帶我的 Ph.D. 學長是搞機器學習的，所以除了 ML 之外系統中這樣那樣雜七雜八前端後端數據庫的東西都變我的工作了），在項目接近尾聲時覺得應該記錄下一些過程中的經驗。一來以免以後做項目時想不起來又重新在Google 的海洋里打撈，二來希望能多少加快其他遇到同樣問題的中文使用者搞定它的時間。之後應該還會更新其他的一些東西（吧 什麼是 Vuex？">
+<meta name="keywords" content="Vue.js,Front-end,Unit Test">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vuex 的單元測試（基於 Jest 框架）">
+<meta property="og:url" content="http://AlexFxw.github.io/2019/08/22/Vue-UnitTest/index.html">
+<meta property="og:site_name" content="Alexology">
+<meta property="og:description" content="前言暑假在 UCLA 做項目時基本成為了全棧工程師（帶我的 Ph.D. 學長是搞機器學習的，所以除了 ML 之外系統中這樣那樣雜七雜八前端後端數據庫的東西都變我的工作了），在項目接近尾聲時覺得應該記錄下一些過程中的經驗。一來以免以後做項目時想不起來又重新在Google 的海洋里打撈，二來希望能多少加快其他遇到同樣問題的中文使用者搞定它的時間。之後應該還會更新其他的一些東西（吧 什麼是 Vuex？">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-08-26T05:10:06.319Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vuex 的單元測試（基於 Jest 框架）">
+<meta name="twitter:description" content="前言暑假在 UCLA 做項目時基本成為了全棧工程師（帶我的 Ph.D. 學長是搞機器學習的，所以除了 ML 之外系統中這樣那樣雜七雜八前端後端數據庫的東西都變我的工作了），在項目接近尾聲時覺得應該記錄下一些過程中的經驗。一來以免以後做項目時想不起來又重新在Google 的海洋里打撈，二來希望能多少加快其他遇到同樣問題的中文使用者搞定它的時間。之後應該還會更新其他的一些東西（吧 什麼是 Vuex？">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://AlexFxw.github.io/2019/08/22/Vue-UnitTest/">
+
+
+
+
+
+  <title>Vuex 的單元測試（基於 Jest 框架） | Alexology</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Alexology</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Act tells.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-portfolio">
+          <a href="/portfolio/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            Portfolio
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://AlexFxw.github.io/2019/08/22/Vue-UnitTest/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Fan, Hsuan-Wei">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/we.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Alexology">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Vuex 的單元測試（基於 Jest 框架）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-22T14:17:52-07:00">
+                2019-08-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/" itemprop="url" rel="index">
+                    <span itemprop="name">Programming</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/08/22/Vue-UnitTest/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/08/22/Vue-UnitTest/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-eye"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>read times
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>暑假在 UCLA 做項目時基本成為了全棧工程師（帶我的 Ph.D. 學長是搞機器學習的，所以除了 ML 之外系統中這樣那樣雜七雜八前端後端數據庫的東西都變我的工作了），在項目接近尾聲時覺得應該記錄下一些過程中的經驗。一來以免以後做項目時想不起來又重新在Google 的海洋里打撈，二來希望能多少加快其他遇到同樣問題的中文使用者搞定它的時間。之後應該還會更新其他的一些東西（吧</p>
+<h1 id="什麼是-Vuex？"><a href="#什麼是-Vuex？" class="headerlink" title="什麼是 Vuex？"></a>什麼是 Vuex？</h1><blockquote>
+<p>Vuex 是一个专为 Vue.js 应用程序开发的<strong>状态管理模式</strong>。它采用集中式存储管理应用的所有组件的状态，并以相应的规则保证状态以一种可预测的方式发生变化。Vuex 也集成到 Vue 的官方调试工具 <a href="https://github.com/vuejs/vue-devtools" target="_blank" rel="noopener">devtools extension</a>，提供了诸如零配置的 time-travel 调试、状态快照导入导出等高级调试功能。</p>
+<p>— 官網說明</p>
+</blockquote>
+<p><a href="https://vuex.vuejs.org/zh/" target="_blank" rel="noopener">Vuex</a> 是一個用在 Vue 的全局狀態管理模塊，可以把Vuex 看成前端的數據庫。雖然前端的數據存儲很大一部分都是部件相關的（在 Vue.js 裡面對應的就是每個 Vue 文件里的 data），但也有一些數據是需要全局維護的，在不是很複雜的情況下可以維護一個.ts 文件里的字典，可是當交互越來越複雜的時候一個可追蹤狀態的模塊對於代碼的質量就很重要了。</p>
+<p>Vuex 的一個重要思想是狀態和操作分離，即一個典型 Vuex 對象中的 state, mutation 以及 action。前端所需要的全局信息維護在 state 中，而對 state 的所有操作只能透過 mutation 來完成（action 是為了異步調用對 mutation 的封裝，此處不展開）以確保操作的合法性和可預期性。</p>
+<p>我在這篇文章並不試圖從頭解釋如何存取 state 或編寫 mutation，這在官方文檔中已經有比較詳細的<a href="https://vuex.vuejs.org/zh/guide/mutations.html" target="_blank" rel="noopener">說明</a>。我的主要目的是記錄如何在一個 Vue 項目中有效地進行關於 Vuex 的單元測試（這點在官方文檔中沒有那麼完整），從而保證前端全局信息的可靠性，因此假定你已經對 state, mutation, commit 等概念有了基本的認識，如果沒有可以先看文檔。</p>
+<p>對於 Vuex 的測試可以分為兩種，一種是測試對 Vuex 執行 mutation/action 時 state 有沒有預期的變化，一種是測試組件中有沒有執行期望的 mutation。</p>
+<h1 id="如何測試-Vuex-本身"><a href="#如何測試-Vuex-本身" class="headerlink" title="如何測試 Vuex 本身"></a>如何測試 Vuex 本身</h1><p>以下考慮一個典型 Vuex 對象的定義，其中有一個簡單的 state 和兩個簡單的 mutation。</p>
+<blockquote>
+<p>相比于純 JavaScript ，我是一個 TypeScript 愛好者。</p>
+</blockquote>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> store = <span class="keyword">new</span> Vuex.Store(&#123;</span><br><span class="line">  state: &#123;</span><br><span class="line">    count: <span class="number">0</span> <span class="keyword">as</span> <span class="built_in">number</span></span><br><span class="line">  &#125;,</span><br><span class="line">  mutations: &#123;</span><br><span class="line">    increase: <span class="function"><span class="keyword">function</span>(<span class="params">state</span>) </span>&#123;</span><br><span class="line">      state.count ++;</span><br><span class="line">    &#125;,</span><br><span class="line">    increaseNum: <span class="function"><span class="keyword">function</span>(<span class="params">state, payload</span>) </span>&#123;</span><br><span class="line">      <span class="comment">// 一個更一般性的情況，payload 是參數對象，假定其中有 num 這個變量</span></span><br><span class="line">      state.count += payload.num;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> store</span><br></pre></td></tr></table></figure>
+<p>那麼對於 vuex 本身的測試其實相當簡單，以上面的代碼為例：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// store.spec.ts</span></span><br><span class="line"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">'../store'</span>;</span><br><span class="line"><span class="keyword">import</span> Vuex <span class="keyword">from</span> <span class="string">'vuex'</span>;</span><br><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span>;</span><br><span class="line">Vue.use(Vuex);</span><br><span class="line"></span><br><span class="line">describe(<span class="string">'test vuex'</span>, <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  it(<span class="string">'test init'</span>, <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    expect(store.state.count).toBe(<span class="number">0</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">  it(<span class="string">'test mutation'</span>, <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    store.commit(<span class="string">'increase'</span>);</span><br><span class="line">    expect(store.state.count).toBe(<span class="number">1</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>其實就是對於 store 允許的每個 commit 操作一下，測試看看執行前後 state 的變化是否符合預期。由於 Vuex 操作與狀態分離的良好性質，這樣就基本可以確保運行如同預期。</p>
+<h1 id="如何在調用處測試-Vuex？"><a href="#如何在調用處測試-Vuex？" class="headerlink" title="如何在調用處測試 Vuex？"></a>如何在調用處測試 Vuex？</h1><p>在某個<code>.vue</code>或<code>.ts</code>中我們通常會這樣來使用 vuex 對象：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">'./store'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// A common .ts file</span></span><br><span class="line"><span class="keyword">const</span> someFunction = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  store.commit(<span class="string">'increase'</span>);</span><br><span class="line">  store.commit(<span class="string">'increase'</span>, &#123;</span><br><span class="line">    num: <span class="number">2</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// A function in vue componenet</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> Vue.extend(&#123;</span><br><span class="line">  data: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      <span class="comment">// Some data.</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    someFunction: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">this</span>.$store.commit(<span class="string">'increase'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>其中 Vue 組件的<code>$store</code>寫法需要在根組件注入，<code>vue-cli</code>生成的典型情況下可以在入口 <code>main.ts</code> 這麼寫：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> MyVuexStore <span class="keyword">from</span> <span class="string">'./store'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  store: MyVuexStore,</span><br><span class="line">  router: MyRouter,</span><br><span class="line">  render: <span class="function"><span class="params">h</span> =&gt;</span> h(App)</span><br><span class="line">&#125;).$mount(<span class="string">"#app"</span>);</span><br></pre></td></tr></table></figure>
+<p>那麼測試代碼應該怎麼寫呢？我在搜索 Stack Overflow 并結合 Jest 和 Vue/Vuex 官方教程后覺得比較好的寫法是這樣：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; shallowMount, createLocalVue &#125; <span class="keyword">from</span> <span class="string">"@vue/test-utils"</span>;</span><br><span class="line"><span class="keyword">import</span> VueRouter <span class="keyword">from</span> <span class="string">"vue-router"</span>;</span><br><span class="line"><span class="keyword">import</span> Vuex <span class="keyword">from</span> <span class="string">"vuex"</span>;</span><br><span class="line"><span class="keyword">import</span> ElementUI <span class="keyword">from</span> <span class="string">"element-ui"</span>;</span><br><span class="line"><span class="keyword">const</span> localVue = createLocalVue();</span><br><span class="line">localVue.use(ElementUI);</span><br><span class="line">localVue.use(Vuex);</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> TestComponent <span class="keyword">from</span> <span class="string">"../test_component.vue"</span>;</span><br><span class="line">describe(<span class="string">"Component test: test_component.vue"</span>, <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> store;</span><br><span class="line">  <span class="keyword">let</span> wrapper;</span><br><span class="line">  <span class="keyword">let</span> mutations;</span><br><span class="line">  beforeEach(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    mutations =  &#123;</span><br><span class="line">      increase: jest.fn(),</span><br><span class="line">    &#125;;</span><br><span class="line">    store = <span class="keyword">new</span> Vuex.Store(&#123;</span><br><span class="line">      <span class="comment">// state 的內容在這裡其實可有可無，只是做個範例</span></span><br><span class="line">      state: &#123;</span><br><span class="line">        count: <span class="number">0</span> <span class="keyword">as</span> <span class="built_in">number</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="comment">// 這是 vue 的語法糖，表示 mutations: mutations</span></span><br><span class="line">      mutations</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">// 測試 Vue 組件的時候會使用 wrapper 掛載，可見官方文檔說明</span></span><br><span class="line">    wrapper = shallowMount(SketchPad, &#123;</span><br><span class="line">      localVue,</span><br><span class="line">      store</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  it(<span class="string">"test: when increase mutation is called."</span>, <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123;increase&#125; = mutations;</span><br><span class="line">    wrapper.find(<span class="string">"[id='test-btn']"</span>).trigger(<span class="string">"click"</span>);</span><br><span class="line">    expect(increase.mock.calls.length).toBe(<span class="number">1</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>這個測試代碼里有幾個重點：</p>
+<ol>
+<li>使用<code>createLocalVue</code>來創建一個測試用的 vue 對象，可以避免在本測試里掛載或注入的操作對全局 Vue 造成影響。</li>
+<li>使用 <code>shallowMount</code>表示只掛載待測試組件，而不掛載、渲染子組件，符合單元測試的思想且可以加速測試時間。</li>
+<li><code>beforeEach</code> 的 hook 確保每個子測試之間的隔離。</li>
+<li>把這個組件里會用到的所有 mutation 寫出來，函數內容使用<code>jest.fn()</code>，因為我們在這裡測試時並不關心 store 實際的狀態變化（這個變化應該由前面提到的對 Vuex 對象本身的單元測試確保），我們只需要保證組件中操作時有如同我們預期的呼叫 mutation 即可，<code>jest.fn()</code>就是這樣用來記錄被調用信息的 mock 函數。</li>
+<li>前端測試實際上就是要測試用戶交互時的行為，從測試代碼里可以看到一種典型的操作：點擊組件中的某個按鈕（<code>id=&#39;test-btn&#39;</code>）時我們希望 Vuex 做出相應變化，這種情況就可以用上面這種寫法。通過<code>jest.fn()</code>捕獲到的呼叫次數就可以判斷效果是否如同預期。</li>
+</ol>
+<p>總結而言，Vuex 的測試核心就兩點：</p>
+<ol>
+<li>store 的每個 mutation 被調用時狀態的變化是否符合預期。</li>
+<li>組件中特定操作觸發時，是否會向 Vuex 對象提交預期的 commit。</li>
+</ol>
+<p>得益于 Vuex 的設計思想，這兩點被好好測試時就基本可以保證全局狀態的可靠性了，action 較為複雜，但本質上也是如此。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Thanks for you donation!</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/uploads/wechat_pay.JPG" alt="Fan, Hsuan-Wei WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/uploads/alipay.jpg" alt="Fan, Hsuan-Wei Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    Fan, Hsuan-Wei
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="http://AlexFxw.github.io/2019/08/22/Vue-UnitTest/" title="Vuex 的單元測試（基於 Jest 框架）">http://AlexFxw.github.io/2019/08/22/Vue-UnitTest/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-na/4.0/" rel="external nofollow" target="_blank">CC BY-NC-NA 4.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Vue-js/" rel="tag"># Vue.js</a>
+          
+            <a href="/tags/Front-end/" rel="tag"># Front-end</a>
+          
+            <a href="/tags/Unit-Test/" rel="tag"># Unit Test</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/09/ResearchTool/" rel="next" title="一些實用的科研工具">
+                <i class="fa fa-chevron-left"></i> 一些實用的科研工具
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5c79319c01a6d23b" async="async"></script>
+</div>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/we.JPG" alt="Fan, Hsuan-Wei">
+            
+              <p class="site-author-name" itemprop="name">Fan, Hsuan-Wei</p>
+              <p class="site-description motion-element" itemprop="description">A junior in Tsinghua CST.<br>Lives in Beijing and comes from Taiwan.<br>Interested in HCI/BCI and VR/AR.<br>Coding and thinking.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/AlexFxw" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:f.hsuanwei@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/profile.php?id=100003713956403" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>FB Page</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://instagram.com/alex93179" target="_blank" title="Instagram">
+                      
+                        <i class="fa fa-fw fa-instagram"></i>Instagram</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#什麼是-Vuex？"><span class="nav-number">2.</span> <span class="nav-text">什麼是 Vuex？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如何測試-Vuex-本身"><span class="nav-number">3.</span> <span class="nav-text">如何測試 Vuex 本身</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如何在調用處測試-Vuex？"><span class="nav-number">4.</span> <span class="nav-text">如何在調用處測試 Vuex？</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Fan, Hsuan-Wei</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      visitors
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      visit times
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://alexfxw.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://AlexFxw.github.io/2019/08/22/Vue-UnitTest/';
+          this.page.identifier = '2019/08/22/Vue-UnitTest/';
+          this.page.title = 'Vuex 的單元測試（基於 Jest 框架）';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://alexfxw.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
