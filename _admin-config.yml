@@ -1,0 +1,6 @@
+options:
+  spellcheck: false
+  askImageFilename: true
+editor:
+  inputStyle: contenteditable
+  spellcheck: false
