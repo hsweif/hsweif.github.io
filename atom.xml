@@ -40,9 +40,9 @@
     
       <category term="Vue.js" scheme="http://AlexFxw.github.io/tags/Vue-js/"/>
     
-      <category term="Unit Test" scheme="http://AlexFxw.github.io/tags/Unit-Test/"/>
-    
       <category term="Front-End" scheme="http://AlexFxw.github.io/tags/Front-End/"/>
+    
+      <category term="Unit Test" scheme="http://AlexFxw.github.io/tags/Unit-Test/"/>
     
   </entry>
   
@@ -147,9 +147,9 @@
       <category term="Tutorial" scheme="http://AlexFxw.github.io/categories/Tutorial/"/>
     
     
-      <category term="Hexo" scheme="http://AlexFxw.github.io/tags/Hexo/"/>
-    
       <category term="Front-End" scheme="http://AlexFxw.github.io/tags/Front-End/"/>
+    
+      <category term="Hexo" scheme="http://AlexFxw.github.io/tags/Hexo/"/>
     
   </entry>
   
