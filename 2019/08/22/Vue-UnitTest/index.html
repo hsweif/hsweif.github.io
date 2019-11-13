@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="en,zh-TW,default">
+<html class="theme-next pisces use-motion" lang="en,zh-TW,default">
 <head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Vue.js,Front-end,Unit Test,">
+  <meta name="keywords" content="Vue.js,Unit Test,Front-End,">
 
 
 
@@ -82,14 +82,14 @@
 
 
 <meta name="description" content="前言暑假在 UCLA 做項目時基本成為了全棧工程師（帶我的 Ph.D. 學長是搞機器學習的，所以除了 ML 之外系統中這樣那樣雜七雜八前端後端數據庫的東西都變我的工作了），在項目接近尾聲時覺得應該記錄下一些過程中的經驗。一來以免以後做項目時想不起來又重新在Google 的海洋里打撈，二來希望能多少加快其他遇到同樣問題的中文使用者搞定它的時間。之後應該還會更新其他的一些東西（吧 什麼是 Vuex？">
-<meta name="keywords" content="Vue.js,Front-end,Unit Test">
+<meta name="keywords" content="Vue.js,Unit Test,Front-End">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vuex 的單元測試（基於 Jest 框架）">
 <meta property="og:url" content="http://AlexFxw.github.io/2019/08/22/Vue-UnitTest/index.html">
 <meta property="og:site_name" content="Alexology">
 <meta property="og:description" content="前言暑假在 UCLA 做項目時基本成為了全棧工程師（帶我的 Ph.D. 學長是搞機器學習的，所以除了 ML 之外系統中這樣那樣雜七雜八前端後端數據庫的東西都變我的工作了），在項目接近尾聲時覺得應該記錄下一些過程中的經驗。一來以免以後做項目時想不起來又重新在Google 的海洋里打撈，二來希望能多少加快其他遇到同樣問題的中文使用者搞定它的時間。之後應該還會更新其他的一些東西（吧 什麼是 Vuex？">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-08-26T05:10:06.319Z">
+<meta property="og:updated_time" content="2019-11-13T08:16:11.259Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Vuex 的單元測試（基於 Jest 框架）">
 <meta name="twitter:description" content="前言暑假在 UCLA 做項目時基本成為了全棧工程師（帶我的 Ph.D. 學長是搞機器學習的，所以除了 ML 之外系統中這樣那樣雜七雜八前端後端數據庫的東西都變我的工作了），在項目接近尾聲時覺得應該記錄下一些過程中的經驗。一來以免以後做項目時想不起來又重新在Google 的海洋里打撈，二來希望能多少加快其他遇到同樣問題的中文使用者搞定它的時間。之後應該還會更新其他的一些東西（吧 什麼是 Vuex？">
@@ -100,7 +100,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Mist',
+    scheme: 'Pisces',
     version: '5.1.4',
     sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -278,7 +278,7 @@
     <link itemprop="mainEntityOfPage" href="http://AlexFxw.github.io/2019/08/22/Vue-UnitTest/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Fan, Hsuan-Wei">
+      <meta itemprop="name" content="Hsuan-Wei Fan">
       <meta itemprop="description" content>
       <meta itemprop="image" content="/uploads/we.JPG">
     </span>
@@ -304,7 +304,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-22T14:17:52-07:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-22T14:17:52+08:00">
                 2019-08-22
               </time>
             
@@ -436,14 +436,14 @@
 
     
       <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="/uploads/wechat_pay.JPG" alt="Fan, Hsuan-Wei WeChat Pay">
+        <img id="wechat_qr" src="/uploads/wechat_pay.JPG" alt="Hsuan-Wei Fan WeChat Pay">
         <p>WeChat Pay</p>
       </div>
     
 
     
       <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="/uploads/alipay.jpg" alt="Fan, Hsuan-Wei Alipay">
+        <img id="alipay_qr" src="/uploads/alipay.jpg" alt="Hsuan-Wei Fan Alipay">
         <p>Alipay</p>
       </div>
     
@@ -461,7 +461,7 @@
         <ul class="post-copyright">
   <li class="post-copyright-author">
     <strong>Post author:</strong>
-    Fan, Hsuan-Wei
+    Hsuan-Wei Fan
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
@@ -482,9 +482,9 @@
           
             <a href="/tags/Vue-js/" rel="tag"># Vue.js</a>
           
-            <a href="/tags/Front-end/" rel="tag"># Front-end</a>
-          
             <a href="/tags/Unit-Test/" rel="tag"># Unit Test</a>
+          
+            <a href="/tags/Front-End/" rel="tag"># Front-End</a>
           
         </div>
       
@@ -587,10 +587,10 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
-              <img class="site-author-image" itemprop="image" src="/uploads/we.JPG" alt="Fan, Hsuan-Wei">
+              <img class="site-author-image" itemprop="image" src="/uploads/we.JPG" alt="Hsuan-Wei Fan">
             
-              <p class="site-author-name" itemprop="name">Fan, Hsuan-Wei</p>
-              <p class="site-description motion-element" itemprop="description">A junior in Tsinghua CST.<br>Lives in Beijing and comes from Taiwan.<br>Interested in HCI/BCI and VR/AR.<br>Coding and thinking.</p>
+              <p class="site-author-name" itemprop="name">Hsuan-Wei Fan</p>
+              <p class="site-description motion-element" itemprop="description">A senior in Tsinghua CST, Beijing.<br>Comes from Taiwan.<br>Interested in VR/MR and CG.<br>Coding and thinking.</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -600,7 +600,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -622,7 +622,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -714,7 +714,7 @@
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">Fan, Hsuan-Wei</span>
+  <span class="author" itemprop="copyrightHolder">Hsuan-Wei Fan</span>
 
   
 </div>
@@ -728,7 +728,7 @@
 
 
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
 
 
 
@@ -847,6 +847,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
 
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
