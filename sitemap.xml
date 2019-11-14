@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://hsuanwei.codes/portfolio/index.html</loc>
+    
+    <lastmod>2019-11-14T01:09:18.966Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://hsuanwei.codes/about/index.html</loc>
     
-    <lastmod>2019-11-14T01:05:52.176Z</lastmod>
+    <lastmod>2019-11-14T01:06:51.495Z</lastmod>
     
   </url>
   
@@ -24,13 +31,6 @@
   
   <url>
     <loc>http://hsuanwei.codes/tags/index.html</loc>
-    
-    <lastmod>2019-08-09T23:29:29.633Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://hsuanwei.codes/portfolio/index.html</loc>
     
     <lastmod>2019-08-09T23:29:29.633Z</lastmod>
     
