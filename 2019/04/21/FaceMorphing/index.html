@@ -410,7 +410,30 @@
 <p>邓老师的计算几何课提到，可以使用Vonori图构造Delaunay Triangulation，但我这里使用了另一种称为Bowyer Watson算法的方法。</p>
 <p>即对于任意的三角形，如果有某个点在其外接圆内，那么其必不是Delaunay三角形，因为我们可以将该点和原先三角形的三个边构成新的三角形，这种组合的外接圆将不会再包括另外的点。从初等几何的知识知道，缩小外接圆相当于使三个角的值趋近。</p>
 <p>由此，可以采用以下伪代码的思路来实现Delaunay Triangulation：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">function <span class="title">BowyerWatson</span> <span class="params">(pointList)</span></span></span><br><span class="line"><span class="function">      <span class="comment">// pointList is a set of coordinates defining the points to be triangulated</span></span></span><br><span class="line">      triangulation := empty triangle mesh data structure</span><br><span class="line">      add super-triangle to triangulation <span class="comment">// must be large enough to completely contain all the points in pointList</span></span><br><span class="line">      <span class="keyword">for</span> each point in pointList <span class="keyword">do</span> <span class="comment">// add all the points one at a time to the triangulation</span></span><br><span class="line">         badTriangles := empty <span class="built_in">set</span></span><br><span class="line">         <span class="keyword">for</span> each triangle in triangulation <span class="keyword">do</span> <span class="comment">// first find all the triangles that are no longer valid due to the insertion</span></span><br><span class="line">            <span class="keyword">if</span> point is inside circumcircle of triangle</span><br><span class="line">               add triangle to badTriangles</span><br><span class="line">         polygon := empty <span class="built_in">set</span></span><br><span class="line">         <span class="keyword">for</span> each triangle in badTriangles <span class="keyword">do</span> <span class="comment">// find the boundary of the polygonal hole</span></span><br><span class="line">            <span class="keyword">for</span> each edge in triangle <span class="keyword">do</span></span><br><span class="line">               <span class="keyword">if</span> edge is <span class="keyword">not</span> shared by any other triangles in badTriangles</span><br><span class="line">                  add edge to polygon</span><br><span class="line">         <span class="keyword">for</span> each triangle in badTriangles <span class="keyword">do</span> <span class="comment">// remove them from the data structure</span></span><br><span class="line">            remove triangle from triangulation</span><br><span class="line">         <span class="keyword">for</span> each edge in polygon <span class="keyword">do</span> <span class="comment">// re-triangulate the polygonal hole</span></span><br><span class="line">            newTri := form a triangle from edge to point</span><br><span class="line">            add newTri to triangulation</span><br><span class="line">      <span class="keyword">for</span> each triangle in triangulation <span class="comment">// done inserting points, now clean up</span></span><br><span class="line">         <span class="keyword">if</span> triangle contains a vertex from original super-triangle</span><br><span class="line">            remove triangle from triangulation</span><br><span class="line">      <span class="keyword">return</span> triangulation</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-c++">function BowyerWatson (pointList)
+      // pointList is a set of coordinates defining the points to be triangulated
+      triangulation := empty triangle mesh data structure
+      add super-triangle to triangulation // must be large enough to completely contain all the points in pointList
+      for each point in pointList do // add all the points one at a time to the triangulation
+         badTriangles := empty set
+         for each triangle in triangulation do // first find all the triangles that are no longer valid due to the insertion
+            if point is inside circumcircle of triangle
+               add triangle to badTriangles
+         polygon := empty set
+         for each triangle in badTriangles do // find the boundary of the polygonal hole
+            for each edge in triangle do
+               if edge is not shared by any other triangles in badTriangles
+                  add edge to polygon
+         for each triangle in badTriangles do // remove them from the data structure
+            remove triangle from triangulation
+         for each edge in polygon do // re-triangulate the polygonal hole
+            newTri := form a triangle from edge to point
+            add newTri to triangulation
+      for each triangle in triangulation // done inserting points, now clean up
+         if triangle contains a vertex from original super-triangle
+            remove triangle from triangulation
+      return triangulation
+</code></pre>
 <blockquote>
 <p>伪代码参考：<a href="https://en.wikipedia.org/wiki/Bowyer%E2%80%93Watson_algorithm" target="_blank" rel="noopener">Bowyer-Watson algorithm| Wikipedia</a></p>
 </blockquote>
@@ -422,7 +445,15 @@
 <p><img src="/2019/04/21/FaceMorphing/affine_1.png" alt></p>
 <p>令上式为$x’ = Tx$，则若$p’ = [x_1’ \ x_2’ \ x_3’] , p = [x_1 \ x_2 \ x_3]$分别为(3,3)的矩阵，则可得$T = p’ p^{-1}$。由线性代数的相关知识得知，三角形ABC中任一点透过仿射矩阵T后都可以变换到三角形A’B’C’的对应点。</p>
 <p>因此我们可以用如下方法计算出Delaunay Triangulation 里每个三角面片对应的仿射矩阵。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calAffineMatrix</span><span class="params">(src_mesh, target_mesh)</span>:</span></span><br><span class="line">    l = len(src_mesh)</span><br><span class="line">    affine_martix = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, l):</span><br><span class="line">        src, target = src_mesh[i].vertex, target_mesh[i].vertex</span><br><span class="line">        afMatrix = af.getAffineMatrix(src, target)</span><br><span class="line">        affine_martix.append(copy.deepcopy(afMatrix))</span><br><span class="line">    <span class="keyword">return</span> affine_martix</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-python">def calAffineMatrix(src_mesh, target_mesh):
+    l = len(src_mesh)
+    affine_martix = []
+    for i in range(0, l):
+        src, target = src_mesh[i].vertex, target_mesh[i].vertex
+        afMatrix = af.getAffineMatrix(src, target)
+        affine_martix.append(copy.deepcopy(afMatrix))
+    return affine_martix
+</code></pre>
 <p><code>af.getAffineMatrix</code>就是基于src和target两个顶点集合的坐标，根据上述数学关系计算仿射矩阵T，<code>affine_matrix</code>维护了Delaunay Triangulation中每个三角面片对应的仿射矩阵。</p>
 <h3 id="Warping"><a href="#Warping" class="headerlink" title="Warping"></a>Warping</h3><p>有了仿射矩阵列表后，我们想知道图像中的每个像素应该应用哪一个仿射矩阵。这个问题相当于计算每一个像素属于哪个三角面片。我采用的方法是遍历Delaunay Triangulation中所有的三角形，然后对于三角形外接矩形内的所有像素分别判是否于三角形内，如果是的话就在全局的二维数组中记录<code>p(x,y)</code>对应的三角面片的编号，于是该像素就可以用这个编号去索引Affine Matrix中的相应项了。</p>
 <blockquote>
@@ -435,7 +466,18 @@
 <h4 id="Inverse-Warping"><a href="#Inverse-Warping" class="headerlink" title="Inverse Warping"></a>Inverse Warping</h4><p><img src="/2019/04/21/FaceMorphing/inverse_warping.png" alt></p>
 <p><img src="/2019/04/21/FaceMorphing/inverse_warping_1.png" alt></p>
 <p>Inverse Warping 和 Forward Warping的做法反过来，枚举Warping后图像中的每个像素，透过仿射矩阵的逆矩阵求得其在源图像中的对应点。由于源图像中每个像素值都是已知的，所以可以使用插值求得变换后的像素值。在我的实现中我用了双线性插值法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">interpolate</span><span class="params">(x, y, img)</span>:</span></span><br><span class="line">    result = np.zeros((<span class="number">1</span>,<span class="number">3</span>))</span><br><span class="line">    l_x, l_y = int(x), int(y)</span><br><span class="line">    u_x, u_y = l_x+<span class="number">1</span>, l_y+<span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> u_x &gt; img.shape[<span class="number">0</span>]:</span><br><span class="line">        u_x = l_x</span><br><span class="line">    <span class="keyword">if</span> u_y &gt; img.shape[<span class="number">1</span>]:</span><br><span class="line">        u_y = l_y</span><br><span class="line">    u = x - int(x)</span><br><span class="line">    v = y - int(y)</span><br><span class="line">    result = (<span class="number">1.0</span>-u)*(<span class="number">1.0</span>-v)*img[l_x,l_y,:] + (<span class="number">1.0</span>-u)*v*img[l_x,u_y,:] + u*(<span class="number">1.0</span>-v)*img[u_x,l_y,:] + u*v*img[u_x,u_y,:]</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-python">def interpolate(x, y, img):
+    result = np.zeros((1,3))
+    l_x, l_y = int(x), int(y)
+    u_x, u_y = l_x+1, l_y+1
+    if u_x &gt; img.shape[0]:
+        u_x = l_x
+    if u_y &gt; img.shape[1]:
+        u_y = l_y
+    u = x - int(x)
+    v = y - int(y)
+    result = (1.0-u)*(1.0-v)*img[l_x,l_y,:] + (1.0-u)*v*img[l_x,u_y,:] + u*(1.0-v)*img[u_x,l_y,:] + u*v*img[u_x,u_y,:]
+</code></pre>
 <h3 id="Average-Shape-amp-Cross-Dissolve"><a href="#Average-Shape-amp-Cross-Dissolve" class="headerlink" title="Average Shape &amp; Cross-Dissolve"></a>Average Shape &amp; Cross-Dissolve</h3><p>基于以上所述，已经可以将源图像（A人脸）映射到目标图像（B人脸）了，但是这样一来，Cross-Dissolve效果虽然还行，可是脸型会有些偏向B人脸。因此，还需要找出Average Shape。做法是给定源图像和目标图像的Triangulation，对于其中每个三角形的顶点$v, v’$套用$newVertex = (1-\alpha)\cdot v + \alpha\cdot v’$找到“中间”的三角剖分。</p>
 <p>基于这个三角剖分，分别向源图像和目标图像做inverse warping得到对应的像素值，再使用$\alpha$加权相加（Cross-Dissolve），得到形状特征和颜色特征都位于中间的图像。</p>
 <p>（如同开头中间的图片，该图参数$\alpha =0.5$</p>
@@ -628,7 +670,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -639,7 +681,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -650,7 +692,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

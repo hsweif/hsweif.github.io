@@ -392,16 +392,114 @@
 <blockquote>
 <p>相比于純 JavaScript ，我是一個 TypeScript 愛好者。</p>
 </blockquote>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> store = <span class="keyword">new</span> Vuex.Store(&#123;</span><br><span class="line">  state: &#123;</span><br><span class="line">    count: <span class="number">0</span> <span class="keyword">as</span> <span class="built_in">number</span></span><br><span class="line">  &#125;,</span><br><span class="line">  mutations: &#123;</span><br><span class="line">    increase: <span class="function"><span class="keyword">function</span>(<span class="params">state</span>) </span>&#123;</span><br><span class="line">      state.count ++;</span><br><span class="line">    &#125;,</span><br><span class="line">    increaseNum: <span class="function"><span class="keyword">function</span>(<span class="params">state, payload</span>) </span>&#123;</span><br><span class="line">      <span class="comment">// 一個更一般性的情況，payload 是參數對象，假定其中有 num 這個變量</span></span><br><span class="line">      state.count += payload.num;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> store</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-typescript">export const store = new Vuex.Store({
+  state: {
+    count: 0 as number
+  },
+  mutations: {
+    increase: function(state) {
+      state.count ++;
+    },
+    increaseNum: function(state, payload) {
+      // 一個更一般性的情況，payload 是參數對象，假定其中有 num 這個變量
+      state.count += payload.num;
+    }
+  }
+
+export default store
+</code></pre>
 <p>那麼對於 vuex 本身的測試其實相當簡單，以上面的代碼為例：</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// store.spec.ts</span></span><br><span class="line"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">'../store'</span>;</span><br><span class="line"><span class="keyword">import</span> Vuex <span class="keyword">from</span> <span class="string">'vuex'</span>;</span><br><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span>;</span><br><span class="line">Vue.use(Vuex);</span><br><span class="line"></span><br><span class="line">describe(<span class="string">'test vuex'</span>, <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  it(<span class="string">'test init'</span>, <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    expect(store.state.count).toBe(<span class="number">0</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">  it(<span class="string">'test mutation'</span>, <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    store.commit(<span class="string">'increase'</span>);</span><br><span class="line">    expect(store.state.count).toBe(<span class="number">1</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-typescript">// store.spec.ts
+import store from &#39;../store&#39;;
+import Vuex from &#39;vuex&#39;;
+import Vue from &#39;vue&#39;;
+Vue.use(Vuex);
+
+describe(&#39;test vuex&#39;, () =&gt; {
+  it(&#39;test init&#39;, () =&gt; {
+    expect(store.state.count).toBe(0);
+  });
+  it(&#39;test mutation&#39;, () =&gt; {
+    store.commit(&#39;increase&#39;);
+    expect(store.state.count).toBe(1);
+  });
+});
+</code></pre>
 <p>其實就是對於 store 允許的每個 commit 操作一下，測試看看執行前後 state 的變化是否符合預期。由於 Vuex 操作與狀態分離的良好性質，這樣就基本可以確保運行如同預期。</p>
 <h1 id="如何在調用處測試-Vuex？"><a href="#如何在調用處測試-Vuex？" class="headerlink" title="如何在調用處測試 Vuex？"></a>如何在調用處測試 Vuex？</h1><p>在某個<code>.vue</code>或<code>.ts</code>中我們通常會這樣來使用 vuex 對象：</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">'./store'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// A common .ts file</span></span><br><span class="line"><span class="keyword">const</span> someFunction = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  store.commit(<span class="string">'increase'</span>);</span><br><span class="line">  store.commit(<span class="string">'increase'</span>, &#123;</span><br><span class="line">    num: <span class="number">2</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// A function in vue componenet</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> Vue.extend(&#123;</span><br><span class="line">  data: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      <span class="comment">// Some data.</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    someFunction: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">this</span>.$store.commit(<span class="string">'increase'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-typescript">import store from &#39;./store&#39;;
+
+// A common .ts file
+const someFunction = function(){
+  store.commit(&#39;increase&#39;);
+  store.commit(&#39;increase&#39;, {
+    num: 2
+  });
+}
+
+// A function in vue componenet
+export default Vue.extend({
+  data: function() {
+    return {
+      // Some data.
+    }
+  },
+  methods: {
+    someFunction: function() {
+      this.$store.commit(&#39;increase&#39;);
+    }
+  }
+});
+</code></pre>
 <p>其中 Vue 組件的<code>$store</code>寫法需要在根組件注入，<code>vue-cli</code>生成的典型情況下可以在入口 <code>main.ts</code> 這麼寫：</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> MyVuexStore <span class="keyword">from</span> <span class="string">'./store'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  store: MyVuexStore,</span><br><span class="line">  router: MyRouter,</span><br><span class="line">  render: <span class="function"><span class="params">h</span> =&gt;</span> h(App)</span><br><span class="line">&#125;).$mount(<span class="string">"#app"</span>);</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-typescript">import MyVuexStore from &#39;./store&#39;;
+
+new Vue({
+  store: MyVuexStore,
+  router: MyRouter,
+  render: h =&gt; h(App)
+}).$mount(&quot;#app&quot;);
+</code></pre>
 <p>那麼測試代碼應該怎麼寫呢？我在搜索 Stack Overflow 并結合 Jest 和 Vue/Vuex 官方教程后覺得比較好的寫法是這樣：</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; shallowMount, createLocalVue &#125; <span class="keyword">from</span> <span class="string">"@vue/test-utils"</span>;</span><br><span class="line"><span class="keyword">import</span> VueRouter <span class="keyword">from</span> <span class="string">"vue-router"</span>;</span><br><span class="line"><span class="keyword">import</span> Vuex <span class="keyword">from</span> <span class="string">"vuex"</span>;</span><br><span class="line"><span class="keyword">import</span> ElementUI <span class="keyword">from</span> <span class="string">"element-ui"</span>;</span><br><span class="line"><span class="keyword">const</span> localVue = createLocalVue();</span><br><span class="line">localVue.use(ElementUI);</span><br><span class="line">localVue.use(Vuex);</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> TestComponent <span class="keyword">from</span> <span class="string">"../test_component.vue"</span>;</span><br><span class="line">describe(<span class="string">"Component test: test_component.vue"</span>, <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> store;</span><br><span class="line">  <span class="keyword">let</span> wrapper;</span><br><span class="line">  <span class="keyword">let</span> mutations;</span><br><span class="line">  beforeEach(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    mutations =  &#123;</span><br><span class="line">      increase: jest.fn(),</span><br><span class="line">    &#125;;</span><br><span class="line">    store = <span class="keyword">new</span> Vuex.Store(&#123;</span><br><span class="line">      <span class="comment">// state 的內容在這裡其實可有可無，只是做個範例</span></span><br><span class="line">      state: &#123;</span><br><span class="line">        count: <span class="number">0</span> <span class="keyword">as</span> <span class="built_in">number</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="comment">// 這是 vue 的語法糖，表示 mutations: mutations</span></span><br><span class="line">      mutations</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">// 測試 Vue 組件的時候會使用 wrapper 掛載，可見官方文檔說明</span></span><br><span class="line">    wrapper = shallowMount(SketchPad, &#123;</span><br><span class="line">      localVue,</span><br><span class="line">      store</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  it(<span class="string">"test: when increase mutation is called."</span>, <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123;increase&#125; = mutations;</span><br><span class="line">    wrapper.find(<span class="string">"[id='test-btn']"</span>).trigger(<span class="string">"click"</span>);</span><br><span class="line">    expect(increase.mock.calls.length).toBe(<span class="number">1</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-typescript">import { shallowMount, createLocalVue } from &quot;@vue/test-utils&quot;;
+import VueRouter from &quot;vue-router&quot;;
+import Vuex from &quot;vuex&quot;;
+import ElementUI from &quot;element-ui&quot;;
+const localVue = createLocalVue();
+localVue.use(ElementUI);
+localVue.use(Vuex);
+
+import TestComponent from &quot;../test_component.vue&quot;;
+describe(&quot;Component test: test_component.vue&quot;, () =&gt; {
+  let store;
+  let wrapper;
+  let mutations;
+  beforeEach(() =&gt; {
+    mutations =  {
+      increase: jest.fn(),
+    };
+    store = new Vuex.Store({
+      // state 的內容在這裡其實可有可無，只是做個範例
+      state: {
+        count: 0 as number
+      },
+      // 這是 vue 的語法糖，表示 mutations: mutations
+      mutations
+    });
+    // 測試 Vue 組件的時候會使用 wrapper 掛載，可見官方文檔說明
+    wrapper = shallowMount(SketchPad, {
+      localVue,
+      store
+    });
+  });
+
+  it(&quot;test: when increase mutation is called.&quot;, () =&gt; {
+    const {increase} = mutations;
+    wrapper.find(&quot;[id=&#39;test-btn&#39;]&quot;).trigger(&quot;click&quot;);
+    expect(increase.mock.calls.length).toBe(1);
+  });
+});
+</code></pre>
 <p>這個測試代碼里有幾個重點：</p>
 <ol>
 <li>使用<code>createLocalVue</code>來創建一個測試用的 vue 對象，可以避免在本測試里掛載或注入的操作對全局 Vue 造成影響。</li>
@@ -600,7 +698,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -611,7 +709,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -622,7 +720,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
