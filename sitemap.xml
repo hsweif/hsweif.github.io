@@ -2,16 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://hsuanwei.codes/portfolio/index.html</loc>
+    <loc>http://hsuanwei.codes/about/index.html</loc>
     
-    <lastmod>2019-11-14T01:09:18.966Z</lastmod>
+    <lastmod>2019-11-14T06:54:24.834Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://hsuanwei.codes/about/index.html</loc>
+    <loc>http://hsuanwei.codes/2019/03/01/Hexo-blog/</loc>
     
-    <lastmod>2019-11-14T01:06:51.495Z</lastmod>
+    <lastmod>2019-11-14T06:46:31.517Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://hsuanwei.codes/gallery/index.html</loc>
+    
+    <lastmod>2019-11-14T05:54:20.774Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://hsuanwei.codes/portfolio/index.html</loc>
+    
+    <lastmod>2019-11-14T01:09:18.966Z</lastmod>
     
   </url>
   
@@ -54,13 +68,6 @@
     <loc>http://hsuanwei.codes/2019/04/14/PoissonEditing/</loc>
     
     <lastmod>2019-08-09T23:29:29.591Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://hsuanwei.codes/2019/03/01/Hexo-blog/</loc>
-    
-    <lastmod>2019-08-09T23:29:29.580Z</lastmod>
     
   </url>
   
