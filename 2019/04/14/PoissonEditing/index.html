@@ -430,10 +430,8 @@ for\ all\ p\in\Omega,\ |N_p|f_p - \sum\limits_{q\in N_p\cap\Omega}f_q - \sum\lim
 <p>整理完的好处是可以将上式转换成矩阵求解问题，例如把未知区域的$f$看作是未知数x，式子左侧求二阶梯度的矩阵看作是$n*n$的矩阵A（n是待填充的像素数量），已知的源图像的引导向量（二阶梯度）表示为n维向量，则原问题转化为求解$Ax = b$的未知量x。</p>
 <p>实际上论文就指出了A是一个稀疏对称正定矩阵，作者使用了Gauss-Seidel迭代求解，但其并未给出该矩阵内容。如果要复现论文结果，显然我们得要进一步推导矩阵形式才能迭代。</p>
 <p>由我们对Laplace算子的理解，其实不难发现其与相邻像素的系数关系应为：</p>
-<pre><code>  -1
--1 4 -1
-  -1
-</code></pre><p>由于$x$是像素函数向量，A矩阵应为对角元为4的稀疏矩阵，每一行有小于$|N_p|$个非零元-1，零元对应不属于$\Omega \cup \partial \Omega$的像素，而对于处于目标图像$S$边界的像素p而言，$|N_p| &lt; 4$。至此，我们知道了构造矩阵A的方法，并且已知引导向量b，则可以采取适当的迭代法求解未知量$x$——目标图像中待填充区块的像素值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">  -1</span><br><span class="line">-1 4 -1</span><br><span class="line">  -1</span><br></pre></td></tr></table></figure>
+<p>由于$x$是像素函数向量，A矩阵应为对角元为4的稀疏矩阵，每一行有小于$|N_p|$个非零元-1，零元对应不属于$\Omega \cup \partial \Omega$的像素，而对于处于目标图像$S$边界的像素p而言，$|N_p| &lt; 4$。至此，我们知道了构造矩阵A的方法，并且已知引导向量b，则可以采取适当的迭代法求解未知量$x$——目标图像中待填充区块的像素值。</p>
 <h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>基于上述的原理，可以梳理需要实现的功能有：</p>
 <ol>
 <li>读取源图像、目标图像、遮罩图像</li>
@@ -445,114 +443,20 @@ for\ all\ p\in\Omega,\ |N_p|f_p - \sum\limits_{q\in N_p\cap\Omega}f_q - \sum\lim
 <p>按照这个思路可以编写相关代码，这里我选用Python实现，相关的库有OpenCV(基本的IO功能)、numpy以及Scipy(稀疏矩阵的存储以及求解)、</p>
 <h3 id="图像IO"><a href="#图像IO" class="headerlink" title="图像IO"></a>图像IO</h3><p>使用<code>cv2.imread()</code>将源图像读入，获得一个(height <em> width </em> channels)的张量。</p>
 <h3 id="遮罩位置调整"><a href="#遮罩位置调整" class="headerlink" title="遮罩位置调整"></a>遮罩位置调整</h3><p>在原始数据中，源图像以及遮罩的长宽是一致的，需要实现让遮罩可以在目标图像中自由调整位置的功能，我用一个二维参数offset来表示这种偏移，将源/遮罩先resize到和目标图像一样大小，偏移mask的位置之后使用新的mask和源文件。</p>
-<pre><code class="lang-python">def shiftMask(src, target, mask, offset=(0,0)):
-    off_h, off_w = offset
-    height = src.shape[0]
-    width = src.shape[1]
-    new_src = np.zeros(target.shape)
-    new_mask = np.zeros(target.shape)
-    new_mask = new_mask[:,:,0]
-    for h in range(0, height):
-        for w in range(0, width):
-            x = h + off_h
-            y = w + off_w
-            if x &lt; target.shape[0] and y &lt; target.shape[1] and x &gt;= 0 and y &gt;= 0:
-                new_src[x,y,:] = src[h,w,:]
-                new_mask[x,y] = mask[h,w]
-    return new_src, new_mask
-</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">shiftMask</span><span class="params">(src, target, mask, offset=<span class="params">(<span class="number">0</span>,<span class="number">0</span>)</span>)</span>:</span></span><br><span class="line">    off_h, off_w = offset</span><br><span class="line">    height = src.shape[<span class="number">0</span>]</span><br><span class="line">    width = src.shape[<span class="number">1</span>]</span><br><span class="line">    new_src = np.zeros(target.shape)</span><br><span class="line">    new_mask = np.zeros(target.shape)</span><br><span class="line">    new_mask = new_mask[:,:,<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">for</span> h <span class="keyword">in</span> range(<span class="number">0</span>, height):</span><br><span class="line">        <span class="keyword">for</span> w <span class="keyword">in</span> range(<span class="number">0</span>, width):</span><br><span class="line">            x = h + off_h</span><br><span class="line">            y = w + off_w</span><br><span class="line">            <span class="keyword">if</span> x &lt; target.shape[<span class="number">0</span>] <span class="keyword">and</span> y &lt; target.shape[<span class="number">1</span>] <span class="keyword">and</span> x &gt;= <span class="number">0</span> <span class="keyword">and</span> y &gt;= <span class="number">0</span>:</span><br><span class="line">                new_src[x,y,:] = src[h,w,:]</span><br><span class="line">                new_mask[x,y] = mask[h,w]</span><br><span class="line">    <span class="keyword">return</span> new_src, new_mask</span><br></pre></td></tr></table></figure>
 <h3 id="判断像素位置"><a href="#判断像素位置" class="headerlink" title="判断像素位置"></a>判断像素位置</h3><p>判断算法的核心思路为：</p>
 <ol>
 <li>若 pixel(x, y) 在mask的区域里，则其属于$\Omega$。</li>
 <li>若 pixel(x, y) 属于$\Omega$，但是其邻居像素存在不属于$\Omega$的情形，则pixel(x,y)属于$\partial\Omega$。</li>
 <li>除此之外，其不属于需要融合的区域。</li>
 </ol>
-<pre><code class="lang-python">def get_neighbor(x, y):
-    return [(x-1, y), (x+1, y), (x, y-1), (x, y+1)]
-
-def in_omega(x, y, mask):
-    if mask[x, y] != 0:
-        return True
-    else:
-        return False
-
-def on_border(x, y, mask):
-    if in_omega(x, y, mask) == False:
-        return False
-    for i, j in get_neighbor(x, y):
-        if in_omega(i, j, mask) == False:
-            return True
-    return False
-
-def pixel_belong(x, y, mask):
-    if in_omega(x, y, mask) == False:
-        return OUTSIDE 
-    elif on_border(x, y, mask):
-        return BORDER
-    else:
-        return OMEGA
-</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_neighbor</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> [(x<span class="number">-1</span>, y), (x+<span class="number">1</span>, y), (x, y<span class="number">-1</span>), (x, y+<span class="number">1</span>)]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">in_omega</span><span class="params">(x, y, mask)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> mask[x, y] != <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">on_border</span><span class="params">(x, y, mask)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> in_omega(x, y, mask) == <span class="literal">False</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">for</span> i, j <span class="keyword">in</span> get_neighbor(x, y):</span><br><span class="line">        <span class="keyword">if</span> in_omega(i, j, mask) == <span class="literal">False</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pixel_belong</span><span class="params">(x, y, mask)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> in_omega(x, y, mask) == <span class="literal">False</span>:</span><br><span class="line">        <span class="keyword">return</span> OUTSIDE </span><br><span class="line">    <span class="keyword">elif</span> on_border(x, y, mask):</span><br><span class="line">        <span class="keyword">return</span> BORDER</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> OMEGA</span><br></pre></td></tr></table></figure>
 <h3 id="Laplace-算子"><a href="#Laplace-算子" class="headerlink" title="Laplace 算子"></a>Laplace 算子</h3><p>根据Laplace算子的矩阵形式，可以很容易地写出以下函数，为了实现简单，<strong>对于$\partial\Omega$ 的情形我们在其他地方判断</strong>，此处假定四周用来计算梯度的函数都是源图像$f$。</p>
-<pre><code class="lang-python">def laplace_pixel(img, x, y):
-    value = 4*img[x,y]
-    for i, j in get_neighbor(x, y):
-        value = value - img[i, j]
-    return value
-</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">laplace_pixel</span><span class="params">(img, x, y)</span>:</span></span><br><span class="line">    value = <span class="number">4</span>*img[x,y]</span><br><span class="line">    <span class="keyword">for</span> i, j <span class="keyword">in</span> get_neighbor(x, y):</span><br><span class="line">        value = value - img[i, j]</span><br><span class="line">    <span class="keyword">return</span> value</span><br></pre></td></tr></table></figure>
 <h3 id="获取mask区域内的像素"><a href="#获取mask区域内的像素" class="headerlink" title="获取mask区域内的像素"></a>获取mask区域内的像素</h3><p>由于b的长度是mask内像素数量，因此编写一个辅助函数得的所有mask内的像素点的坐标，将其存入一个数组中。</p>
-<pre><code class="lang-python">def get_fpoints(mask):
-    f_points = []
-    for i in range(0, mask.shape[0]):
-        for j in range(0, mask.shape[1]):
-            if in_omega(i, j, mask):
-                f_points.append((i, j))
-    return f_points
-</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_fpoints</span><span class="params">(mask)</span>:</span></span><br><span class="line">    f_points = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, mask.shape[<span class="number">0</span>]):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>, mask.shape[<span class="number">1</span>]):</span><br><span class="line">            <span class="keyword">if</span> in_omega(i, j, mask):</span><br><span class="line">                f_points.append((i, j))</span><br><span class="line">    <span class="keyword">return</span> f_points</span><br></pre></td></tr></table></figure>
 <h3 id="构造转换矩阵A以及引导向量b"><a href="#构造转换矩阵A以及引导向量b" class="headerlink" title="构造转换矩阵A以及引导向量b"></a>构造转换矩阵A以及引导向量b</h3><p>依照着上述的思路，可以实现以下代码。由于A是一个高度稀疏的矩阵，所以不采用np.array而是使用Scipy.sparse中的稀疏矩阵来存储，考虑到增量添加元素的过程，使用lil_matrix，构造完A和b后，用Scipy.sparse里的线性代数求解器即可得到解x。</p>
-<pre><code class="lang-python">def poisson_matrix(f_points):
-    &#39;&#39;&#39;
-    Construct a poisson matrix with non zero points in mask (fpoints).
-    Considered the sparsity of the matrix (at most 5 non zero element per row),
-    use lil_matrix in scipy.sparse rather than np.array 
-    &#39;&#39;&#39;
-    N = len(f_points)
-    A = lil_matrix((N,N))
-    for index in range(0, N):
-        A[index,index] = 4
-        x, y = f_points[index]
-        for pt in get_neighbor(x, y):
-            if pt not in f_points:
-                continue
-            else:
-                A[index, f_points.index(pt)] = -1
-    return A
-
-def solve_equation(src, target, mask):
-    &#39;&#39;&#39;
-    This function is used to solve Ax = b equation.
-    Use linalq in scipy.sparse to get the inverse of a sparse matrix.
-    &#39;&#39;&#39;
-    f_points = get_fpoints(mask)
-    N = len(f_points)
-    b = np.zeros(N)
-    A = poisson_matrix(f_points)
-    for index in range(0, N):
-        x, y = f_points[index]
-        b[index] = laplace_pixel(src, x, y)
-        # ensure the border condition that the gradiant of f and f* is the same
-        if pixel_belong(x, y, mask) == BORDER:
-            for i, j in get_neighbor(x, y):
-                if in_omega(i, j, mask) == False:
-                    b[index] += target[i, j]
-    A = A.asformat(&quot;csr&quot;)
-    x_ans = linalg.spsolve(A, b)
-    result = np.copy(target).astype(int)
-    for index in range(0, N):
-        x, y = f_points[index]
-        result[x, y] = x_ans[index]
-    print(x_ans)
-    return result
-</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">poisson_matrix</span><span class="params">(f_points)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    Construct a poisson matrix with non zero points in mask (fpoints).</span></span><br><span class="line"><span class="string">    Considered the sparsity of the matrix (at most 5 non zero element per row),</span></span><br><span class="line"><span class="string">    use lil_matrix in scipy.sparse rather than np.array </span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    N = len(f_points)</span><br><span class="line">    A = lil_matrix((N,N))</span><br><span class="line">    <span class="keyword">for</span> index <span class="keyword">in</span> range(<span class="number">0</span>, N):</span><br><span class="line">        A[index,index] = <span class="number">4</span></span><br><span class="line">        x, y = f_points[index]</span><br><span class="line">        <span class="keyword">for</span> pt <span class="keyword">in</span> get_neighbor(x, y):</span><br><span class="line">            <span class="keyword">if</span> pt <span class="keyword">not</span> <span class="keyword">in</span> f_points:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                A[index, f_points.index(pt)] = <span class="number">-1</span></span><br><span class="line">    <span class="keyword">return</span> A</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">solve_equation</span><span class="params">(src, target, mask)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    This function is used to solve Ax = b equation.</span></span><br><span class="line"><span class="string">    Use linalq in scipy.sparse to get the inverse of a sparse matrix.</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    f_points = get_fpoints(mask)</span><br><span class="line">    N = len(f_points)</span><br><span class="line">    b = np.zeros(N)</span><br><span class="line">    A = poisson_matrix(f_points)</span><br><span class="line">    <span class="keyword">for</span> index <span class="keyword">in</span> range(<span class="number">0</span>, N):</span><br><span class="line">        x, y = f_points[index]</span><br><span class="line">        b[index] = laplace_pixel(src, x, y)</span><br><span class="line">        <span class="comment"># ensure the border condition that the gradiant of f and f* is the same</span></span><br><span class="line">        <span class="keyword">if</span> pixel_belong(x, y, mask) == BORDER:</span><br><span class="line">            <span class="keyword">for</span> i, j <span class="keyword">in</span> get_neighbor(x, y):</span><br><span class="line">                <span class="keyword">if</span> in_omega(i, j, mask) == <span class="literal">False</span>:</span><br><span class="line">                    b[index] += target[i, j]</span><br><span class="line">    A = A.asformat(<span class="string">"csr"</span>)</span><br><span class="line">    x_ans = linalg.spsolve(A, b)</span><br><span class="line">    result = np.copy(target).astype(int)</span><br><span class="line">    <span class="keyword">for</span> index <span class="keyword">in</span> range(<span class="number">0</span>, N):</span><br><span class="line">        x, y = f_points[index]</span><br><span class="line">        result[x, y] = x_ans[index]</span><br><span class="line">    print(x_ans)</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
 <p>至此就实现了Poisson Fusion，Mixing Gradient的方法也可以基于上述实现完成。</p>
 <h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p>实验里提供了两组图像，用泊松图像融合的效果如下：</p>
 <h3 id="夕阳"><a href="#夕阳" class="headerlink" title="夕阳"></a>夕阳</h3><p><img src="/2019/04/14/PoissonEditing/test1_src.jpg" alt="源图像"></p>
@@ -769,7 +673,7 @@ def solve_equation(src, target, mask):
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
