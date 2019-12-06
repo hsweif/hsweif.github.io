@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://hsuanwei.codes/"/>
-  <updated>2019-11-13T08:16:11.259Z</updated>
+  <updated>2019-12-06T03:48:26.286Z</updated>
   <id>http://hsuanwei.codes/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Monte Carlo Path Tracing</title>
+    <link href="http://hsuanwei.codes/2019/12/06/pt/"/>
+    <id>http://hsuanwei.codes/2019/12/06/pt/</id>
+    <published>2019-12-06T03:45:16.000Z</published>
+    <updated>2019-12-06T03:48:26.286Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;You may understand the fundamental concept of light path tracing and why we often use Monte Carlo integration for it after reading this
+        
+      
+    
+    </summary>
+    
+      <category term="Computer Science" scheme="http://hsuanwei.codes/categories/Computer-Science/"/>
+    
+    
+      <category term="Computer Graphics" scheme="http://hsuanwei.codes/tags/Computer-Graphics/"/>
+    
+      <category term="Path Tracing" scheme="http://hsuanwei.codes/tags/Path-Tracing/"/>
+    
+  </entry>
   
   <entry>
     <title>Vuex 的單元測試（基於 Jest 框架）</title>
