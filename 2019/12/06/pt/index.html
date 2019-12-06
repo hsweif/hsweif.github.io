@@ -97,7 +97,7 @@
 <meta property="og:image" content="http://hsuanwei.codes/2019/12/06/pt/pdf.png">
 <meta property="og:image" content="http://hsuanwei.codes/2019/12/06/pt/measure_conversion.png">
 <meta property="og:image" content="http://hsuanwei.codes/2019/12/06/pt/summary.png">
-<meta property="og:updated_time" content="2019-12-06T03:48:26.286Z">
+<meta property="og:updated_time" content="2019-12-06T03:50:28.805Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Monte Carlo Path Tracing">
 <meta name="twitter:description" content="You may understand the fundamental concept of light path tracing and why we often use Monte Carlo integration for it after reading this post. IntroductionThis is my notes of a talk “Path Integral Form">
@@ -987,24 +987,7 @@ p(x_0,\cdots, x_3) = p(x_3)p(x_2)p(x_1)p(x_0)</script><blockquote>
         s.src = 'https://alexfxw.disqus.com/embed.js';
         s.setAttribute('data-timestamp', '' + +new Date());
         (d.head || d.body).appendChild(s);
-      </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+      </script>
     
 
   
@@ -1049,6 +1032,43 @@ p(x_0,\cdots, x_3) = p(x_3)p(x_2)p(x_1)p(x_0)</script><blockquote>
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
   
 
 
