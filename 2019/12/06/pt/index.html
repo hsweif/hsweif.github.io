@@ -81,13 +81,13 @@
 
 
 
-<meta name="description" content="You may understand the fundamental concept of light path tracing and why we often use Monte Carlo integration for it after reading this post. IntroductionThis is my notes of a talk “Path Integral Form">
+<meta name="description" content="You may understand the fundamental concept of light path tracing and why we often use Monte Carlo integration for it after reading this post. IntroductionThis is my note of a chapter “Path Integral Fo">
 <meta name="keywords" content="Computer Graphics,Path Tracing">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Monte Carlo Path Tracing">
 <meta property="og:url" content="http://hsuanwei.codes/2019/12/06/pt/index.html">
 <meta property="og:site_name" content="Alexology">
-<meta property="og:description" content="You may understand the fundamental concept of light path tracing and why we often use Monte Carlo integration for it after reading this post. IntroductionThis is my notes of a talk “Path Integral Form">
+<meta property="og:description" content="You may understand the fundamental concept of light path tracing and why we often use Monte Carlo integration for it after reading this post. IntroductionThis is my note of a chapter “Path Integral Fo">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://hsuanwei.codes/2019/12/06/pt/bidirectional.png">
 <meta property="og:image" content="http://hsuanwei.codes/2019/12/06/pt/form_pic.png">
@@ -97,10 +97,10 @@
 <meta property="og:image" content="http://hsuanwei.codes/2019/12/06/pt/pdf.png">
 <meta property="og:image" content="http://hsuanwei.codes/2019/12/06/pt/measure_conversion.png">
 <meta property="og:image" content="http://hsuanwei.codes/2019/12/06/pt/summary.png">
-<meta property="og:updated_time" content="2019-12-06T03:50:28.805Z">
+<meta property="og:updated_time" content="2019-12-07T02:20:31.001Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Monte Carlo Path Tracing">
-<meta name="twitter:description" content="You may understand the fundamental concept of light path tracing and why we often use Monte Carlo integration for it after reading this post. IntroductionThis is my notes of a talk “Path Integral Form">
+<meta name="twitter:description" content="You may understand the fundamental concept of light path tracing and why we often use Monte Carlo integration for it after reading this post. IntroductionThis is my note of a chapter “Path Integral Fo">
 <meta name="twitter:image" content="http://hsuanwei.codes/2019/12/06/pt/bidirectional.png">
 
 
@@ -389,16 +389,16 @@
 
       
         <p>You may understand the fundamental concept of light path tracing and why we often use Monte Carlo integration for it after reading this post.</p>
-<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>This is my notes of a talk “Path Integral Formulation of Light Transport” of the course, <a href="https://cgg.mff.cuni.cz/~jaroslav/papers/2013-ltscourse/index.htm" target="_blank" rel="noopener">Recent Advances in Light Transport Simulation: Theory &amp; Practice</a>, in SIGGRAPH 2013. I think the course is helpful for beginners to form a clearer picture about light path tracing.</p>
+<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>This is my note of a chapter “Path Integral Formulation of Light Transport” of <a href="https://cgg.mff.cuni.cz/~jaroslav/papers/2013-ltscourse/index.htm" target="_blank" rel="noopener">Recent Advances in Light Transport Simulation: Theory &amp; Practice</a>, in SIGGRAPH 2013. I think the course is helpful for beginners to form a clearer picture about light path tracing.</p>
 <blockquote>
 <p>Most images and some quotes in this post come from the slides of the course. The original author owns the copyright of them without a doubt.</p>
 </blockquote>
 <p><img src="/2019/12/06/pt/bidirectional.png" alt></p>
-<p>In physical world, the light is emitted from light sources, such as lamps. After reflection, refraction or absorption in the environment, the light could be seen only if it finally reached our eyes (or the camera in the picture). It may be natural to come up with the idea of formulating the process by calculating every ray emitted after defining surface attribute. However, it will result in computation of numerous invisible light, which refers to those lights that do not reach your eyes, and cause the waste of resources. Fortunately, we could simply reverse the process: emit the light from your eyes, so we will only calculate the lights matter. It may be a little counterintuitive but it is absolutely correct due to the phyisical knowledge that light path is reversible.</p>
+<p>In physical world, the light is emitted from light sources, such as lamps. After reflection, refraction or absorption in the environment, the light could be seen only if it finally reached our eyes (or the camera in the picture). It may be natural to come up with the idea of formulating the process by calculating every ray emitted after defining surface attribute. However, it will result in computation of numerous invisible light, which refers to one that do not reach your eyes, and causes the waste of resources. Fortunately, we could simply reverse the process: emit the light from the eyes, so we will only need to calculate the light that matters. It is absolutely correct due to the phyisical knowledge that light path is reversible.</p>
 <p>Now, let’s get a further step. Try to imagine there are some objects in a house with a single window and you’re standing outside. You are not allowed to get into the house but you want to see what’s in the house, so you can only see them through the window. Apparently, your view is limited due to the window is not infinitely large.</p>
 <p>Ok, and then we replace the words. The window is the <strong>screen</strong>, you are the observer (or the “<strong>camera</strong>“), and the objects compose a <strong>scene</strong>. As I mentioned above, we do path tracing in a reversed way in comparison to real world. In the illustration, the light pass inside (scene) through the window (screen) and then reach your eyes (camera). So its mirror turn should be <strong>“emitting lights from the camera through screen to the scene”</strong>. To be more specific, as the screen is composed of limited pixels, we can descibe the process as <strong>emitting lights from the camera through each pixel of the screen to the scene</strong>.</p>
 <p>This is the most fundamental idea about path tracing. And I will explain later how can we create a beatiful picture with this simple concept.</p>
-<h1 id="Path-Integral-Formulation"><a href="#Path-Integral-Formulation" class="headerlink" title="Path Integral Formulation"></a>Path Integral Formulation</h1><p>Programming is a concise art, and it is hard to solve a question without a formal definitions. Path tracing is not an excepction. So let’s take a look of its mathematical term, which will help you understand why Monte Carlo is crucial.</p>
+<h1 id="Path-Integral-Formulation"><a href="#Path-Integral-Formulation" class="headerlink" title="Path Integral Formulation"></a>Path Integral Formulation</h1><p>Programming is a concise art, and it is hard to solve a question without formal definitions. Path tracing is not an excepction. So let’s first take a look at its mathematical term, which will help you understand why Monte Carlo is crucial.</p>
 <p><img src="/2019/12/06/pt/form_pic.png" alt> </p>
 <p>The picture above shows what a camera sees from a pixel: a collection of lights the reached to the pixel. Now we can define the <strong>camera response</strong> (the synthesis value of the pixel) in this term:</p>
 <script type="math/tex; mode=display">
@@ -408,7 +408,7 @@ I_j = \int_\Omega f_j(\bar x)d\mu(\bar x)</script><p>The formula is called <stro
 <li>$\Omega$: all possible light paths</li>
 <li>$f_j(\bar x)$: measurement contribution function</li>
 </ol>
-<p>Well, then what’s “measurement contribution funciton” and what’s $\bar x$? See the lecturer’s first.</p>
+<p>Well, then what’s “measurement contribution function” and what’s $\bar x$? See the lecturer’s first.</p>
 <blockquote>
 <p>The measurement contribution function of a given path encompasses the “amount” of light emitted along the path, the light carrying capacity of the path, and the sensitivity of the sensor to light brought along the path.</p>
 </blockquote>
@@ -435,15 +435,15 @@ G(x\leftrightarrow y) = \frac{|cos\theta_x||cos\theta_y|}{\|x-y\|^2}V(x\leftrigh
 </ol>
 <p>Now, let’s read the integral again:</p>
 <script type="math/tex; mode=display">
-I_j = \int_\Omega f_j(\bar x)d\mu(\bar x)</script><p>Oh yes, you understand it now! But wait, can you tell what “all paths ($\Omega$)” means?</p>
+I_j = \int_\Omega f_j(\bar x)d\mu(\bar x)</script><p>Oh yes, you understand it now! But wait, can you tell what “all paths ($\Omega$)” mean?</p>
 <p>Though it looks like a simple integral, there are infinite light paths and thus we cannot integrate $\Omega$ directly. It can be rewritten as:</p>
 <script type="math/tex; mode=display">
-I_j = \sum_{k=1}^\infty \int_{M^{k+1}}f_j(x_0\cdots x_k)dA(x_0)\cdots dA(x_k)</script><p>See it, the path integral actually hides an infinite sum over all possible path lengths. </p>
+I_j = \sum_{k=1}^\infty \int_{M^{k+1}}f_j(x_0\cdots x_k)dA(x_0)\cdots dA(x_k)</script><p>See it, the path integral actually hides an infinite sum over all possible path lengths.</p>
 <blockquote>
 <p>Each summand of this sum is a multiple integral, where we integrate the path contribution over all possible positions of the path vertices. So each of the integrals is taken over the Cartesian product of the surface of the scene with itself, taken k+1 times (=number of vertices for a length-k path.) The integration measure is the area-product measure, i.e. the natural surface area, raised to the power of k+1.</p>
 </blockquote>
-<p>As we all know, computer is not good at dealing with infinite thing even if it is a simple form of integral. Thus, we need to find a method to numerically calculate the integral to get the value of each pixel.</p>
-<p>Let’s welcom Monte Carlo.</p>
+<p>As we all know, the computer is not good at dealing with infinity even if it is a simple form of integral. Thus, we need to find a method to numerically calculate the integral to get the value of each pixel.</p>
+<p>Welcom Monte Carlo.</p>
 <h1 id="Monte-Carlo-Integration"><a href="#Monte-Carlo-Integration" class="headerlink" title="Monte Carlo Integration"></a>Monte Carlo Integration</h1><p>Monte Carlo is a famous concept, if you have learned possibility theory or traditional machine learning methods you should be familiar with it. </p>
 <p>If you didn’t learn Monte Carlo before, let’s take a quick look.</p>
 <blockquote>
