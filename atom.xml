@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://hsuanwei.codes/"/>
-  <updated>2019-12-07T02:20:31.001Z</updated>
+  <updated>2020-04-02T07:31:03.007Z</updated>
   <id>http://hsuanwei.codes/</id>
   
   <author>
@@ -15,6 +15,37 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>PBRT | Bounding Volume Hierarchies</title>
+    <link href="http://hsuanwei.codes/2020/03/20/bvh/"/>
+    <id>http://hsuanwei.codes/2020/03/20/bvh/</id>
+    <published>2020-03-20T05:24:00.000Z</published>
+    <updated>2020-04-02T07:31:03.007Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Overview&quot;&gt;&lt;a href=&quot;#Overview&quot; class=&quot;headerlink&quot; title=&quot;Overview&quot;&gt;&lt;/a&gt;Overview&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;“Bounding volume hierarchies
+        
+      
+    
+    </summary>
+    
+      <category term="Computer Science" scheme="http://hsuanwei.codes/categories/Computer-Science/"/>
+    
+    
+      <category term="pbrt" scheme="http://hsuanwei.codes/tags/pbrt/"/>
+    
+      <category term="Graphics" scheme="http://hsuanwei.codes/tags/Graphics/"/>
+    
+      <category term="Rendering" scheme="http://hsuanwei.codes/tags/Rendering/"/>
+    
+  </entry>
   
   <entry>
     <title>Monte Carlo Path Tracing</title>
