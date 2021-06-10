@@ -5,9 +5,9 @@
   <subtitle>Act tells.</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://hsuanwei.codes/"/>
+  <link href="http://blogs.hsuanwei.me/"/>
   <updated>2020-04-02T07:31:03.007Z</updated>
-  <id>http://hsuanwei.codes/</id>
+  <id>http://blogs.hsuanwei.me/</id>
   
   <author>
     <name>Hsuan-Wei Fan</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>PBRT | Bounding Volume Hierarchies</title>
-    <link href="http://hsuanwei.codes/2020/03/20/bvh/"/>
-    <id>http://hsuanwei.codes/2020/03/20/bvh/</id>
+    <link href="http://blogs.hsuanwei.me/2020/03/20/bvh/"/>
+    <id>http://blogs.hsuanwei.me/2020/03/20/bvh/</id>
     <published>2020-03-20T05:24:00.000Z</published>
     <updated>2020-04-02T07:31:03.007Z</updated>
     
@@ -36,21 +36,21 @@
     
     </summary>
     
-      <category term="Computer Science" scheme="http://hsuanwei.codes/categories/Computer-Science/"/>
+      <category term="Computer Science" scheme="http://blogs.hsuanwei.me/categories/Computer-Science/"/>
     
     
-      <category term="pbrt" scheme="http://hsuanwei.codes/tags/pbrt/"/>
+      <category term="pbrt" scheme="http://blogs.hsuanwei.me/tags/pbrt/"/>
     
-      <category term="Graphics" scheme="http://hsuanwei.codes/tags/Graphics/"/>
+      <category term="Graphics" scheme="http://blogs.hsuanwei.me/tags/Graphics/"/>
     
-      <category term="Rendering" scheme="http://hsuanwei.codes/tags/Rendering/"/>
+      <category term="Rendering" scheme="http://blogs.hsuanwei.me/tags/Rendering/"/>
     
   </entry>
   
   <entry>
     <title>Monte Carlo Path Tracing</title>
-    <link href="http://hsuanwei.codes/2019/12/06/pt/"/>
-    <id>http://hsuanwei.codes/2019/12/06/pt/</id>
+    <link href="http://blogs.hsuanwei.me/2019/12/06/pt/"/>
+    <id>http://blogs.hsuanwei.me/2019/12/06/pt/</id>
     <published>2019-12-06T03:45:16.000Z</published>
     <updated>2019-12-07T02:20:31.001Z</updated>
     
@@ -66,19 +66,19 @@
     
     </summary>
     
-      <category term="Computer Science" scheme="http://hsuanwei.codes/categories/Computer-Science/"/>
+      <category term="Computer Science" scheme="http://blogs.hsuanwei.me/categories/Computer-Science/"/>
     
     
-      <category term="Computer Graphics" scheme="http://hsuanwei.codes/tags/Computer-Graphics/"/>
+      <category term="Computer Graphics" scheme="http://blogs.hsuanwei.me/tags/Computer-Graphics/"/>
     
-      <category term="Path Tracing" scheme="http://hsuanwei.codes/tags/Path-Tracing/"/>
+      <category term="Path Tracing" scheme="http://blogs.hsuanwei.me/tags/Path-Tracing/"/>
     
   </entry>
   
   <entry>
     <title>Vuex 的單元測試（基於 Jest 框架）</title>
-    <link href="http://hsuanwei.codes/2019/08/22/Vue-UnitTest/"/>
-    <id>http://hsuanwei.codes/2019/08/22/Vue-UnitTest/</id>
+    <link href="http://blogs.hsuanwei.me/2019/08/22/Vue-UnitTest/"/>
+    <id>http://blogs.hsuanwei.me/2019/08/22/Vue-UnitTest/</id>
     <published>2019-08-22T06:17:52.000Z</published>
     <updated>2019-11-13T08:16:11.259Z</updated>
     
@@ -94,21 +94,21 @@
     
     </summary>
     
-      <category term="Programming" scheme="http://hsuanwei.codes/categories/Programming/"/>
+      <category term="Programming" scheme="http://blogs.hsuanwei.me/categories/Programming/"/>
     
     
-      <category term="Vue.js" scheme="http://hsuanwei.codes/tags/Vue-js/"/>
+      <category term="Vue.js" scheme="http://blogs.hsuanwei.me/tags/Vue-js/"/>
     
-      <category term="Front-End" scheme="http://hsuanwei.codes/tags/Front-End/"/>
+      <category term="Front-End" scheme="http://blogs.hsuanwei.me/tags/Front-End/"/>
     
-      <category term="Unit Test" scheme="http://hsuanwei.codes/tags/Unit-Test/"/>
+      <category term="Unit Test" scheme="http://blogs.hsuanwei.me/tags/Unit-Test/"/>
     
   </entry>
   
   <entry>
     <title>一些實用的科研工具</title>
-    <link href="http://hsuanwei.codes/2019/05/09/ResearchTool/"/>
-    <id>http://hsuanwei.codes/2019/05/09/ResearchTool/</id>
+    <link href="http://blogs.hsuanwei.me/2019/05/09/ResearchTool/"/>
+    <id>http://blogs.hsuanwei.me/2019/05/09/ResearchTool/</id>
     <published>2019-05-09T14:41:50.000Z</published>
     <updated>2019-12-06T03:50:38.252Z</updated>
     
@@ -125,14 +125,14 @@
     </summary>
     
     
-      <category term="Research" scheme="http://hsuanwei.codes/tags/Research/"/>
+      <category term="Research" scheme="http://blogs.hsuanwei.me/tags/Research/"/>
     
   </entry>
   
   <entry>
     <title>基于Delaunay Triangulation 的 Image Morphing</title>
-    <link href="http://hsuanwei.codes/2019/04/21/FaceMorphing/"/>
-    <id>http://hsuanwei.codes/2019/04/21/FaceMorphing/</id>
+    <link href="http://blogs.hsuanwei.me/2019/04/21/FaceMorphing/"/>
+    <id>http://blogs.hsuanwei.me/2019/04/21/FaceMorphing/</id>
     <published>2019-04-20T17:15:00.000Z</published>
     <updated>2019-08-09T23:29:29.573Z</updated>
     
@@ -148,17 +148,17 @@
     
     </summary>
     
-      <category term="Computer Science" scheme="http://hsuanwei.codes/categories/Computer-Science/"/>
+      <category term="Computer Science" scheme="http://blogs.hsuanwei.me/categories/Computer-Science/"/>
     
     
-      <category term="Image Processing" scheme="http://hsuanwei.codes/tags/Image-Processing/"/>
+      <category term="Image Processing" scheme="http://blogs.hsuanwei.me/tags/Image-Processing/"/>
     
   </entry>
   
   <entry>
     <title>泊松图像编辑(Poisson Image Editing)</title>
-    <link href="http://hsuanwei.codes/2019/04/14/PoissonEditing/"/>
-    <id>http://hsuanwei.codes/2019/04/14/PoissonEditing/</id>
+    <link href="http://blogs.hsuanwei.me/2019/04/14/PoissonEditing/"/>
+    <id>http://blogs.hsuanwei.me/2019/04/14/PoissonEditing/</id>
     <published>2019-04-14T03:30:34.000Z</published>
     <updated>2019-08-09T23:29:29.591Z</updated>
     
@@ -177,17 +177,17 @@
     
     </summary>
     
-      <category term="Computer Science" scheme="http://hsuanwei.codes/categories/Computer-Science/"/>
+      <category term="Computer Science" scheme="http://blogs.hsuanwei.me/categories/Computer-Science/"/>
     
     
-      <category term="Image Processing" scheme="http://hsuanwei.codes/tags/Image-Processing/"/>
+      <category term="Image Processing" scheme="http://blogs.hsuanwei.me/tags/Image-Processing/"/>
     
   </entry>
   
   <entry>
     <title>如何優雅地架設個人網站？Hexo博客教學</title>
-    <link href="http://hsuanwei.codes/2019/03/01/Hexo-blog/"/>
-    <id>http://hsuanwei.codes/2019/03/01/Hexo-blog/</id>
+    <link href="http://blogs.hsuanwei.me/2019/03/01/Hexo-blog/"/>
+    <id>http://blogs.hsuanwei.me/2019/03/01/Hexo-blog/</id>
     <published>2019-03-01T05:29:31.000Z</published>
     <updated>2020-02-17T06:37:21.672Z</updated>
     
@@ -203,7 +203,7 @@
     
     </summary>
     
-      <category term="Tutorial" scheme="http://hsuanwei.codes/categories/Tutorial/"/>
+      <category term="Tutorial" scheme="http://blogs.hsuanwei.me/categories/Tutorial/"/>
     
     
   </entry>

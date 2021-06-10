@@ -85,23 +85,23 @@
 <meta name="keywords" content="Computer Graphics,Path Tracing">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Monte Carlo Path Tracing">
-<meta property="og:url" content="http://hsuanwei.codes/2019/12/06/pt/index.html">
+<meta property="og:url" content="http://blogs.hsuanwei.me/2019/12/06/pt/index.html">
 <meta property="og:site_name" content="Hsuan-Wei&#39;s Blog">
 <meta property="og:description" content="You may understand the fundamental concept of light path tracing and why we often use Monte Carlo integration for it after reading this post. IntroductionThis is my note of a chapter “Path Integral Fo">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://hsuanwei.codes/2019/12/06/pt/bidirectional.png">
-<meta property="og:image" content="http://hsuanwei.codes/2019/12/06/pt/form_pic.png">
-<meta property="og:image" content="http://hsuanwei.codes/2019/12/06/pt/mcfunc.png">
-<meta property="og:image" content="http://hsuanwei.codes/2019/12/06/pt/gterm.png">
-<meta property="og:image" content="http://hsuanwei.codes/2019/12/06/pt/pt_ex.png">
-<meta property="og:image" content="http://hsuanwei.codes/2019/12/06/pt/pdf.png">
-<meta property="og:image" content="http://hsuanwei.codes/2019/12/06/pt/measure_conversion.png">
-<meta property="og:image" content="http://hsuanwei.codes/2019/12/06/pt/summary.png">
+<meta property="og:image" content="http://blogs.hsuanwei.me/2019/12/06/pt/bidirectional.png">
+<meta property="og:image" content="http://blogs.hsuanwei.me/2019/12/06/pt/form_pic.png">
+<meta property="og:image" content="http://blogs.hsuanwei.me/2019/12/06/pt/mcfunc.png">
+<meta property="og:image" content="http://blogs.hsuanwei.me/2019/12/06/pt/gterm.png">
+<meta property="og:image" content="http://blogs.hsuanwei.me/2019/12/06/pt/pt_ex.png">
+<meta property="og:image" content="http://blogs.hsuanwei.me/2019/12/06/pt/pdf.png">
+<meta property="og:image" content="http://blogs.hsuanwei.me/2019/12/06/pt/measure_conversion.png">
+<meta property="og:image" content="http://blogs.hsuanwei.me/2019/12/06/pt/summary.png">
 <meta property="og:updated_time" content="2019-12-07T02:20:31.001Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Monte Carlo Path Tracing">
 <meta name="twitter:description" content="You may understand the fundamental concept of light path tracing and why we often use Monte Carlo integration for it after reading this post. IntroductionThis is my note of a chapter “Path Integral Fo">
-<meta name="twitter:image" content="http://hsuanwei.codes/2019/12/06/pt/bidirectional.png">
+<meta name="twitter:image" content="http://blogs.hsuanwei.me/2019/12/06/pt/bidirectional.png">
 
 
 
@@ -131,7 +131,7 @@
 
 
 
-  <link rel="canonical" href="http://hsuanwei.codes/2019/12/06/pt/">
+  <link rel="canonical" href="http://blogs.hsuanwei.me/2019/12/06/pt/">
 
 
 
@@ -202,16 +202,6 @@
         </li>
       
         
-        <li class="menu-item menu-item-about">
-          <a href="/about/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
-            
-            About
-          </a>
-        </li>
-      
-        
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
@@ -238,16 +228,6 @@
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             Archives
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-portfolio">
-          <a href="/portfolio/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
-            
-            Portfolio
           </a>
         </li>
       
@@ -284,7 +264,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hsuanwei.codes/2019/12/06/pt/">
+    <link itemprop="mainEntityOfPage" href="http://blogs.hsuanwei.me/2019/12/06/pt/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Hsuan-Wei Fan">
@@ -573,7 +553,7 @@ p(x_0,\cdots, x_3) = p(x_3)p(x_2)p(x_1)p(x_0)</script><blockquote>
   </li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="http://hsuanwei.codes/2019/12/06/pt/" title="Monte Carlo Path Tracing">http://hsuanwei.codes/2019/12/06/pt/</a>
+    <a href="http://blogs.hsuanwei.me/2019/12/06/pt/" title="Monte Carlo Path Tracing">http://blogs.hsuanwei.me/2019/12/06/pt/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>
@@ -694,7 +674,7 @@ p(x_0,\cdots, x_3) = p(x_3)p(x_2)p(x_1)p(x_0)</script><blockquote>
               <img class="site-author-image" itemprop="image" src="/uploads/we.JPG" alt="Hsuan-Wei Fan">
             
               <p class="site-author-name" itemprop="name">Hsuan-Wei Fan</p>
-              <p class="site-description motion-element" itemprop="description">A senior in Tsinghua CST, Beijing.<br>Comes from Taiwan.<br>Interested in VR/MR and CG.<br>Coding and thinking.</p>
+              <p class="site-description motion-element" itemprop="description">B.E in Tsinghua CST, Beijing.<br>Lives in Taiwan.<br>Interested in VR/MR and CG.<br>Coding and thinking.</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -747,7 +727,7 @@ p(x_0,\cdots, x_3) = p(x_3)p(x_2)p(x_1)p(x_0)</script><blockquote>
             <div class="links-of-author motion-element">
                 
                   <span class="links-of-author-item">
-                    <a href="https://github.com/AlexFxw" target="_blank" title="GitHub">
+                    <a href="https://github.com/hsweif" target="_blank" title="GitHub">
                       
                         <i class="fa fa-fw fa-github"></i>GitHub</a>
                   </span>
@@ -814,7 +794,7 @@ p(x_0,\cdots, x_3) = p(x_3)p(x_2)p(x_1)p(x_0)</script><blockquote>
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -977,7 +957,7 @@ p(x_0,\cdots, x_3) = p(x_3)p(x_2)p(x_1)p(x_0)</script><blockquote>
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://hsuanwei.codes/2019/12/06/pt/';
+          this.page.url = 'http://blogs.hsuanwei.me/2019/12/06/pt/';
           this.page.identifier = '2019/12/06/pt/';
           this.page.title = 'Monte Carlo Path Tracing';
         };
