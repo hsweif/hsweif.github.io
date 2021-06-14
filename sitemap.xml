@@ -2,30 +2,44 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://blogs.hsuanwei.me/2020/03/20/bvh/</loc>
+    <loc>http://blogs.hsuanwei.me/2019/05/09/ResearchTool/</loc>
     
-    <lastmod>2020-04-02T07:31:03.007Z</lastmod>
+    <lastmod>2021-06-14T12:41:19.321Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://blogs.hsuanwei.me/2019/03/01/Hexo-blog/</loc>
+    <loc>http://blogs.hsuanwei.me/2019/04/21/FaceMorphing/</loc>
     
-    <lastmod>2020-02-17T06:37:21.672Z</lastmod>
+    <lastmod>2021-06-14T12:40:48.187Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blogs.hsuanwei.me/2019/04/14/PoissonEditing/</loc>
+    
+    <lastmod>2021-06-14T12:39:19.136Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blogs.hsuanwei.me/2019/08/22/Vue-UnitTest/</loc>
+    
+    <lastmod>2021-06-14T12:37:56.019Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blogs.hsuanwei.me/2020/03/20/bvh/</loc>
+    
+    <lastmod>2021-06-14T12:36:06.313Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://blogs.hsuanwei.me/2019/12/06/pt/</loc>
     
-    <lastmod>2019-12-07T02:20:31.001Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blogs.hsuanwei.me/2019/05/09/ResearchTool/</loc>
-    
-    <lastmod>2019-12-06T03:50:38.252Z</lastmod>
+    <lastmod>2021-06-14T12:36:02.368Z</lastmod>
     
   </url>
   
@@ -33,13 +47,6 @@
     <loc>http://blogs.hsuanwei.me/gallery/index.html</loc>
     
     <lastmod>2019-11-14T05:54:20.774Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blogs.hsuanwei.me/2019/08/22/Vue-UnitTest/</loc>
-    
-    <lastmod>2019-11-13T08:16:11.259Z</lastmod>
     
   </url>
   
@@ -61,20 +68,6 @@
     <loc>http://blogs.hsuanwei.me/categories/index.html</loc>
     
     <lastmod>2019-08-09T23:29:29.632Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blogs.hsuanwei.me/2019/04/14/PoissonEditing/</loc>
-    
-    <lastmod>2019-08-09T23:29:29.591Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blogs.hsuanwei.me/2019/04/21/FaceMorphing/</loc>
-    
-    <lastmod>2019-08-09T23:29:29.573Z</lastmod>
     
   </url>
   

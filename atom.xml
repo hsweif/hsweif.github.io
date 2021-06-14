@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Hsuan-Wei&#39;s Blog</title>
+  <title>hsweifeed</title>
   
   <subtitle>Act tells.</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blogs.hsuanwei.me/"/>
-  <updated>2020-04-02T07:31:03.007Z</updated>
+  <updated>2021-06-14T12:36:06.313Z</updated>
   <id>http://blogs.hsuanwei.me/</id>
   
   <author>
@@ -21,18 +21,12 @@
     <link href="http://blogs.hsuanwei.me/2020/03/20/bvh/"/>
     <id>http://blogs.hsuanwei.me/2020/03/20/bvh/</id>
     <published>2020-03-20T05:24:00.000Z</published>
-    <updated>2020-04-02T07:31:03.007Z</updated>
+    <updated>2021-06-14T12:36:06.313Z</updated>
     
     <summary type="html">
     
-      
-      
-        
-        
-          &lt;h1 id=&quot;Overview&quot;&gt;&lt;a href=&quot;#Overview&quot; class=&quot;headerlink&quot; title=&quot;Overview&quot;&gt;&lt;/a&gt;Overview&lt;/h1&gt;&lt;blockquote&gt;
-&lt;p&gt;“Bounding volume hierarchies
-        
-      
+      &lt;blockquote&gt;
+&lt;p&gt;“Bounding volume hierarchies (BVHs) are an approach for ray intersection acceleration based on primitive subdivision, where the primitives are partitioned into a hierarchy of disjoint sets.”&lt;br&gt;&lt;/p&gt;&lt;/blockquote&gt;
     
     </summary>
     
@@ -52,17 +46,11 @@
     <link href="http://blogs.hsuanwei.me/2019/12/06/pt/"/>
     <id>http://blogs.hsuanwei.me/2019/12/06/pt/</id>
     <published>2019-12-06T03:45:16.000Z</published>
-    <updated>2019-12-07T02:20:31.001Z</updated>
+    <updated>2021-06-14T12:36:02.368Z</updated>
     
     <summary type="html">
     
-      
-      
-        
-        
-          &lt;p&gt;You may understand the fundamental concept of light path tracing and why we often use Monte Carlo integration for it after reading this
-        
-      
+      &lt;p&gt;You may understand the fundamental concept of light path tracing and why we often use Monte Carlo integration for it after reading this post.&lt;br&gt;&lt;/p&gt;
     
     </summary>
     
@@ -80,17 +68,12 @@
     <link href="http://blogs.hsuanwei.me/2019/08/22/Vue-UnitTest/"/>
     <id>http://blogs.hsuanwei.me/2019/08/22/Vue-UnitTest/</id>
     <published>2019-08-22T06:17:52.000Z</published>
-    <updated>2019-11-13T08:16:11.259Z</updated>
+    <updated>2021-06-14T12:37:56.019Z</updated>
     
     <summary type="html">
     
-      
-      
-        
-        
-          &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;暑假在 UCLA 做項目時基本成為了全棧工程師（帶我的 Ph.D. 學長是搞機器學習的，所以除了 ML
-        
-      
+      &lt;blockquote&gt;
+&lt;p&gt;Vuex 是一个专为 Vue.js 应用程序开发的&lt;strong&gt;状态管理模式&lt;/strong&gt;。它采用集中式存储管理应用的所有组件的状态，并以相应的规则保证状态以一种可预测的方式发生变化。Vuex 也集成到 Vue 的官方调试工具 &lt;a href=&quot;https://github.com/vuejs/vue-devtools&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;devtools extension&lt;/a&gt;，提供了诸如零配置的 time-travel 调试、状态快照导入导出等高级调试功能。&lt;br&gt;&lt;/p&gt;&lt;/blockquote&gt;
     
     </summary>
     
@@ -110,17 +93,11 @@
     <link href="http://blogs.hsuanwei.me/2019/05/09/ResearchTool/"/>
     <id>http://blogs.hsuanwei.me/2019/05/09/ResearchTool/</id>
     <published>2019-05-09T14:41:50.000Z</published>
-    <updated>2019-12-06T03:50:38.252Z</updated>
+    <updated>2021-06-14T12:41:19.321Z</updated>
     
     <summary type="html">
     
-      
-      
-        
-        
-          &lt;p&gt;隨著進入本科高年級，許多人應該都開始了在實驗室參與科研（打雜）的生活。這篇博客將介紹一些我覺得還不錯的工具，可以一定程度地節約時間成本，讓你將心力專注在知識本身。希望對於剛開始在實驗室搬磚或是目前用土方法管理各種課程論文的你有所幫助，如果你已經有成套的研究管理工具的話繼續用
-        
-      
+      &lt;p&gt;這篇博客將介紹一些我覺得還不錯的工具，可以一定程度地節約時間成本，讓你將心力專注在知識本身。希望對於剛開始在實驗室搬磚或是目前用土方法管理各種課程論文的你有所幫助。&lt;br&gt;&lt;/p&gt;
     
     </summary>
     
@@ -134,17 +111,11 @@
     <link href="http://blogs.hsuanwei.me/2019/04/21/FaceMorphing/"/>
     <id>http://blogs.hsuanwei.me/2019/04/21/FaceMorphing/</id>
     <published>2019-04-20T17:15:00.000Z</published>
-    <updated>2019-08-09T23:29:29.573Z</updated>
+    <updated>2021-06-14T12:40:48.187Z</updated>
     
     <summary type="html">
     
-      
-      
-        
-        
-          &lt;h2 id=&quot;原理&quot;&gt;&lt;a href=&quot;#原理&quot; class=&quot;headerlink&quot; title=&quot;原理&quot;&gt;&lt;/a&gt;原理&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;/2019/04/21/FaceMorphing/result_1.png&quot;
-        
-      
+      &lt;p&gt;两个不同的人物的面部合成不仅是一件有趣的事情，更是一个重要的任务。例如，在动画中如何让人物的变形能较为平滑自然与Face Morphing就息息相关。&lt;br&gt;&lt;/p&gt;
     
     </summary>
     
@@ -160,20 +131,11 @@
     <link href="http://blogs.hsuanwei.me/2019/04/14/PoissonEditing/"/>
     <id>http://blogs.hsuanwei.me/2019/04/14/PoissonEditing/</id>
     <published>2019-04-14T03:30:34.000Z</published>
-    <updated>2019-08-09T23:29:29.591Z</updated>
+    <updated>2021-06-14T12:39:19.136Z</updated>
     
     <summary type="html">
     
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;相关论文: Perez, P., Gangnet, M., &amp;amp; Blake, A. (2003). Poisson Image Editing. ACM SIGGRAPH 2003.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2
-        
-      
+      &lt;p&gt;图像融合是相当常见的图像处理场景，例如很多普通用户打开PS的主要目的就是图像合成。&lt;br&gt;&lt;/p&gt;
     
     </summary>
     
@@ -181,30 +143,6 @@
     
     
       <category term="Image Processing" scheme="http://blogs.hsuanwei.me/tags/Image-Processing/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>如何優雅地架設個人網站？Hexo博客教學</title>
-    <link href="http://blogs.hsuanwei.me/2019/03/01/Hexo-blog/"/>
-    <id>http://blogs.hsuanwei.me/2019/03/01/Hexo-blog/</id>
-    <published>2019-03-01T05:29:31.000Z</published>
-    <updated>2020-02-17T06:37:21.672Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="Tutorial" scheme="http://blogs.hsuanwei.me/categories/Tutorial/"/>
-    
     
   </entry>
   
