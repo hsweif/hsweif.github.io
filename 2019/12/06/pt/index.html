@@ -24,25 +24,25 @@
 <meta name="keywords" content="Computer Graphics,Path Tracing">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Monte Carlo Path Tracing">
-<meta property="og:url" content="http://blogs.hsuanwei.me/2019/12/06/pt/index.html">
-<meta property="og:site_name" content="hsweifeed">
+<meta property="og:url" content="https://blogs.hsuanwei.me/2019/12/06/pt/index.html">
+<meta property="og:site_name" content="HsweiFeed">
 <meta property="og:description" content="You may understand the fundamental concept of light path tracing and why we often use Monte Carlo integration for it after reading this post.">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://blogs.hsuanwei.me/2019/12/06/pt/bidirectional.png">
-<meta property="og:image" content="http://blogs.hsuanwei.me/2019/12/06/pt/form_pic.png">
-<meta property="og:image" content="http://blogs.hsuanwei.me/2019/12/06/pt/mcfunc.png">
-<meta property="og:image" content="http://blogs.hsuanwei.me/2019/12/06/pt/gterm.png">
-<meta property="og:image" content="http://blogs.hsuanwei.me/2019/12/06/pt/pt_ex.png">
-<meta property="og:image" content="http://blogs.hsuanwei.me/2019/12/06/pt/pdf.png">
-<meta property="og:image" content="http://blogs.hsuanwei.me/2019/12/06/pt/measure_conversion.png">
-<meta property="og:image" content="http://blogs.hsuanwei.me/2019/12/06/pt/summary.png">
+<meta property="og:image" content="https://blogs.hsuanwei.me/2019/12/06/pt/bidirectional.png">
+<meta property="og:image" content="https://blogs.hsuanwei.me/2019/12/06/pt/form_pic.png">
+<meta property="og:image" content="https://blogs.hsuanwei.me/2019/12/06/pt/mcfunc.png">
+<meta property="og:image" content="https://blogs.hsuanwei.me/2019/12/06/pt/gterm.png">
+<meta property="og:image" content="https://blogs.hsuanwei.me/2019/12/06/pt/pt_ex.png">
+<meta property="og:image" content="https://blogs.hsuanwei.me/2019/12/06/pt/pdf.png">
+<meta property="og:image" content="https://blogs.hsuanwei.me/2019/12/06/pt/measure_conversion.png">
+<meta property="og:image" content="https://blogs.hsuanwei.me/2019/12/06/pt/summary.png">
 <meta property="og:updated_time" content="2021-06-14T12:36:02.368Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Monte Carlo Path Tracing">
 <meta name="twitter:description" content="You may understand the fundamental concept of light path tracing and why we often use Monte Carlo integration for it after reading this post.">
-<meta name="twitter:image" content="http://blogs.hsuanwei.me/2019/12/06/pt/bidirectional.png">
+<meta name="twitter:image" content="https://blogs.hsuanwei.me/2019/12/06/pt/bidirectional.png">
 
-<link rel="canonical" href="http://blogs.hsuanwei.me/2019/12/06/pt/">
+<link rel="canonical" href="https://blogs.hsuanwei.me/2019/12/06/pt/">
 
 
 <script id="page-configurations">
@@ -55,7 +55,7 @@
   };
 </script>
 
-  <title>Monte Carlo Path Tracing | hsweifeed</title>
+  <title>Monte Carlo Path Tracing | HsweiFeed</title>
   
 
 
@@ -106,7 +106,7 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">hsweifeed</h1>
+      <h1 class="site-title">HsweiFeed</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
       <p class="site-subtitle" itemprop="description">Act tells.</p>
@@ -172,7 +172,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://blogs.hsuanwei.me/2019/12/06/pt/">
+    <link itemprop="mainEntityOfPage" href="https://blogs.hsuanwei.me/2019/12/06/pt/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/we.JPG">
@@ -181,7 +181,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="hsweifeed">
+      <meta itemprop="name" content="HsweiFeed">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -239,129 +239,136 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>You may understand the fundamental concept of light path tracing and why we often use Monte Carlo integration for it after reading this post.<br><a id="more"></a></p>
-<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>This is my note of a chapter “Path Integral Formulation of Light Transport” of <a href="https://cgg.mff.cuni.cz/~jaroslav/papers/2013-ltscourse/index.htm" target="_blank" rel="noopener">Recent Advances in Light Transport Simulation: Theory &amp; Practice</a>, in SIGGRAPH 2013. I think the course is helpful for beginners to form a clearer picture about light path tracing.</p>
+        <p>You may understand the fundamental concept of light path tracing and why we often use Monte Carlo integration for it after reading this post. <a id="more"></a> # Introduction</p>
+<p>This is my note of a chapter "Path Integral Formulation of Light Transport" of <a href="https://cgg.mff.cuni.cz/~jaroslav/papers/2013-ltscourse/index.htm" target="_blank" rel="noopener">Recent Advances in Light Transport Simulation: Theory &amp; Practice</a>, in SIGGRAPH 2013. I think the course is helpful for beginners to form a clearer picture about light path tracing.</p>
 <blockquote>
 <p>Most images and some quotes in this post come from the slides of the course. The original author owns the copyright of them without a doubt.</p>
 </blockquote>
-<p><img src="/2019/12/06/pt/bidirectional.png" alt></p>
+<p><img src="/2019/12/06/pt/bidirectional.png"></p>
 <p>In physical world, the light is emitted from light sources, such as lamps. After reflection, refraction or absorption in the environment, the light could be seen only if it finally reached our eyes (or the camera in the picture). It may be natural to come up with the idea of formulating the process by calculating every ray emitted after defining surface attribute. However, it will result in computation of numerous invisible light, which refers to one that do not reach your eyes, and causes the waste of resources. Fortunately, we could simply reverse the process: emit the light from the eyes, so we will only need to calculate the light that matters. It is absolutely correct due to the phyisical knowledge that light path is reversible.</p>
-<p>Now, let’s get a further step. Try to imagine there are some objects in a house with a single window and you’re standing outside. You are not allowed to get into the house but you want to see what’s in the house, so you can only see them through the window. Apparently, your view is limited due to the window is not infinitely large.</p>
-<p>Ok, and then we replace the words. The window is the <strong>screen</strong>, you are the observer (or the “<strong>camera</strong>“), and the objects compose a <strong>scene</strong>. As I mentioned above, we do path tracing in a reversed way in comparison to real world. In the illustration, the light pass inside (scene) through the window (screen) and then reach your eyes (camera). So its mirror turn should be <strong>“emitting lights from the camera through screen to the scene”</strong>. To be more specific, as the screen is composed of limited pixels, we can descibe the process as <strong>emitting lights from the camera through each pixel of the screen to the scene</strong>.</p>
+<p>Now, let's get a further step. Try to imagine there are some objects in a house with a single window and you're standing outside. You are not allowed to get into the house but you want to see what's in the house, so you can only see them through the window. Apparently, your view is limited due to the window is not infinitely large.</p>
+<p>Ok, and then we replace the words. The window is the <strong>screen</strong>, you are the observer (or the "<strong>camera</strong>"), and the objects compose a <strong>scene</strong>. As I mentioned above, we do path tracing in a reversed way in comparison to real world. In the illustration, the light pass inside (scene) through the window (screen) and then reach your eyes (camera). So its mirror turn should be <strong>"emitting lights from the camera through screen to the scene"</strong>. To be more specific, as the screen is composed of limited pixels, we can descibe the process as <strong>emitting lights from the camera through each pixel of the screen to the scene</strong>.</p>
 <p>This is the most fundamental idea about path tracing. And I will explain later how can we create a beatiful picture with this simple concept.</p>
-<h1 id="Path-Integral-Formulation"><a href="#Path-Integral-Formulation" class="headerlink" title="Path Integral Formulation"></a>Path Integral Formulation</h1><p>Programming is a concise art, and it is hard to solve a question without formal definitions. Path tracing is not an excepction. So let’s first take a look at its mathematical term, which will help you understand why Monte Carlo is crucial.</p>
-<p><img src="/2019/12/06/pt/form_pic.png" alt> </p>
-<p>The picture above shows what a camera sees from a pixel: a collection of lights the reached to the pixel. Now we can define the <strong>camera response</strong> (the synthesis value of the pixel) in this term:</p>
-<script type="math/tex; mode=display">
-I_j = \int_\Omega f_j(\bar x)d\mu(\bar x)</script><p>The formula is called <strong>Path Integral Formulation</strong>, and its meaning is:</p>
-<ol>
-<li>$I_j$: the value of pixel j</li>
-<li>$\Omega$: all possible light paths</li>
-<li>$f_j(\bar x)$: measurement contribution function</li>
+<h1 id="path-integral-formulation">Path Integral Formulation</h1>
+<p>Programming is a concise art, and it is hard to solve a question without formal definitions. Path tracing is not an excepction. So let's first take a look at its mathematical term, which will help you understand why Monte Carlo is crucial.</p>
+<p><img src="/2019/12/06/pt/form_pic.png"></p>
+<p>The picture above shows what a camera sees from a pixel: a collection of lights the reached to the pixel. Now we can define the <strong>camera response</strong> (the synthesis value of the pixel) in this term: <span class="math display">\[
+I_j = \int_\Omega f_j(\bar x)d\mu(\bar x)
+\]</span></p>
+<p>The formula is called <strong>Path Integral Formulation</strong>, and its meaning is:</p>
+<ol type="1">
+<li><span class="math inline">\(I_j\)</span>: the value of pixel j</li>
+<li><span class="math inline">\(\Omega\)</span>: all possible light paths</li>
+<li><span class="math inline">\(f_j(\bar x)\)</span>: measurement contribution function</li>
 </ol>
-<p>Well, then what’s “measurement contribution function” and what’s $\bar x$? See the lecturer’s first.</p>
+<p>Well, then what's "measurement contribution function" and what's <span class="math inline">\(\bar x\)</span>? See the lecturer's first.</p>
 <blockquote>
 <p>The measurement contribution function of a given path encompasses the “amount” of light emitted along the path, the light carrying capacity of the path, and the sensitivity of the sensor to light brought along the path.</p>
 </blockquote>
-<p>Then this is the formal definition of $f(\bar x), \bar x$:</p>
-<script type="math/tex; mode=display">
+<p>Then this is the formal definition of <span class="math inline">\(f(\bar x), \bar x\)</span>: <span class="math display">\[
 \bar x = x_0x_1\cdots x_k \\
-f_j(\bar x) = L_e(x_0 \rightarrow x_1)T(\bar x)W_e^j(x_{k-1}\rightarrow x_k)</script><p>This picture shows what $\bar x$ and $T(\bar x)$ mean clearer:</p>
-<p><img src="/2019/12/06/pt/mcfunc.png" alt></p>
-<p>Now, let’s try to understand the formula. First of all, a light transport path is a polyline with <strong>vertices</strong> corresponding to light scattering on surfaces. Like points on surfaces of walls, tables and desks.</p>
-<ol>
-<li>$x_i$: The i-th vertex</li>
-<li>$\bar x$: All vertices along the path</li>
-<li>$L_e(x_0 \rightarrow x_1)$: Emitted radiance. As we call the light resource $x_0$, it can be understood as the light intensity of the source.</li>
-<li>$W<em>e^j(x</em>{k-1}\rightarrow x_k)$: Sensor sensitivity (or Emitted Importance). It depends on the distance or angle to the pixel, material feature, etc.</li>
-<li><p>$T(\bar x)$: Pass throughput. It is defined as the product of the geometric G and scattering terms associated with the path edges and interior vertices, respectively</p>
-</li>
-<li><p>$G(x\leftrightarrow y)$: Geometry term (or point-to-point form factor) of a path edge expresses the throughput of the edge due to geometry configuration of the scene.</p>
-<script type="math/tex; mode=display">
-G(x\leftrightarrow y) = \frac{|cos\theta_x||cos\theta_y|}{\|x-y\|^2}V(x\leftrightarrow y)</script></li>
+f_j(\bar x) = L_e(x_0 \rightarrow x_1)T(\bar x)W_e^j(x_{k-1}\rightarrow x_k)
+\]</span> This picture shows what <span class="math inline">\(\bar x\)</span> and <span class="math inline">\(T(\bar x)\)</span> mean clearer:</p>
+<p><img src="/2019/12/06/pt/mcfunc.png"></p>
+<p>Now, let's try to understand the formula. First of all, a light transport path is a polyline with <strong>vertices</strong> corresponding to light scattering on surfaces. Like points on surfaces of walls, tables and desks.</p>
+<ol type="1">
+<li><p><span class="math inline">\(x_i\)</span>: The i-th vertex</p></li>
+<li><p><span class="math inline">\(\bar x\)</span>: All vertices along the path</p></li>
+<li><p><span class="math inline">\(L_e(x_0 \rightarrow x_1)\)</span>: Emitted radiance. As we call the light resource <span class="math inline">\(x_0\)</span>, it can be understood as the light intensity of the source.</p></li>
+<li><p><span class="math inline">\(W_e^j(x_{k-1}\rightarrow x_k)\)</span>: Sensor sensitivity (or Emitted Importance). It depends on the distance or angle to the pixel, material feature, etc.</p></li>
+<li><p><span class="math inline">\(T(\bar x)\)</span>: Pass throughput. It is defined as the product of the geometric G and scattering terms associated with the path edges and interior vertices, respectively</p></li>
+<li><p><span class="math inline">\(G(x\leftrightarrow y)\)</span>: Geometry term (or point-to-point form factor) of a path edge expresses the throughput of the edge due to geometry configuration of the scene. <span class="math display">\[
+G(x\leftrightarrow y) = \frac{|cos\theta_x||cos\theta_y|}{\|x-y\|^2}V(x\leftrightarrow y)
+\]</span></p>
+<p><img src="/2019/12/06/pt/gterm.png" style="zoom:50%;"></p></li>
+<li><p><span class="math inline">\(\rho_s(x_i)\)</span>: It is a abstract expression that means the value of each vertex, which may depend on material.</p></li>
 </ol>
-<p>   <img src="/2019/12/06/pt/gterm.png" style="zoom:50%;"></p>
-<ol>
-<li>$\rho_s(x_i)$: It is a abstract expression that means the value of each vertex, which may depend on material.</li>
-</ol>
-<p>Now, let’s read the integral again:</p>
-<script type="math/tex; mode=display">
-I_j = \int_\Omega f_j(\bar x)d\mu(\bar x)</script><p>Oh yes, you understand it now! But wait, can you tell what “all paths ($\Omega$)” mean?</p>
-<p>Though it looks like a simple integral, there are infinite light paths and thus we cannot integrate $\Omega$ directly. It can be rewritten as:</p>
-<script type="math/tex; mode=display">
-I_j = \sum_{k=1}^\infty \int_{M^{k+1}}f_j(x_0\cdots x_k)dA(x_0)\cdots dA(x_k)</script><p>See it, the path integral actually hides an infinite sum over all possible path lengths.</p>
+<p>Now, let's read the integral again: <span class="math display">\[
+I_j = \int_\Omega f_j(\bar x)d\mu(\bar x)
+\]</span> Oh yes, you understand it now! But wait, can you tell what "all paths (<span class="math inline">\(\Omega\)</span>)" mean?</p>
+<p>Though it looks like a simple integral, there are infinite light paths and thus we cannot integrate <span class="math inline">\(\Omega\)</span> directly. It can be rewritten as: <span class="math display">\[
+I_j = \sum_{k=1}^\infty \int_{M^{k+1}}f_j(x_0\cdots x_k)dA(x_0)\cdots dA(x_k)
+\]</span> See it, the path integral actually hides an infinite sum over all possible path lengths.</p>
 <blockquote>
 <p>Each summand of this sum is a multiple integral, where we integrate the path contribution over all possible positions of the path vertices. So each of the integrals is taken over the Cartesian product of the surface of the scene with itself, taken k+1 times (=number of vertices for a length-k path.) The integration measure is the area-product measure, i.e. the natural surface area, raised to the power of k+1.</p>
 </blockquote>
 <p>As we all know, the computer is not good at dealing with infinity even if it is a simple form of integral. Thus, we need to find a method to numerically calculate the integral to get the value of each pixel.</p>
 <p>Welcom Monte Carlo.</p>
-<h1 id="Monte-Carlo-Integration"><a href="#Monte-Carlo-Integration" class="headerlink" title="Monte Carlo Integration"></a>Monte Carlo Integration</h1><p>Monte Carlo is a famous concept, if you have learned possibility theory or traditional machine learning methods you should be familiar with it. </p>
-<p>If you didn’t learn Monte Carlo before, let’s take a quick look.</p>
+<h1 id="monte-carlo-integration">Monte Carlo Integration</h1>
+<p>Monte Carlo is a famous concept, if you have learned possibility theory or traditional machine learning methods you should be familiar with it.</p>
+<p>If you didn't learn Monte Carlo before, let's take a quick look.</p>
 <blockquote>
-<p>Suppose we are given a real function $f(x)$ and want to compute the integral $\int f(x) dx$ over some domain. The Monte Carlo integration procedure consists in generating a ‘sample’, that is, a random x-value from the integration domain, drawn from some probability distribution with probability density p(x). In the case of path integral, the xvalue is an entire light transport path.</p>
-<p>For this sample $x_i$, we evaluate the integrand $f(x_i)$, and the probability density $p(x_i)$. The ratio $\frac{f(x_i)}{p(x_i)}$ is an estimator of the integrand. To make the estimator more accurate (i.e. to reduce its variance) we repeat the procedure for a number of random samples $x_1 , x_2 , …, x_N$, and average the result as shown in the formula. This procedure provides an <strong>unbiased estimator</strong> of the integrand, which means that “on average”, it produces the correct result i.e. the integral that we want to compute.</p>
+<p>Suppose we are given a real function <span class="math inline">\(f(x)\)</span> and want to compute the integral <span class="math inline">\(\int f(x) dx\)</span> over some domain. The Monte Carlo integration procedure consists in generating a ‘sample’, that is, a random x-value from the integration domain, drawn from some probability distribution with probability density p(x). In the case of path integral, the xvalue is an entire light transport path.</p>
+<p>For this sample <span class="math inline">\(x_i\)</span>, we evaluate the integrand <span class="math inline">\(f(x_i)\)</span>, and the probability density <span class="math inline">\(p(x_i)\)</span>. The ratio <span class="math inline">\(\frac{f(x_i)}{p(x_i)}\)</span> is an estimator of the integrand. To make the estimator more accurate (i.e. to reduce its variance) we repeat the procedure for a number of random samples <span class="math inline">\(x_1 , x_2 , …, x_N\)</span>, and average the result as shown in the formula. This procedure provides an <strong>unbiased estimator</strong> of the integrand, which means that “on average”, it produces the correct result i.e. the integral that we want to compute.</p>
 </blockquote>
-<p>The most well-known example of this method is estimating the value of $\pi$ by throwing stones to a circle again and again. If you want to learn more about it or confused by <strong>unbiased estimator</strong>, try to find a statistical textbook.</p>
-<p>Suppose you understood everything mentioned yet, let’s see how to apply Monte Carlo integration to path tracing.</p>
-<p>We can rewrite the Monte Carlo estimator of path integral formula first:</p>
-<script type="math/tex; mode=display">
-\langle I_j\rangle = \frac{f_j(\bar x)}{p(\bar x)}</script><p>Now, for each pixel $j$ we can apply Mote Carlo inegration by these steps:</p>
-<ol>
-<li>Generate a random light transport path $x$ in the scene.</li>
-<li>Evaluate the probability density $p(\bar x)$ of the path and the contribution function.</li>
-<li>Evaluate the integrand $f_j(\bar x)$.</li>
+<p>The most well-known example of this method is estimating the value of <span class="math inline">\(\pi\)</span> by throwing stones to a circle again and again. If you want to learn more about it or confused by <strong>unbiased estimator</strong>, try to find a statistical textbook.</p>
+<p>Suppose you understood everything mentioned yet, let's see how to apply Monte Carlo integration to path tracing.</p>
+<p>We can rewrite the Monte Carlo estimator of path integral formula first: <span class="math display">\[
+\langle I_j\rangle = \frac{f_j(\bar x)}{p(\bar x)}
+\]</span> Now, for each pixel <span class="math inline">\(j\)</span> we can apply Mote Carlo inegration by these steps:</p>
+<ol type="1">
+<li>Generate a random light transport path <span class="math inline">\(x\)</span> in the scene.</li>
+<li>Evaluate the probability density <span class="math inline">\(p(\bar x)\)</span> of the path and the contribution function.</li>
+<li>Evaluate the integrand <span class="math inline">\(f_j(\bar x)\)</span>.</li>
 </ol>
-<h2 id="Path-Sampling"><a href="#Path-Sampling" class="headerlink" title="Path Sampling"></a>Path Sampling</h2><p>We already knew how to calculate $f_j(\bar x)$, so now the question left is the path sampling method and its induced path probability density function (PDF) $p(\bar x)$.</p>
+<h2 id="path-sampling">Path Sampling</h2>
+<p>We already knew how to calculate <span class="math inline">\(f_j(\bar x)\)</span>, so now the question left is the path sampling method and its induced path probability density function (PDF) <span class="math inline">\(p(\bar x)\)</span>.</p>
 <blockquote>
 <p>In fact, from the point of view of the path integral formulation, the only difference between many light transport simulation algorithms are the employed path sampling techniques and their PDFs.</p>
 </blockquote>
-<p>A beautiful conclusion induced is that different path sampling algorithms share the same general form of estimator, only PDF $p(\bar x)$ changes. For example, path tracing samples paths by starting at the camera as I mentioned above, and extending the path by <strong>BRDF importance sampling</strong>, and possibly explicitly connecting a to a vertex sampled on the light source. In contract, light tracing starts from the light sources. They share same esitmator form, however.</p>
+<p>A beautiful conclusion induced is that different path sampling algorithms share the same general form of estimator, only PDF <span class="math inline">\(p(\bar x)\)</span> changes. For example, path tracing samples paths by starting at the camera as I mentioned above, and extending the path by <strong>BRDF importance sampling</strong>, and possibly explicitly connecting a to a vertex sampled on the light source. In contract, light tracing starts from the light sources. They share same esitmator form, however.</p>
 <blockquote>
 <p>Without the path integral framework, we would need equations of importance transport to formulate light tracing, which can get messy.</p>
 </blockquote>
-<h2 id="Local-Path-Sampling"><a href="#Local-Path-Sampling" class="headerlink" title="Local Path Sampling"></a>Local Path Sampling</h2><p>I will explain how we exactly sample the paths and comput the PDF in this section. Most practical algorithms rely on local sampling, where paths are build by adding one vertex at a time until a complete path is built. That is, the algorithm concerns vertex by vertex rather than direct calculate a global path.</p>
+<h2 id="local-path-sampling">Local Path Sampling</h2>
+<p>I will explain how we exactly sample the paths and comput the PDF in this section. Most practical algorithms rely on local sampling, where paths are build by adding one vertex at a time until a complete path is built. That is, the algorithm concerns vertex by vertex rather than direct calculate a global path.</p>
 <p>There are 3 common basic operations:</p>
-<ol>
+<ol type="1">
 <li>Sampling a path vertex from a prior given distribution over a surface, it is usually used to generate the first vertex on camera or light source.</li>
 <li>Shoot a ray along a direction from a previously sampled vertex to obtain the next path vertex.</li>
 <li>Give two sub-paths, we could connect their end-vertices to form a full light transport path. <strong>It is a simple visibility check to see if the contribution function of the path is non-zero.</strong></li>
 </ol>
-<p><img src="/2019/12/06/pt/pt_ex.png" alt></p>
+<p><img src="/2019/12/06/pt/pt_ex.png"></p>
 <p>The image above shows a simple path tracer. Along the blue path, we generate the first vertex from the priorly distributed camera surface, and then we pick a random direction form this point such that it passes through the image plane to generate new vertices until the path finally hit the light source. (Operation 2)</p>
 <p>You man question how can we guarantee the blue path hit the light source. Actually, we cannot but a light path that do not hit light source contributes nothing to the value so it does not impact the correctness. However, it means there are lots of useless lights calculated, and it results in the waste of time. Thus, we do it in a slightly different way like the yellow path.</p>
 <p>Along the yellow path, we use operation 1 to generate a vertex on camera than use operation 2 to generate new vertices. But at the end, we do not expect it to hit the light source. Instead, we use operation 1 to shoot a light from the light source and then apply operation 3 to connect the sub-paths. With this method, we make sure the light path is visible. It is called bidirectional path tracing.</p>
-<h2 id="Probability-Density-Function"><a href="#Probability-Density-Function" class="headerlink" title="Probability Density Function"></a>Probability Density Function</h2><p>By local sampling, we know how to construct a light path. Now we need to evaluate its PDF  to calculate the Monte Carlo estimator.</p>
-<p><img src="/2019/12/06/pt/pdf.png" alt></p>
-<p>Take the picture above for example. The path PDF can be defined as:</p>
-<script type="math/tex; mode=display">
-p(\bar x) = p(x_0,\cdots,x_3)</script><p>It means the path PDF equals to the <strong>joint PDF</strong> of path vertices. Applied simple path tracing method the image, then we have:</p>
-<script type="math/tex; mode=display">
-p(x_0,\cdots,x_3) = p(x_3)p(x_2|x_3)p(x_1|x_2)p(x_0)</script><p>Because:</p>
-<ol>
-<li>$p(x_3)$: Vertex $x_3$ comes from a prior distribution over the camera lens that is usually uniform. </li>
-<li>$p(x_2|x_3)$: Vertex $x_2$ is sampled by generating a random direction from $x_3$, so it is a conditional possibility. Same for $x_1$.</li>
-<li>$p(x_0)$: Sampled from the light source, so it depends on the uniform distribution over the light source. (Recall the bidirectional path tracing mentioned above)</li>
+<h2 id="probability-density-function">Probability Density Function</h2>
+<p>By local sampling, we know how to construct a light path. Now we need to evaluate its PDF to calculate the Monte Carlo estimator.</p>
+<p><img src="/2019/12/06/pt/pdf.png"></p>
+<p>Take the picture above for example. The path PDF can be defined as: <span class="math display">\[
+p(\bar x) = p(x_0,\cdots,x_3)
+\]</span> It means the path PDF equals to the <strong>joint PDF</strong> of path vertices. Applied simple path tracing method the image, then we have: <span class="math display">\[
+p(x_0,\cdots,x_3) = p(x_3)p(x_2|x_3)p(x_1|x_2)p(x_0)
+\]</span> Because:</p>
+<ol type="1">
+<li><span class="math inline">\(p(x_3)\)</span>: Vertex <span class="math inline">\(x_3\)</span> comes from a prior distribution over the camera lens that is usually uniform.</li>
+<li><span class="math inline">\(p(x_2|x_3)\)</span>: Vertex <span class="math inline">\(x_2\)</span> is sampled by generating a random direction from <span class="math inline">\(x_3\)</span>, so it is a conditional possibility. Same for <span class="math inline">\(x_1\)</span>.</li>
+<li><span class="math inline">\(p(x_0)\)</span>: Sampled from the light source, so it depends on the uniform distribution over the light source. (Recall the bidirectional path tracing mentioned above)</li>
 </ol>
-<p>It is not hard to find that the product of these conditional vertex PDFs could the rewritten in a simpler form.</p>
-<script type="math/tex; mode=display">
-p(x_0,\cdots, x_3) = p(x_3)p(x_2)p(x_1)p(x_0)</script><blockquote>
+<p>It is not hard to find that the product of these conditional vertex PDFs could the rewritten in a simpler form. <span class="math display">\[
+p(x_0,\cdots, x_3) = p(x_3)p(x_2)p(x_1)p(x_0)
+\]</span></p>
+<blockquote>
 <p>Nonetheless, it is important to keep in mind that the path vertex PDFs for vertices that are not sampled independently are indeed conditional PDFs.</p>
 </blockquote>
-<h2 id="Vertex-Sampling"><a href="#Vertex-Sampling" class="headerlink" title="Vertex Sampling"></a>Vertex Sampling</h2><p>In accordance with the principle of importance sampling, we want to generate full paths paths from a distribution with probability density proportional to the measurement contribution function. That is, high-contribution paths should have proportionally high probability of being sampled. For example, when starting a path on the light source, we usually sample the initial vertex from a distribution proportional to the emitted power. And we usually sample the random direction proportionally to the BRDF at the vertex when extending the path from an existing vertex.</p>
+<h2 id="vertex-sampling">Vertex Sampling</h2>
+<p>In accordance with the principle of importance sampling, we want to generate full paths paths from a distribution with probability density proportional to the measurement contribution function. That is, high-contribution paths should have proportionally high probability of being sampled. For example, when starting a path on the light source, we usually sample the initial vertex from a distribution proportional to the emitted power. And we usually sample the random direction proportionally to the BRDF at the vertex when extending the path from an existing vertex.</p>
 <blockquote>
 <p>Similarly, when connecting two sub-paths with an edge, we may want to prefer connections with high throughput (though this is rarely done in practice).</p>
 </blockquote>
-<h2 id="Measure-Conversion"><a href="#Measure-Conversion" class="headerlink" title="Measure Conversion"></a>Measure Conversion</h2><p><img src="/2019/12/06/pt/measure_conversion.png" alt></p>
-<p>The lecturer mentioned a technical detail of computing the path PDF for vertcies sampled by basic operation 2. As we are integrating the path integral over the surface of the scene, the direction sampling usually gives the PDF with respect to the (projected) solid angle, however. </p>
-<p>The conversion factor from the projected solid angle measure to the area measure is the <strong>geometry factor</strong>. This means that any vertex sampled by shooting a ray along a picked direction has the geometry factor of the generated edge importance sampled. </p>
+<h2 id="measure-conversion">Measure Conversion</h2>
+<p><img src="/2019/12/06/pt/measure_conversion.png"></p>
+<p>The lecturer mentioned a technical detail of computing the path PDF for vertcies sampled by basic operation 2. As we are integrating the path integral over the surface of the scene, the direction sampling usually gives the PDF with respect to the (projected) solid angle, however.</p>
+<p>The conversion factor from the projected solid angle measure to the area measure is the <strong>geometry factor</strong>. This means that any vertex sampled by shooting a ray along a picked direction has the geometry factor of the generated edge importance sampled.</p>
 <blockquote>
 <p>The only geometry factor that are not importance sampled actually correspond to the connecting edges (operation 3 in local path sampling).</p>
 </blockquote>
-<h1 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h1><p><img src="/2019/12/06/pt/summary.png" alt></p>
+<h1 id="summary">Summary</h1>
+<p><img src="/2019/12/06/pt/summary.png"></p>
 <blockquote>
 <p>I think the original lecturer already gives a clear summary about all the contents mentioned above. So that I basically copy paste his points here.</p>
 </blockquote>
-<ol>
+<ol type="1">
 <li>The path integral formulation gives the pixel value as an integral over all light transport paths of all lengths.</li>
 <li>A light transport path is the trajectory of a light carrying particle. It is usually a polyline specified by its <strong>vertices</strong>.</li>
 <li>The integrand is the measurement contribution function, which is the product of <strong>emitted radiance, sensor sensitivity, and path throughput</strong>.</li>
@@ -374,7 +381,7 @@ p(x_0,\cdots, x_3) = p(x_3)p(x_2)p(x_1)p(x_0)</script><blockquote>
 <blockquote>
 <p>Because of the contradiction between the infinite light paths and finite time and computation resources, a estimating method to simulate the process is necessary. Monte Carlo is a simple unbiased estimation for this purpose.</p>
 </blockquote>
-<p>It’s the end of the brief introduction, I hope you understand better why we use Monte Carlo method. And remember, considering the computational cost, <strong>path tracing is still an unresolved problem yet</strong>.</p>
+<p>It's the end of the brief introduction, I hope you understand better why we use Monte Carlo method. And remember, considering the computational cost, <strong>path tracing is still an unresolved problem yet</strong>.</p>
 
     </div>
 
@@ -390,7 +397,7 @@ p(x_0,\cdots, x_3) = p(x_3)p(x_2)p(x_1)p(x_0)</script><blockquote>
   </li>
   <li class="post-copyright-link">
     <strong>Post link: </strong>
-    <a href="http://blogs.hsuanwei.me/2019/12/06/pt/" title="Monte Carlo Path Tracing">http://blogs.hsuanwei.me/2019/12/06/pt/</a>
+    <a href="https://blogs.hsuanwei.me/2019/12/06/pt/" title="Monte Carlo Path Tracing">https://blogs.hsuanwei.me/2019/12/06/pt/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
@@ -483,7 +490,7 @@ p(x_0,\cdots, x_3) = p(x_3)p(x_2)p(x_1)p(x_0)</script><blockquote>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Path-Integral-Formulation"><span class="nav-number">2.</span> <span class="nav-text">Path Integral Formulation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Monte-Carlo-Integration"><span class="nav-number">3.</span> <span class="nav-text">Monte Carlo Integration</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Path-Sampling"><span class="nav-number">3.1.</span> <span class="nav-text">Path Sampling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Local-Path-Sampling"><span class="nav-number">3.2.</span> <span class="nav-text">Local Path Sampling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Probability-Density-Function"><span class="nav-number">3.3.</span> <span class="nav-text">Probability Density Function</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vertex-Sampling"><span class="nav-number">3.4.</span> <span class="nav-text">Vertex Sampling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Measure-Conversion"><span class="nav-number">3.5.</span> <span class="nav-text">Measure Conversion</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Summary"><span class="nav-number">4.</span> <span class="nav-text">Summary</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#path-integral-formulation"><span class="nav-number">1.</span> <span class="nav-text">Path Integral Formulation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#monte-carlo-integration"><span class="nav-number">2.</span> <span class="nav-text">Monte Carlo Integration</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#path-sampling"><span class="nav-number">2.1.</span> <span class="nav-text">Path Sampling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#local-path-sampling"><span class="nav-number">2.2.</span> <span class="nav-text">Local Path Sampling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#probability-density-function"><span class="nav-number">2.3.</span> <span class="nav-text">Probability Density Function</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vertex-sampling"><span class="nav-number">2.4.</span> <span class="nav-text">Vertex Sampling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#measure-conversion"><span class="nav-number">2.5.</span> <span class="nav-text">Measure Conversion</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#summary"><span class="nav-number">3.</span> <span class="nav-text">Summary</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -672,7 +679,7 @@ p(x_0,\cdots, x_3) = p(x_3)p(x_2)p(x_1)p(x_0)</script><blockquote>
 </script>
 <script>
   var disqus_config = function() {
-    this.page.url = "http://blogs.hsuanwei.me/2019/12/06/pt/";
+    this.page.url = "https://blogs.hsuanwei.me/2019/12/06/pt/";
     this.page.identifier = "2019/12/06/pt/";
     this.page.title = "Monte Carlo Path Tracing";
     };
