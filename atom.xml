@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://blogs.hsuanwei.me/"/>
-  <updated>2021-06-14T12:36:06.313Z</updated>
+  <updated>2021-06-16T17:29:01.546Z</updated>
   <id>https://blogs.hsuanwei.me/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Rust | What does &quot;Some&quot; mean?</title>
+    <link href="https://blogs.hsuanwei.me/2021/06/16/rust-some/"/>
+    <id>https://blogs.hsuanwei.me/2021/06/16/rust-some/</id>
+    <published>2021-06-16T14:55:36.000Z</published>
+    <updated>2021-06-16T17:29:01.546Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;I was confused when I saw the keyword &quot;Some&quot; in Rust at first. As it is a rare keyword in other languages, at least for C++ and Python, I hope this blog will help you understand the meaning of the keyword and the concept behind it.&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Programming" scheme="https://blogs.hsuanwei.me/categories/Programming/"/>
+    
+    
+      <category term="Rust" scheme="https://blogs.hsuanwei.me/tags/Rust/"/>
+    
+  </entry>
   
   <entry>
     <title>PBRT | Bounding Volume Hierarchies</title>
@@ -26,7 +46,7 @@
     <summary type="html">
     
       &lt;blockquote&gt;
-&lt;p&gt;&quot;Bounding volume hierarchies (BVHs) are an approach for ray intersection acceleration based on primitive subdivision, where the primitives are partitioned into a hierarchy of disjoint sets.&quot;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;“Bounding volume hierarchies (BVHs) are an approach for ray intersection acceleration based on primitive subdivision, where the primitives are partitioned into a hierarchy of disjoint sets.”&lt;br&gt;&lt;/p&gt;&lt;/blockquote&gt;
     
     </summary>
     
@@ -50,7 +70,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;You may understand the fundamental concept of light path tracing and why we often use Monte Carlo integration for it after reading this post.&lt;/p&gt;
+      &lt;p&gt;You may understand the fundamental concept of light path tracing and why we often use Monte Carlo integration for it after reading this post.&lt;br&gt;&lt;/p&gt;
     
     </summary>
     
@@ -73,7 +93,7 @@
     <summary type="html">
     
       &lt;blockquote&gt;
-&lt;p&gt;Vuex 是一个专为 Vue.js 应用程序开发的&lt;strong&gt;状态管理模式&lt;/strong&gt;。它采用集中式存储管理应用的所有组件的状态，并以相应的规则保证状态以一种可预测的方式发生变化。Vuex 也集成到 Vue 的官方调试工具 &lt;a href=&quot;https://github.com/vuejs/vue-devtools&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;devtools extension&lt;/a&gt;，提供了诸如零配置的 time-travel 调试、状态快照导入导出等高级调试功能。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;Vuex 是一个专为 Vue.js 应用程序开发的&lt;strong&gt;状态管理模式&lt;/strong&gt;。它采用集中式存储管理应用的所有组件的状态，并以相应的规则保证状态以一种可预测的方式发生变化。Vuex 也集成到 Vue 的官方调试工具 &lt;a href=&quot;https://github.com/vuejs/vue-devtools&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;devtools extension&lt;/a&gt;，提供了诸如零配置的 time-travel 调试、状态快照导入导出等高级调试功能。&lt;br&gt;&lt;/p&gt;&lt;/blockquote&gt;
     
     </summary>
     
@@ -97,7 +117,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;這篇博客將介紹一些我覺得還不錯的工具，可以一定程度地節約時間成本，讓你將心力專注在知識本身。希望對於剛開始在實驗室搬磚或是目前用土方法管理各種課程論文的你有所幫助。&lt;/p&gt;
+      &lt;p&gt;這篇博客將介紹一些我覺得還不錯的工具，可以一定程度地節約時間成本，讓你將心力專注在知識本身。希望對於剛開始在實驗室搬磚或是目前用土方法管理各種課程論文的你有所幫助。&lt;br&gt;&lt;/p&gt;
     
     </summary>
     
@@ -115,7 +135,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;两个不同的人物的面部合成不仅是一件有趣的事情，更是一个重要的任务。例如，在动画中如何让人物的变形能较为平滑自然与Face Morphing就息息相关。&lt;/p&gt;
+      &lt;p&gt;两个不同的人物的面部合成不仅是一件有趣的事情，更是一个重要的任务。例如，在动画中如何让人物的变形能较为平滑自然与Face Morphing就息息相关。&lt;br&gt;&lt;/p&gt;
     
     </summary>
     
@@ -135,7 +155,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;图像融合是相当常见的图像处理场景，例如很多普通用户打开PS的主要目的就是图像合成。&lt;/p&gt;
+      &lt;p&gt;图像融合是相当常见的图像处理场景，例如很多普通用户打开PS的主要目的就是图像合成。&lt;br&gt;&lt;/p&gt;
     
     </summary>
     
