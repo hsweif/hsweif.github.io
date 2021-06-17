@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://blogs.hsuanwei.me/"/>
-  <updated>2021-06-16T17:29:01.546Z</updated>
+  <updated>2021-06-17T17:11:24.919Z</updated>
   <id>https://blogs.hsuanwei.me/</id>
   
   <author>
@@ -17,6 +17,20 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>ANOVA</title>
+    <link href="https://blogs.hsuanwei.me/2021/06/18/ANOVA/"/>
+    <id>https://blogs.hsuanwei.me/2021/06/18/ANOVA/</id>
+    <published>2021-06-17T17:11:24.000Z</published>
+    <updated>2021-06-17T17:11:24.919Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
     <title>Rust | What does &quot;Some&quot; mean?</title>
     <link href="https://blogs.hsuanwei.me/2021/06/16/rust-some/"/>
     <id>https://blogs.hsuanwei.me/2021/06/16/rust-some/</id>
@@ -25,7 +39,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;I was confused when I saw the keyword &quot;Some&quot; in Rust at first. As it is a rare keyword in other languages, at least for C++ and Python, I hope this blog will help you understand the meaning of the keyword and the concept behind it.&lt;/p&gt;
+      &lt;p&gt;I was confused when I saw the keyword “Some” in Rust at first. As it is a rare keyword in other languages, at least for C++ and Python, I hope this blog will help you understand the meaning of the keyword and the concept behind it.&lt;/p&gt;
     
     </summary>
     
