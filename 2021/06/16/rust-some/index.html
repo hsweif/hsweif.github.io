@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en,zh-TW,default">
+<html lang="en,default">
 <head>
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 6.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -17,23 +17,23 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"blogs.hsuanwei.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"hsuanwei.me","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="I was confused when I saw the keyword “Some” in Rust at first. As it is a rare keyword in other languages, at least for C++ and Python, I hope this blog will help you understand the meaning of the key">
-<meta name="keywords" content="Rust">
+  <meta name="description" content="I was confused when I saw the keyword &quot;Some&quot; in Rust at first. As it is a rare keyword in other languages, at least for C++ and Python, I hope this blog will help you understand the meaning of the key">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Rust | What does &quot;Some&quot; mean?">
-<meta property="og:url" content="https://blogs.hsuanwei.me/2021/06/16/rust-some/index.html">
+<meta property="og:url" content="https://hsuanwei.me/2021/06/16/rust-some/index.html">
 <meta property="og:site_name" content="HsweiFeed">
-<meta property="og:description" content="I was confused when I saw the keyword “Some” in Rust at first. As it is a rare keyword in other languages, at least for C++ and Python, I hope this blog will help you understand the meaning of the key">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2021-06-16T17:29:01.546Z">
+<meta property="og:description" content="I was confused when I saw the keyword &quot;Some&quot; in Rust at first. As it is a rare keyword in other languages, at least for C++ and Python, I hope this blog will help you understand the meaning of the key">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-06-16T14:55:36.000Z">
+<meta property="article:modified_time" content="2021-06-16T17:29:01.546Z">
+<meta property="article:author" content="Hsuan-Wei Fan">
+<meta property="article:tag" content="Rust">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Rust | What does &quot;Some&quot; mean?">
-<meta name="twitter:description" content="I was confused when I saw the keyword “Some” in Rust at first. As it is a rare keyword in other languages, at least for C++ and Python, I hope this blog will help you understand the meaning of the key">
 
-<link rel="canonical" href="https://blogs.hsuanwei.me/2021/06/16/rust-some/">
+<link rel="canonical" href="https://hsuanwei.me/2021/06/16/rust-some/">
 
 
 <script id="page-configurations">
@@ -77,10 +77,14 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -163,12 +167,12 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://blogs.hsuanwei.me/2021/06/16/rust-some/">
+    <link itemprop="mainEntityOfPage" href="https://hsuanwei.me/2021/06/16/rust-some/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/we.JPG">
       <meta itemprop="name" content="Hsuan-Wei Fan">
-      <meta itemprop="description" content="B.E in Tsinghua CST, Beijing.<br>Lives in Taiwan.<br>Interested in VR/MR and CG.<br>Coding and thinking.">
+      <meta itemprop="description" content="Working, reading, thinking, asking, feeling, loving, so living.">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -206,13 +210,6 @@
             </span>
 
           
-            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">Views: </span>
-              <span id="busuanzi_value_page_pv"></span>
-            </span>
   
   <span class="post-meta-item">
     
@@ -237,14 +234,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>I was confused when I saw the keyword “Some” in Rust at first. As it is a rare keyword in other languages, at least for C++ and Python, I hope this blog will help you understand the meaning of the keyword and the concept behind it.</p>
-<a id="more"></a>
-<p>Rust has one of the most strict compilers within all languages I’ve learned. It introduced some interesting concepts to move lots of runtime errors of other languages to compile stage. Though forming a steeper learning curve, those concepts indeed keep developers from writing potential runtime bugs carelessly. The “option” is just an example.</p>
+        <p>I was confused when I saw the keyword "Some" in Rust at first. As it is a rare keyword in other languages, at least for C++ and Python, I hope this blog will help you understand the meaning of the keyword and the concept behind it.</p>
+<span id="more"></span>
+<p>Rust has one of the most strict compilers within all languages I've learned. It introduced some interesting concepts to move lots of runtime errors of other languages to compile stage. Though forming a steeper learning curve, those concepts indeed keep developers from writing potential runtime bugs carelessly. The "option" is just an example.</p>
 <p>To explain the keyword in one sentence:</p>
 <blockquote>
-<p>“Some” is an enum value of an “Option” object that represents the state of “not None”.</p>
+<p>"Some" is an enum value of an "Option" object that represents the state of "not None".</p>
 </blockquote>
-<p>Ok, then what is an “Option”? I regard it as a Rustacean solution to the annoying, unexpected <code>NullPointerException</code> in other languages.</p>
+<p>Ok, then what is an "Option"? I regard it as a Rustacean solution to the annoying, unexpected <code>NullPointerException</code> in other languages.</p>
 <p>The official documentation says that:</p>
 <blockquote>
 <p>The <code>Option&lt;T&gt;</code> enum has two variants:</p>
@@ -256,7 +253,7 @@
 <p>In other words, <code>Option</code> forces developers to deal with None condition. If you do not handle potential <code>None</code>, you will not pass the compilation unless you call <code>unwrap()</code> on purpose.</p>
 <p>The meaning of <code>Some</code> becomes clear now. It stores the exact value you expect in a standard, not-none condition. You should load the value from the enum <code>Some</code> before doing whatever you want.</p>
 <p>I wrote a simple example below that may help you understand the concept better.</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">exam_result</span></span>(score: <span class="built_in">i32</span>) -&gt; <span class="built_in">Option</span>&lt;<span class="built_in">bool</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">if</span> score &lt; <span class="number">0</span> || score &gt; <span class="number">100</span> &#123;</span><br><span class="line">        <span class="literal">None</span></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> score &lt; <span class="number">60</span> &#123;</span><br><span class="line">        <span class="literal">Some</span>(<span class="literal">false</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="literal">Some</span>(<span class="literal">true</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> scores = <span class="built_in">vec!</span>[-<span class="number">10</span>, <span class="number">59</span>, <span class="number">98</span>, <span class="number">107</span>];</span><br><span class="line">    <span class="keyword">for</span> score <span class="keyword">in</span> scores.iter() &#123;</span><br><span class="line">        <span class="keyword">let</span> score = score.to_owned();</span><br><span class="line">        <span class="keyword">let</span> result = exam_result(score);</span><br><span class="line">        <span class="keyword">match</span> result &#123;</span><br><span class="line">            <span class="literal">Some</span>(pass) =&gt; &#123;</span><br><span class="line">                <span class="keyword">if</span> pass &#123;</span><br><span class="line">                    <span class="built_in">println!</span>(<span class="string">"Score &#123;&#125; pass the exam"</span>, score);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="built_in">println!</span>(<span class="string">"Score &#123;&#125; fail the exam"</span>, score);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="literal">None</span> =&gt; &#123;</span><br><span class="line">                <span class="built_in">println!</span>(<span class="string">"Score &#123;&#125; is invalid"</span>, score);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">exam_result</span>(score: <span class="type">i32</span>) <span class="punctuation">-&gt;</span> <span class="type">Option</span>&lt;<span class="type">bool</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">if</span> score &lt; <span class="number">0</span> || score &gt; <span class="number">100</span> &#123;</span><br><span class="line">        <span class="literal">None</span></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> score &lt; <span class="number">60</span> &#123;</span><br><span class="line">        <span class="title function_ invoke__">Some</span>(<span class="literal">false</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="title function_ invoke__">Some</span>(<span class="literal">true</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">scores</span> = <span class="built_in">vec!</span>[-<span class="number">10</span>, <span class="number">59</span>, <span class="number">98</span>, <span class="number">107</span>];</span><br><span class="line">    <span class="keyword">for</span> <span class="variable">score</span> <span class="keyword">in</span> scores.<span class="title function_ invoke__">iter</span>() &#123;</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">score</span> = score.<span class="title function_ invoke__">to_owned</span>();</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">result</span> = <span class="title function_ invoke__">exam_result</span>(score);</span><br><span class="line">        <span class="keyword">match</span> result &#123;</span><br><span class="line">            <span class="title function_ invoke__">Some</span>(pass) =&gt; &#123;</span><br><span class="line">                <span class="keyword">if</span> pass &#123;</span><br><span class="line">                    <span class="built_in">println!</span>(<span class="string">&quot;Score &#123;&#125; pass the exam&quot;</span>, score);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="built_in">println!</span>(<span class="string">&quot;Score &#123;&#125; fail the exam&quot;</span>, score);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="literal">None</span> =&gt; &#123;</span><br><span class="line">                <span class="built_in">println!</span>(<span class="string">&quot;Score &#123;&#125; is invalid&quot;</span>, score);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>I hope the blog helps you understand the unfamiliar but brilliant concept of Rust. Enjoy coding =)</p>
 
     </div>
@@ -273,7 +270,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>Post link: </strong>
-    <a href="https://blogs.hsuanwei.me/2021/06/16/rust-some/" title="Rust | What does "Some" mean?">https://blogs.hsuanwei.me/2021/06/16/rust-some/</a>
+    <a href="https://hsuanwei.me/2021/06/16/rust-some/" title="Rust | What does "Some" mean?">https://hsuanwei.me/2021/06/16/rust-some/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
@@ -370,7 +367,7 @@
     <img class="site-author-image" itemprop="image" alt="Hsuan-Wei Fan"
       src="/uploads/we.JPG">
   <p class="site-author-name" itemprop="name">Hsuan-Wei Fan</p>
-  <div class="site-description" itemprop="description">B.E in Tsinghua CST, Beijing.<br>Lives in Taiwan.<br>Interested in VR/MR and CG.<br>Coding and thinking.</div>
+  <div class="site-description" itemprop="description">Working, reading, thinking, asking, feeling, loving, so living.</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
@@ -390,7 +387,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -431,13 +428,13 @@
 <div class="copyright">
   
   &copy; 2019 – 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Hsuan-Wei Fan</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
   </div>
 
 
@@ -445,26 +442,6 @@
 
 
         
-<div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-user"></i>
-      </span>
-      <span class="site-uv" title="Total Visitors">
-        <span id="busuanzi_value_site_uv"></span>
-      </span>
-    </span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-eye"></i>
-      </span>
-      <span class="site-pv" title="Total Views">
-        <span id="busuanzi_value_site_pv"></span>
-      </span>
-    </span>
-</div>
 
 
 
@@ -481,9 +458,17 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/muse.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 
@@ -521,7 +506,7 @@
 </script>
 <script>
   var disqus_config = function() {
-    this.page.url = "https://blogs.hsuanwei.me/2021/06/16/rust-some/";
+    this.page.url = "https://hsuanwei.me/2021/06/16/rust-some/";
     this.page.identifier = "2021/06/16/rust-some/";
     this.page.title = "Rust | What does \"Some\" mean?";
     };
@@ -538,7 +523,7 @@
       (d.head || d.body).appendChild(s);
     }
   });
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </body>
 </html>

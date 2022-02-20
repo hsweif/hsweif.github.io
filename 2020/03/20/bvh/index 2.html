@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en,default">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hsuanwei.me","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="“Bounding volume hierarchies (BVHs) are an approach for ray intersection acceleration based on primitive subdivision, where the primitives are partitioned into a hierarchy of disjoint sets.”">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PBRT | Bounding Volume Hierarchies">
+<meta property="og:url" content="https://hsuanwei.me/2020/03/20/bvh/index.html">
+<meta property="og:site_name" content="HsweiFeed">
+<meta property="og:description" content="“Bounding volume hierarchies (BVHs) are an approach for ray intersection acceleration based on primitive subdivision, where the primitives are partitioned into a hierarchy of disjoint sets.”">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://hsuanwei.me/2020/03/20/bvh/bvh.png">
+<meta property="og:image" content="https://hsuanwei.me/2020/03/20/bvh/max_extent.png">
+<meta property="og:image" content="https://hsuanwei.me/2020/03/20/bvh/nequal_fail.png">
+<meta property="og:image" content="https://hsuanwei.me/2020/03/20/bvh/linear_layout.png">
+<meta property="article:published_time" content="2020-03-20T05:24:00.000Z">
+<meta property="article:modified_time" content="2021-06-14T12:36:06.313Z">
+<meta property="article:author" content="Hsuan-Wei Fan">
+<meta property="article:tag" content="pbrt">
+<meta property="article:tag" content="Graphics">
+<meta property="article:tag" content="Rendering">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hsuanwei.me/2020/03/20/bvh/bvh.png">
+
+<link rel="canonical" href="https://hsuanwei.me/2020/03/20/bvh/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>PBRT | Bounding Volume Hierarchies | HsweiFeed</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">HsweiFeed</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Act tells.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hsuanwei.me/2020/03/20/bvh/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/we.JPG">
+      <meta itemprop="name" content="Hsuan-Wei Fan">
+      <meta itemprop="description" content="Working, reading, thinking, asking, feeling, loving, so living.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HsweiFeed">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PBRT | Bounding Volume Hierarchies
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-03-20 13:24:00" itemprop="dateCreated datePublished" datetime="2020-03-20T13:24:00+08:00">2020-03-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-06-14 20:36:06" itemprop="dateModified" datetime="2021-06-14T20:36:06+08:00">2021-06-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Computer-Science/" itemprop="url" rel="index"><span itemprop="name">Computer Science</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2020/03/20/bvh/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/03/20/bvh/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>“Bounding volume hierarchies (BVHs) are an approach for ray intersection acceleration based on primitive subdivision, where the primitives are partitioned into a hierarchy of disjoint sets.”<br><span id="more"></span></p>
+<p>— PBRT-v3</p>
+</blockquote>
+<p>Intersection testing is an important part of the rendering, and thus the acceleration is concerned. Bounding volume hierarchies (BVHs) is a widely used method, which organizes the primitives of a scene with a binary tree. The core concept is that each node of the binary tree stores a bounding box that includes all primitives of the subtree. And therefore, the rendering engine can check the intersection quickly by traveling the tree and check the bounding boxes along the path. To check whether a ray hit a primitive, the engine uses a binary search to find the primitive while testing the intersection with the bounding boxes along the path. If one of the tests fails, then the ray must not hit the primitive we’re looking for because the children nodes’ volume must be the sub-volume of the parent node.</p>
+<p><img src="/2020/03/20/bvh/bvh.png" alt></p>
+<blockquote>
+<p>Illustration of the BVHs</p>
+<p>(Note: The copyright of some quotes, source code and images in this post belong to PBRT-v3.)</p>
+</blockquote>
+<p>In comparison to spatially subdivision methods like KD-tree, we can estimate the maximum memory cost of BVHs. Because the height of the binary tree is related to the sum of the primitives. As binary BVH stores the primitive in the leaf (as you can see in the illustration above), for an n-primitives scene, the number of nodes is 2n-1. It is composed of n leaves and n-1 inner nodes that hold the bounding box information. In some implementations, a leaf stores more than 1 primitive, and the total nodes number is even smaller in such a situation. On the other hand, BVHs are generally more numerically robust to missed intersections in comparison to spatially division algorithms.</p>
+<h1 id="Construction"><a href="#Construction" class="headerlink" title="Construction"></a>Construction</h1><p>There are three stages to construct a BVH in the implementation of PBRT-v3:</p>
+<ol>
+<li>Computing bounding information about each primitive and storing them in an array to be used later.</li>
+<li>Split the scene. Different algorithms could be applied here, and the choice will result in a different binary tree.</li>
+<li>Convert the tree to a more compact pointerless representation for use during rendering to improve the efficiency.</li>
+</ol>
+<p>For those who just want to practice BVHs instead of using it in rendering, step 3 will be optional.</p>
+<p>The BVHs construction is implemented in </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BVHAccel::<span class="built_in">BHAccel</span>(std::vector&lt;std::shared_ptr&lt;Primitive&gt;&gt; p, <span class="type">int</span> maxPrimsInNode, SplitMethod splitMethod)</span><br></pre></td></tr></table></figure>
+<h2 id="Initialize-primitive-info-array"><a href="#Initialize-primitive-info-array" class="headerlink" title="Initialize primitive info array"></a>Initialize primitive info array</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">BVHPrimitiveInfo</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">BVHPrimitiveInfo</span>() &#123;&#125;</span><br><span class="line">    <span class="built_in">BVHPrimitiveInfo</span>(<span class="type">size_t</span> primitiveNumber, <span class="type">const</span> Bounds3f &amp;bounds)</span><br><span class="line">        : <span class="built_in">primitiveNumber</span>(primitiveNumber),</span><br><span class="line">          <span class="built_in">bounds</span>(bounds),</span><br><span class="line">          <span class="built_in">centroid</span>(<span class="number">.5</span>f * bounds.pMin + <span class="number">.5</span>f * bounds.pMax) &#123;&#125;</span><br><span class="line">    <span class="type">size_t</span> primitiveNumber;</span><br><span class="line">    Bounds3f bounds;</span><br><span class="line">    Point3f centroid;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>Besides bounding information, some additional information is precomputed and stored in the array to reduce the computing cost in traveling. The declaration above is a local struct in <code>accelerators/bvh.cpp</code>. The meaning of member variables is apparent like the centroid is the “midpoint” of the bounding box.</p>
+<p>The initialization code is straight-forward:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::vector&lt;BVHPrimitiveInfo&gt; <span class="title">primitiveInfo</span><span class="params">(primitives.size())</span></span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">size_t</span> i = <span class="number">0</span>; i &lt; primitives.<span class="built_in">size</span>(); ++i)</span><br><span class="line">    primitiveInfo[i] = &#123;i, primitives[i]-&gt;<span class="built_in">WorldBound</span>()&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>The <code>WorldBound()</code> method finally calls the one defined in <code>shape</code> and implemented in corresponding source files. Generally, it computes the bounding box first object coordinate and then applies a transform on it.</p>
+</blockquote>
+<h2 id="Build-BVH-tree"><a href="#Build-BVH-tree" class="headerlink" title="Build BVH tree"></a>Build BVH tree</h2><p>With the primitive information array, now we can build the BVH tree via different algorithms. PBRT-v3 implements 4 algorithms, which are defined as:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum class</span> <span class="title class_">SplitMethod</span></span><br><span class="line">&#123;</span><br><span class="line">    SAH,</span><br><span class="line">    HLBVH,</span><br><span class="line">    Middle,</span><br><span class="line">    EqualCounts</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>If the user choose <code>SplitMethod::HLBVH</code>, the engine will call <code>BVHAccel::HLBVHBuild</code> while calling <code>BVHAccel::recursiveBuild</code> for the others. I will introduce the differences between them later. Now let’s take a look at the general building pipeline first:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">MemoryArena <span class="title">arena</span><span class="params">(<span class="number">1024</span> * <span class="number">1024</span>)</span></span>;</span><br><span class="line"><span class="type">int</span> totalNodes = <span class="number">0</span>;</span><br><span class="line">std::vector&lt;std::shared_ptr&lt;Primitive&gt;&gt; orderedPrims;</span><br><span class="line">orderedPrims.<span class="built_in">reserve</span>(primitives.<span class="built_in">size</span>());</span><br><span class="line">BVHBuildNode *root;</span><br><span class="line"><span class="keyword">if</span> (splitMethod == SplitMethod::HLBVH)</span><br><span class="line">    root = <span class="built_in">HLBVHBuild</span>(arena, primitiveInfo, &amp;totalNodes, orderedPrims);</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    root = <span class="built_in">recursiveBuild</span>(arena, primitiveInfo, <span class="number">0</span>, primitives.<span class="built_in">size</span>(), &amp;totalNodes, orderedPrims);</span><br><span class="line">primitives.<span class="built_in">swap</span>(orderedPrims);</span><br><span class="line">primitiveInfo.<span class="built_in">resize</span>(<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+<p>The struct <code>BVHBuildNode</code> is a util class and it is declared as:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">BVHBuildNode</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">InitLeaf</span><span class="params">(<span class="type">int</span> first, <span class="type">int</span> n, <span class="type">const</span> Bounds3f &amp;b)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        firstPrimOffset = first;</span><br><span class="line">        nPrimitives = n;</span><br><span class="line">        bounds = b;</span><br><span class="line">        children[<span class="number">0</span>] = children[<span class="number">1</span>] = <span class="literal">nullptr</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">InitInterior</span><span class="params">(<span class="type">int</span> axis, BVHBuildNode *c0, BVHBuildNode *c1)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        children[<span class="number">0</span>] = c0;</span><br><span class="line">        children[<span class="number">1</span>] = c1;</span><br><span class="line">        bounds = <span class="built_in">Union</span>(c0-&gt;bounds, c1-&gt;bounds);</span><br><span class="line">        splitAxis = axis;</span><br><span class="line">        nPrimitives = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    Bounds3f bounds;</span><br><span class="line">    BVHBuildNode *children[<span class="number">2</span>];</span><br><span class="line">    <span class="type">int</span> splitAxis, firstPrimOffset, nPrimitives;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>It is similar to those <code>node</code> we often define in a binary tree. The only thing to notice I think is the difference operation applied to leaf and interior nodes. And we can see that all nodes of the BVH store a <code>bounds</code> variable to represent the bounding information.</p>
+<h3 id="Recursive-Build"><a href="#Recursive-Build" class="headerlink" title="Recursive Build"></a>Recursive Build</h3><p>The <code>BVHAccel::recursiveBuild</code> will construct a BVH with the primitives of the vector with index within <code>[start, end)</code>.  The main idea is:</p>
+<ol>
+<li><p>Allocate the memory. (Use <code>MemoryArena</code> here, or you can just simply use <code>new</code> operator)</p>
+</li>
+<li><p>Compute the bounds of all primitives in the BVH node.</p>
+<blockquote>
+<p>It is quite easy because you only need to union the bounds of all primitives belong to this node.</p>
+</blockquote>
+</li>
+<li><p>Determine how many primitives are contained in this node. If there’s only one, create a leaf node, or create an interior node for other conditions.</p>
+<blockquote>
+<p>(For creating a leaf node)</p>
+<p>Get the corresponding index of the primitive from the primitveInfo vector, and then store the reference to the primitive to orderdPrims.</p>
+</blockquote>
+</li>
+<li><p>While creating an interior node, use a specific algorithm to choose the split dimension that divides the sequence <code>[start ,end)</code> to <code>[start, mid) , [mid, end)</code>. After dividing, <strong>recursively call this function to build the children</strong>.</p>
+</li>
+</ol>
+<p>The main difference comes from the choice of dividing algorithm, there are $2^n - 2$ ways to partition n primitives into two non-empty groups. In practice when building BVHs, one generally considers partitions along a coordinate axis, meaning that there are about 6n candidate partitions. The implementation in PBRT-v3 chooses the axis associated with the largest extent when projecting the bounding box centroid for the current set of primitives.</p>
+<blockquote>
+<p>The general goal in partitioning here is to select a partition of primitives that doesn’t have too much overlap of the bounding boxes of the two resulting primitive sets—if there is substantial overlap then it will more frequently be necessary to traverse both children subtrees when traversing the tree</p>
+</blockquote>
+<p><img src="/2020/03/20/bvh/max_extent.png" alt></p>
+<blockquote>
+<p>The illustration explains what <strong>largest extent</strong> means.</p>
+</blockquote>
+<p>A special case is that all centroid points overlap and thus the centroid bounds have zero volume. In such a case, there is no effective splitting method and therefore just put all the primitives in one single leaf node.</p>
+<p>Now let’s move on the different splitting methods:</p>
+<ol>
+<li><p><code>SplitMethod::Middle</code>:  find a midpoint of the bounds centroid and then use it to divide the primitives into two sets by comparing the centroid with the midpoint. If the primitives all have large overlapping bounding boxes, this splitting method may fail to separate the primitives into two groups. In that case, execution falls through to the <code>SplitMethod::EqualCounts</code> approach to trying again.</p>
+<blockquote>
+<p>The preference of the strategies is why to use <code>switch</code> instead of <code>if else</code> here, we expect the <strong>fall through</strong> to happen.</p>
+</blockquote>
+</li>
+<li><p><code>SplitMethod::EqualCounts</code>: just easily divide the primitive to two $n/2$ subsets with <code>std::nth_element()</code>. But it fails in the situation (b) described below:<br><img src="/2020/03/20/bvh/nequal_fail.png" alt></p>
+<blockquote>
+<p><strong>Splitting Primitives Based on the Midpoint of Centroids on an Axis.</strong></p>
+<p>(a) For some distributions of primitives, such as the one shown here, splitting based on the midpoint of the centroids along the chosen axis works well. (The bounding boxes of the two resulting primitive groups are shown with dashed lines.) (b) For distributions like this one, the midpoint is a suboptimal choice; the two resulting bounding boxes overlap substantially. (c) If the same group of primitives from (b) is instead split along the line shown here, the resulting bounding boxes are smaller and don’t overlap at all, leading to better performance when rendering.</p>
+</blockquote>
+</li>
+<li><p><code>SplitMethod::SAH</code>: <strong>Surface Area Heuristic</strong>. It is the default splitting method because it provides a well-grounded cost model. The SAH model estimates the computational expense of performing ray intersection tests, including the time spent traversing nodes of the tree and the time spent on ray-primitive intersection tests for a particular partitioning of primitives. The main idea is dividing the bounds of the parent node to n (n = 8 here) buckets, and try a different ratio of buckets in two children then calculating the cost. Use the option with the lowest cost as the split point.</p>
+</li>
+</ol>
+<p>The corresponding source code is here. There is a comment at the beginning of each step, so it should be easy to understand now.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BVHBuildNode *<span class="title">BVHAccel::recursiveBuild</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    MemoryArena &amp;arena, std::vector&lt;BVHPrimitiveInfo&gt; &amp;primitiveInfo, <span class="type">int</span> start,</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="type">int</span> end, <span class="type">int</span> *totalNodes,</span></span></span><br><span class="line"><span class="params"><span class="function">    std::vector&lt;std::shared_ptr&lt;Primitive&gt;&gt; &amp;orderedPrims)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">CHECK_NE</span>(start, end);</span><br><span class="line">    BVHBuildNode *node = arena.<span class="built_in">Alloc</span>&lt;BVHBuildNode&gt;();</span><br><span class="line">    (*totalNodes)++;</span><br><span class="line">    <span class="comment">// Compute bounds of all primitives in BVH node</span></span><br><span class="line">    Bounds3f bounds;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = start; i &lt; end; ++i)</span><br><span class="line">        bounds = <span class="built_in">Union</span>(bounds, primitiveInfo[i].bounds);</span><br><span class="line">    <span class="type">int</span> nPrimitives = end - start;</span><br><span class="line">    <span class="keyword">if</span> (nPrimitives == <span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// Create leaf _BVHBuildNode_</span></span><br><span class="line">        <span class="type">int</span> firstPrimOffset = orderedPrims.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = start; i &lt; end; ++i)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="type">int</span> primNum = primitiveInfo[i].primitiveNumber;</span><br><span class="line">            orderedPrims.<span class="built_in">push_back</span>(primitives[primNum]);</span><br><span class="line">        &#125;</span><br><span class="line">        node-&gt;<span class="built_in">InitLeaf</span>(firstPrimOffset, nPrimitives, bounds);</span><br><span class="line">        <span class="keyword">return</span> node;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// Compute bound of primitive centroids, choose split dimension _dim_</span></span><br><span class="line">        Bounds3f centroidBounds;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = start; i &lt; end; ++i)</span><br><span class="line">            centroidBounds = <span class="built_in">Union</span>(centroidBounds, primitiveInfo[i].centroid);</span><br><span class="line">        <span class="type">int</span> dim = centroidBounds.<span class="built_in">MaximumExtent</span>();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Partition primitives into two sets and build children</span></span><br><span class="line">        <span class="type">int</span> mid = (start + end) / <span class="number">2</span>;</span><br><span class="line">        <span class="comment">// Special case: the centroid bounds have zero volume, then put all primitves in one leaf node.</span></span><br><span class="line">        <span class="keyword">if</span> (centroidBounds.pMax[dim] == centroidBounds.pMin[dim])</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// Create leaf _BVHBuildNode_</span></span><br><span class="line">            <span class="type">int</span> firstPrimOffset = orderedPrims.<span class="built_in">size</span>();</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> i = start; i &lt; end; ++i)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="type">int</span> primNum = primitiveInfo[i].primitiveNumber;</span><br><span class="line">                orderedPrims.<span class="built_in">push_back</span>(primitives[primNum]);</span><br><span class="line">            &#125;</span><br><span class="line">            node-&gt;<span class="built_in">InitLeaf</span>(firstPrimOffset, nPrimitives, bounds);</span><br><span class="line">            <span class="keyword">return</span> node;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// Partition primitives based on _splitMethod_</span></span><br><span class="line">            <span class="keyword">switch</span> (splitMethod)</span><br><span class="line">            &#123;</span><br><span class="line">            <span class="keyword">case</span> SplitMethod::Middle:</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// Partition primitives through node&#x27;s midpoint</span></span><br><span class="line">                Float pmid = (centroidBounds.pMin[dim] + centroidBounds.pMax[dim]) / <span class="number">2</span>;</span><br><span class="line">                BVHPrimitiveInfo *midPtr = std::<span class="built_in">partition</span>(</span><br><span class="line">                    &amp;primitiveInfo[start], &amp;primitiveInfo[end - <span class="number">1</span>] + <span class="number">1</span>,</span><br><span class="line">                    [dim, pmid](<span class="type">const</span> BVHPrimitiveInfo &amp;pi) &#123;</span><br><span class="line">                        <span class="keyword">return</span> pi.centroid[dim] &lt; pmid;</span><br><span class="line">                    &#125;);</span><br><span class="line">                mid = midPtr - &amp;primitiveInfo[<span class="number">0</span>];</span><br><span class="line">                <span class="comment">// For lots of prims with large overlapping bounding boxes, this</span></span><br><span class="line">                <span class="comment">// may fail to partition; in that case don&#x27;t break and fall</span></span><br><span class="line">                <span class="comment">// through</span></span><br><span class="line">                <span class="comment">// to EqualCounts.</span></span><br><span class="line">                <span class="keyword">if</span> (mid != start &amp;&amp; mid != end)</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">case</span> SplitMethod::EqualCounts:</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// Partition primitives into equally-sized subsets</span></span><br><span class="line">                mid = (start + end) / <span class="number">2</span>;</span><br><span class="line">                std::<span class="built_in">nth_element</span>(&amp;primitiveInfo[start], &amp;primitiveInfo[mid],</span><br><span class="line">                                 &amp;primitiveInfo[end - <span class="number">1</span>] + <span class="number">1</span>,</span><br><span class="line">                                 [dim](<span class="type">const</span> BVHPrimitiveInfo &amp;a,</span><br><span class="line">                                       <span class="type">const</span> BVHPrimitiveInfo &amp;b) &#123;</span><br><span class="line">                                     <span class="keyword">return</span> a.centroid[dim] &lt; b.centroid[dim];</span><br><span class="line">                                 &#125;);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">case</span> SplitMethod::SAH:</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// Partition primitives using approximate SAH</span></span><br><span class="line">                <span class="keyword">if</span> (nPrimitives &lt;= <span class="number">2</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="comment">// Partition primitives into equally-sized subsets</span></span><br><span class="line">                    mid = (start + end) / <span class="number">2</span>;</span><br><span class="line">                    std::<span class="built_in">nth_element</span>(&amp;primitiveInfo[start], &amp;primitiveInfo[mid],</span><br><span class="line">                                     &amp;primitiveInfo[end - <span class="number">1</span>] + <span class="number">1</span>,</span><br><span class="line">                                     [dim](<span class="type">const</span> BVHPrimitiveInfo &amp;a,</span><br><span class="line">                                           <span class="type">const</span> BVHPrimitiveInfo &amp;b) &#123;</span><br><span class="line">                                         <span class="keyword">return</span> a.centroid[dim] &lt;</span><br><span class="line">                                                b.centroid[dim];</span><br><span class="line">                                     &#125;);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="comment">// Allocate _BucketInfo_ for SAH partition buckets</span></span><br><span class="line">                    <span class="type">const</span> <span class="type">int</span> nBuckets = <span class="number">12</span>;</span><br><span class="line">                    BucketInfo buckets[nBuckets];</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// Initialize _BucketInfo_ for SAH partition buckets</span></span><br><span class="line">                    <span class="keyword">for</span> (<span class="type">int</span> i = start; i &lt; end; ++i)</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="type">int</span> b = nBuckets *</span><br><span class="line">                                centroidBounds.<span class="built_in">Offset</span>(</span><br><span class="line">                                    primitiveInfo[i].centroid)[dim];</span><br><span class="line">                        <span class="keyword">if</span> (b == nBuckets)</span><br><span class="line">                            b = nBuckets - <span class="number">1</span>;</span><br><span class="line">                        <span class="built_in">CHECK_GE</span>(b, <span class="number">0</span>);</span><br><span class="line">                        <span class="built_in">CHECK_LT</span>(b, nBuckets);</span><br><span class="line">                        buckets[b].count++;</span><br><span class="line">                        buckets[b].bounds =</span><br><span class="line">                            <span class="built_in">Union</span>(buckets[b].bounds, primitiveInfo[i].bounds);</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// Compute costs for splitting after each bucket</span></span><br><span class="line">                    Float cost[nBuckets - <span class="number">1</span>];</span><br><span class="line">                    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; nBuckets - <span class="number">1</span>; ++i)</span><br><span class="line">                    &#123;</span><br><span class="line">                        Bounds3f b0, b1;</span><br><span class="line">                        <span class="type">int</span> count0 = <span class="number">0</span>, count1 = <span class="number">0</span>;</span><br><span class="line">                        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt;= i; ++j)</span><br><span class="line">                        &#123;</span><br><span class="line">                            b0 = <span class="built_in">Union</span>(b0, buckets[j].bounds);</span><br><span class="line">                            count0 += buckets[j].count;</span><br><span class="line">                        &#125;</span><br><span class="line">                        <span class="keyword">for</span> (<span class="type">int</span> j = i + <span class="number">1</span>; j &lt; nBuckets; ++j)</span><br><span class="line">                        &#123;</span><br><span class="line">                            b1 = <span class="built_in">Union</span>(b1, buckets[j].bounds);</span><br><span class="line">                            count1 += buckets[j].count;</span><br><span class="line">                        &#125;</span><br><span class="line">                        cost[i] = <span class="number">1</span> +</span><br><span class="line">                                  (count0 * b0.<span class="built_in">SurfaceArea</span>() +</span><br><span class="line">                                   count1 * b1.<span class="built_in">SurfaceArea</span>()) /</span><br><span class="line">                                      bounds.<span class="built_in">SurfaceArea</span>();</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// Find bucket to split at that minimizes SAH metric</span></span><br><span class="line">                    Float minCost = cost[<span class="number">0</span>];</span><br><span class="line">                    <span class="type">int</span> minCostSplitBucket = <span class="number">0</span>;</span><br><span class="line">                    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; nBuckets - <span class="number">1</span>; ++i)</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="keyword">if</span> (cost[i] &lt; minCost)</span><br><span class="line">                        &#123;</span><br><span class="line">                            minCost = cost[i];</span><br><span class="line">                            minCostSplitBucket = i;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// Either create leaf or split primitives at selected SAH</span></span><br><span class="line">                    <span class="comment">// bucket</span></span><br><span class="line">                    Float leafCost = nPrimitives;</span><br><span class="line">                    <span class="keyword">if</span> (nPrimitives &gt; maxPrimsInNode || minCost &lt; leafCost)</span><br><span class="line">                    &#123;</span><br><span class="line">                        BVHPrimitiveInfo *pmid = std::<span class="built_in">partition</span>(</span><br><span class="line">                            &amp;primitiveInfo[start], &amp;primitiveInfo[end - <span class="number">1</span>] + <span class="number">1</span>,</span><br><span class="line">                            [=](<span class="type">const</span> BVHPrimitiveInfo &amp;pi) &#123;</span><br><span class="line">                                <span class="type">int</span> b = nBuckets *</span><br><span class="line">                                        centroidBounds.<span class="built_in">Offset</span>(pi.centroid)[dim];</span><br><span class="line">                                <span class="keyword">if</span> (b == nBuckets)</span><br><span class="line">                                    b = nBuckets - <span class="number">1</span>;</span><br><span class="line">                                <span class="built_in">CHECK_GE</span>(b, <span class="number">0</span>);</span><br><span class="line">                                <span class="built_in">CHECK_LT</span>(b, nBuckets);</span><br><span class="line">                                <span class="keyword">return</span> b &lt;= minCostSplitBucket;</span><br><span class="line">                            &#125;);</span><br><span class="line">                        mid = pmid - &amp;primitiveInfo[<span class="number">0</span>];</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">else</span></span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="comment">// Create leaf _BVHBuildNode_</span></span><br><span class="line">                        <span class="type">int</span> firstPrimOffset = orderedPrims.<span class="built_in">size</span>();</span><br><span class="line">                        <span class="keyword">for</span> (<span class="type">int</span> i = start; i &lt; end; ++i)</span><br><span class="line">                        &#123;</span><br><span class="line">                            <span class="type">int</span> primNum = primitiveInfo[i].primitiveNumber;</span><br><span class="line">                            orderedPrims.<span class="built_in">push_back</span>(primitives[primNum]);</span><br><span class="line">                        &#125;</span><br><span class="line">                        node-&gt;<span class="built_in">InitLeaf</span>(firstPrimOffset, nPrimitives, bounds);</span><br><span class="line">                        <span class="keyword">return</span> node;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            node-&gt;<span class="built_in">InitInterior</span>(dim,</span><br><span class="line">                               <span class="built_in">recursiveBuild</span>(arena, primitiveInfo, start, mid,</span><br><span class="line">                                              totalNodes, orderedPrims),</span><br><span class="line">                               <span class="built_in">recursiveBuild</span>(arena, primitiveInfo, mid, end,</span><br><span class="line">                                              totalNodes, orderedPrims));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> node;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Hierarchical-Linear-Bounding-Volume-Hierarchy-HLBVH"><a href="#Hierarchical-Linear-Bounding-Volume-Hierarchy-HLBVH" class="headerlink" title="Hierarchical Linear Bounding Volume Hierarchy (HLBVH)"></a>Hierarchical Linear Bounding Volume Hierarchy (HLBVH)</h3><p>Though SAH gives very good results, it is hard to parallelize, and many passes are taken over the primitives to compute the SAH costs. To address the problem, linear bounding volume hierarchies (LBVHs) were developed. It is much complicated than the methods I mentioned above, and it occupies many pages in the book. So that I plan to separate it to another post in the future to avoid putting too much content in this post. I think the construction methods mentioned above are enough for you to write your BVH, and you can read HLBVH if you want to improve it later.</p>
+<h2 id="Compact-BVH-for-Traversal"><a href="#Compact-BVH-for-Traversal" class="headerlink" title="Compact BVH for Traversal"></a>Compact BVH for Traversal</h2><p>Now we have a BVH binary tree. Though you can just use the pointer to visit the tree, I’m gonna introduce another way to make the BVH pointerless, which increases the system performance with better use of cache and memory.</p>
+<p><img src="/2020/03/20/bvh/linear_layout.png" alt></p>
+<blockquote>
+<p><strong>Linear Layout of a BVH in Memory</strong></p>
+<p>The nodes of the BVH (left) are stored in memory in depth-ﬁrst order (right). Therefore, for any interior node of the tree (A and B in this example), the ﬁrst child is found immediately after the parent node in memory. The second child is found via an offset pointer, represented here with lines with arrows. Leaf nodes of the tree (D, E, and C) have no children.</p>
+<p>(Illustration from PBRT-v3)</p>
+</blockquote>
+<p>The structure <code>LinearBVHNode</code> is introduced to flatten the tree.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">LinearBVHNode</span> &#123;</span><br><span class="line">    Bounds3f bounds;</span><br><span class="line">    <span class="keyword">union</span> &#123;</span><br><span class="line">        <span class="type">int</span> primitivesOffset;  <span class="comment">// leaf</span></span><br><span class="line">        <span class="type">int</span> secondChildOffset; <span class="comment">// interior</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="type">uint16_t</span> nPrimitives; <span class="comment">// 0 -&gt; interior node</span></span><br><span class="line">    <span class="type">uint8_t</span> axis;         <span class="comment">// interior node: xyz</span></span><br><span class="line">    <span class="type">uint8_t</span> pad[<span class="number">1</span>];       <span class="comment">// ensure 32 byte total size</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>This structure is padded to ensure that it’s 32 bytes large. Doing so ensures that, if the nodes are allocated such that the ﬁrst node is cache-line aligned, then none of the subsequent nodes will straddle cache lines (as long as the cache line size is at least 32 bytes, which is the case on modern CPU architectures).</p>
+</blockquote>
+<p>With the declaration of <code>LinearBVHNode</code>, we can allocate the memory needed at once.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nodes = <span class="built_in">AllocAligned</span>&lt;LinearBVHNode&gt;(totalNodes);</span><br><span class="line"><span class="type">int</span> offset = <span class="number">0</span>;</span><br><span class="line"><span class="built_in">flattenBVHTree</span>(root, &amp;offset);</span><br></pre></td></tr></table></figure>
+<p>Now let’s move on to <code>flattenBVHTree</code>. The function is quite straightforward that the <code>*offset</code> parameter tracks the current offset of the array. The flatten function processes recursively:</p>
+<ol>
+<li>Use the offset to get corresponding <code>LinearBVHNode</code> in the array, use <code>(*offset)++</code> to assure the offset is unique.</li>
+<li>For a leaf node, record the <code>node-&gt;firstPrimOffset</code> and <code>node-&gt;nPrimitives</code>.</li>
+<li>For an interior node, flatten its two children recursively, and record the offset returned by its second child. (As the first child must be immediately after the current node because of the operation <code>(*offset)++</code>) In addition to bounds information, you need to record which axis to split as well.</li>
+</ol>
+<p>Source code is a straightforward implementation of the three steps:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">BVHAccel::flattenBVHTree</span><span class="params">(BVHBuildNode *node, <span class="type">int</span> *offset)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    LinearBVHNode *linearNode = &amp;nodes[*offset];</span><br><span class="line">    linearNode-&gt;bounds = node-&gt;bounds;</span><br><span class="line">    <span class="type">int</span> myOffset = (*offset)++;</span><br><span class="line">    <span class="keyword">if</span> (node-&gt;nPrimitives &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        linearNode-&gt;primitivesOffset = node-&gt;firstPrimOffset;</span><br><span class="line">        linearNode-&gt;nPrimitives = node-&gt;nPrimitives;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// Create interior flattened BVH node</span></span><br><span class="line">        linearNode-&gt;axis = node-&gt;splitAxis;</span><br><span class="line">        linearNode-&gt;nPrimitives = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">flattenBVHTree</span>(node-&gt;children[<span class="number">0</span>], offset);</span><br><span class="line">        linearNode-&gt;secondChildOffset =</span><br><span class="line">            <span class="built_in">flattenBVHTree</span>(node-&gt;children[<span class="number">1</span>], offset);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> myOffset;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Traversal"><a href="#Traversal" class="headerlink" title="Traversal"></a>Traversal</h1><p>Ok, now we know how to construct and flatten a BVH tree! There’s only a question left to use the accelerator: how to test intersect with the BVH we constructed. In another word, how to traversal the binary tree?</p>
+<p>Recall what information we assign to each node during construction: split axis, bounds, primitive reference. And then we can start to look at how to test if a ray intersects with any primitives in the BVHs! The BVHAccel should receive a ray as a parameter as well as a pointer to a <code>SurfaceInteraction</code> instance. The intersection testing process can be described as:</p>
+<ol>
+<li><p>Receive a ray, starting from index 0 in the flattened node array.</p>
+</li>
+<li><p>Use a loop to access all nodes in the array. Check ray against each BVH node. Use the bounds information to test if the ray intersects. Suppose the ray hits the bounding box, then:</p>
+<ol>
+<li>If the node is a leaf node, just do the interaction test between the ray and the corresponding primitive.</li>
+<li>If the node is an interior node, put it in a stack to visit later.</li>
+</ol>
+<blockquote>
+<p>HINT: PBRT-v3 maintains an array here as a stack to avoid recursive function.</p>
+</blockquote>
+</li>
+<li><p>For an interior node, we need to visit both its children. As we want to visit the subtree more likely to be hit first, <code>dirIsNeg</code> is maintained. It is used to determine if the ray direction the same as we partition the volume in construction.</p>
+</li>
+</ol>
+<p>The related source code is below. <code>Intersect</code> records the interaction information while <code>IntersectP</code> just simply testing if the ray hit or not. The code of <code>IntersectP</code> is similar that it calls <code>Primitve::IntersectP</code> instead of  <code>Primitive::Intersect</code> here.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">BVHAccel::Intersect</span><span class="params">(<span class="type">const</span> Ray &amp;ray, SurfaceInteraction *isect)</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!nodes)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="type">bool</span> hit = <span class="literal">false</span>;</span><br><span class="line">    <span class="function">Vector3f <span class="title">invDir</span><span class="params">(<span class="number">1</span> / ray.d.x, <span class="number">1</span> / ray.d.y, <span class="number">1</span> / ray.d.z)</span></span>;</span><br><span class="line">    <span class="type">int</span> dirIsNeg[<span class="number">3</span>] = &#123;invDir.x &lt; <span class="number">0</span>, invDir.y &lt; <span class="number">0</span>, invDir.z &lt; <span class="number">0</span>&#125;;</span><br><span class="line">    <span class="comment">// Follow ray through BVH nodes to find primitive intersections</span></span><br><span class="line">    <span class="type">int</span> toVisitOffset = <span class="number">0</span>, currentNodeIndex = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> nodesToVisit[<span class="number">64</span>];</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">const</span> LinearBVHNode *node = &amp;nodes[currentNodeIndex];</span><br><span class="line">        <span class="comment">// Check ray against BVH node</span></span><br><span class="line">        <span class="keyword">if</span> (node-&gt;bounds.<span class="built_in">IntersectP</span>(ray, invDir, dirIsNeg))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (node-&gt;nPrimitives &gt; <span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// Intersect ray with primitives in leaf BVH node</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; node-&gt;nPrimitives; ++i)</span><br><span class="line">                    <span class="keyword">if</span> (primitives[node-&gt;primitivesOffset + i]-&gt;<span class="built_in">Intersect</span>(</span><br><span class="line">                            ray, isect))</span><br><span class="line">                        hit = <span class="literal">true</span>;</span><br><span class="line">                <span class="keyword">if</span> (toVisitOffset == <span class="number">0</span>)</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                currentNodeIndex = nodesToVisit[--toVisitOffset];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// Put far BVH node on _nodesToVisit_ stack, advance to near</span></span><br><span class="line">                <span class="comment">// node</span></span><br><span class="line">                <span class="keyword">if</span> (dirIsNeg[node-&gt;axis])</span><br><span class="line">                &#123;</span><br><span class="line">                    nodesToVisit[toVisitOffset++] = currentNodeIndex + <span class="number">1</span>;</span><br><span class="line">                    currentNodeIndex = node-&gt;secondChildOffset;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                &#123;</span><br><span class="line">                    nodesToVisit[toVisitOffset++] = node-&gt;secondChildOffset;</span><br><span class="line">                    currentNodeIndex = currentNodeIndex + <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (toVisitOffset == <span class="number">0</span>)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            currentNodeIndex = nodesToVisit[--toVisitOffset];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> hit;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>Hsuan-Wei Fan
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    <a href="https://hsuanwei.me/2020/03/20/bvh/" title="PBRT | Bounding Volume Hierarchies">https://hsuanwei.me/2020/03/20/bvh/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/pbrt/" rel="tag"># pbrt</a>
+              <a href="/tags/Graphics/" rel="tag"># Graphics</a>
+              <a href="/tags/Rendering/" rel="tag"># Rendering</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/12/06/pt/" rel="prev" title="Monte Carlo Path Tracing">
+      <i class="fa fa-chevron-left"></i> Monte Carlo Path Tracing
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/06/16/rust-some/" rel="next" title="Rust | What does "Some" mean?">
+      Rust | What does "Some" mean? <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Construction"><span class="nav-number">1.</span> <span class="nav-text">Construction</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Initialize-primitive-info-array"><span class="nav-number">1.1.</span> <span class="nav-text">Initialize primitive info array</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Build-BVH-tree"><span class="nav-number">1.2.</span> <span class="nav-text">Build BVH tree</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Recursive-Build"><span class="nav-number">1.2.1.</span> <span class="nav-text">Recursive Build</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hierarchical-Linear-Bounding-Volume-Hierarchy-HLBVH"><span class="nav-number">1.2.2.</span> <span class="nav-text">Hierarchical Linear Bounding Volume Hierarchy (HLBVH)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Compact-BVH-for-Traversal"><span class="nav-number">1.3.</span> <span class="nav-text">Compact BVH for Traversal</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Traversal"><span class="nav-number">2.</span> <span class="nav-text">Traversal</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hsuan-Wei Fan"
+      src="/uploads/we.JPG">
+  <p class="site-author-name" itemprop="name">Hsuan-Wei Fan</p>
+  <div class="site-description" itemprop="description">Working, reading, thinking, asking, feeling, loving, so living.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hsweif" title="GitHub → https://github.com/hsweif" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:f.hsuanwei@gmail.com" title="E-Mail → mailto:f.hsuanwei@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/profile.php?id=100003713956403" title="FB Page → https://www.facebook.com/profile.php?id=100003713956403" rel="noopener" target="_blank"><i class="fa fa-fw fa-facebook"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/hweiphotography" title="Instagram → https://instagram.com/hweiphotography" rel="noopener" target="_blank"><i class="fa fa-fw fa-instagram"></i>Instagram</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hsuan-Wei Fan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://alexfxw.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://hsuanwei.me/2020/03/20/bvh/";
+    this.page.identifier = "2020/03/20/bvh/";
+    this.page.title = "PBRT | Bounding Volume Hierarchies";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://alexfxw.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

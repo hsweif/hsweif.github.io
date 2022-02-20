@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en,zh-TW,default">
+<html lang="en,default">
 <head>
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 6.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -17,31 +17,31 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"blogs.hsuanwei.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"hsuanwei.me","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="图像融合是相当常见的图像处理场景，例如很多普通用户打开PS的主要目的就是图像合成。">
-<meta name="keywords" content="Image Processing">
 <meta property="og:type" content="article">
 <meta property="og:title" content="泊松图像编辑(Poisson Image Editing)">
-<meta property="og:url" content="https://blogs.hsuanwei.me/2019/04/14/PoissonEditing/index.html">
+<meta property="og:url" content="https://hsuanwei.me/2019/04/14/PoissonEditing/index.html">
 <meta property="og:site_name" content="HsweiFeed">
 <meta property="og:description" content="图像融合是相当常见的图像处理场景，例如很多普通用户打开PS的主要目的就是图像合成。">
-<meta property="og:locale" content="en">
-<meta property="og:image" content="https://blogs.hsuanwei.me/2019/04/14/PoissonEditing/border.png">
-<meta property="og:image" content="https://blogs.hsuanwei.me/2019/04/14/PoissonEditing/test1_src.jpg">
-<meta property="og:image" content="https://blogs.hsuanwei.me/2019/04/14/PoissonEditing/test1_target.jpg">
-<meta property="og:image" content="https://blogs.hsuanwei.me/2019/04/14/PoissonEditing/test1_result.jpg">
-<meta property="og:image" content="https://blogs.hsuanwei.me/2019/04/14/PoissonEditing/test2_src.png">
-<meta property="og:image" content="https://blogs.hsuanwei.me/2019/04/14/PoissonEditing/test2_target.png">
-<meta property="og:image" content="https://blogs.hsuanwei.me/2019/04/14/PoissonEditing/test2_result.png">
-<meta property="og:updated_time" content="2021-06-14T12:39:19.136Z">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://hsuanwei.me/2019/04/14/PoissonEditing/border.png">
+<meta property="og:image" content="https://hsuanwei.me/2019/04/14/PoissonEditing/test1_src.jpg">
+<meta property="og:image" content="https://hsuanwei.me/2019/04/14/PoissonEditing/test1_target.jpg">
+<meta property="og:image" content="https://hsuanwei.me/2019/04/14/PoissonEditing/test1_result.jpg">
+<meta property="og:image" content="https://hsuanwei.me/2019/04/14/PoissonEditing/test2_src.png">
+<meta property="og:image" content="https://hsuanwei.me/2019/04/14/PoissonEditing/test2_target.png">
+<meta property="og:image" content="https://hsuanwei.me/2019/04/14/PoissonEditing/test2_result.png">
+<meta property="article:published_time" content="2019-04-14T03:30:34.000Z">
+<meta property="article:modified_time" content="2021-06-14T12:39:19.136Z">
+<meta property="article:author" content="Hsuan-Wei Fan">
+<meta property="article:tag" content="Image Processing">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="泊松图像编辑(Poisson Image Editing)">
-<meta name="twitter:description" content="图像融合是相当常见的图像处理场景，例如很多普通用户打开PS的主要目的就是图像合成。">
-<meta name="twitter:image" content="https://blogs.hsuanwei.me/2019/04/14/PoissonEditing/border.png">
+<meta name="twitter:image" content="https://hsuanwei.me/2019/04/14/PoissonEditing/border.png">
 
-<link rel="canonical" href="https://blogs.hsuanwei.me/2019/04/14/PoissonEditing/">
+<link rel="canonical" href="https://hsuanwei.me/2019/04/14/PoissonEditing/">
 
 
 <script id="page-configurations">
@@ -85,10 +85,14 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -171,12 +175,12 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://blogs.hsuanwei.me/2019/04/14/PoissonEditing/">
+    <link itemprop="mainEntityOfPage" href="https://hsuanwei.me/2019/04/14/PoissonEditing/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/we.JPG">
       <meta itemprop="name" content="Hsuan-Wei Fan">
-      <meta itemprop="description" content="B.E in Tsinghua CST, Beijing.<br>Lives in Taiwan.<br>Interested in VR/MR and CG.<br>Coding and thinking.">
+      <meta itemprop="description" content="Working, reading, thinking, asking, feeling, loving, so living.">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -214,13 +218,6 @@
             </span>
 
           
-            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">Views: </span>
-              <span id="busuanzi_value_page_pv"></span>
-            </span>
   
   <span class="post-meta-item">
     
@@ -245,8 +242,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>图像融合是相当常见的图像处理场景，例如很多普通用户打开PS的主要目的就是图像合成。<br><a id="more"></a><br>图像融合的效果可以从两个方向来评价：</p>
-<ol>
+        <p>图像融合是相当常见的图像处理场景，例如很多普通用户打开PS的主要目的就是图像合成。 <span id="more"></span> 图像融合的效果可以从两个方向来评价：</p>
+<ol type="1">
 <li>边界的标记难度</li>
 <li>合成结果的效果</li>
 </ol>
@@ -255,79 +252,102 @@
 <blockquote>
 <p>相关论文: Perez, P., Gangnet, M., &amp; Blake, A. (2003). Poisson Image Editing. ACM SIGGRAPH 2003.</p>
 </blockquote>
-<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>科学家发现人类的视觉对局部对比度变化的敏感度远高于对整体亮度变化的敏感度，因此我们可以让两幅图像在融合边界处完全一致，但在保持区域内部的梯度调整图像整体的亮度/颜色。为了完成这件事，首先我们得要描述”边界“，以下给出论文中对边界的定义：</p>
-<p><img src="/2019/04/14/PoissonEditing/border.png" alt="Border"></p>
+<h2 id="原理">原理</h2>
+<p>科学家发现人类的视觉对局部对比度变化的敏感度远高于对整体亮度变化的敏感度，因此我们可以让两幅图像在融合边界处完全一致，但在保持区域内部的梯度调整图像整体的亮度/颜色。为了完成这件事，首先我们得要描述”边界“，以下给出论文中对边界的定义：</p>
+<figure>
+<img src="/2019/04/14/PoissonEditing/border.png" alt="Border"><figcaption aria-hidden="true">Border</figcaption>
+</figure>
 <blockquote>
 <p>由于MathJax渲染行间公式的某种神秘力量，成对的星号的优先级似乎高于数学公式标记，所以以下行文或以F代替f星，避免渲染问题。</p>
 </blockquote>
-<p>g是原图像，S是目标图像，图像融合就是将g插入到S中的区域 $\Omega$，边界为$\partial \Omega$。目标图像的像素值和像素位置的关系可以用函数$F$来描述。而合成后的图像在区域里的像素值和像素位置的关系则用函数f来描述。因此这里的$g, S, \Omega , \partial \Omega, F$等是已知量，唯有f是待求解的函数（即插入后的图像），这个关系相当直观。</p>
+<p>g是原图像，S是目标图像，图像融合就是将g插入到S中的区域 <span class="math inline">\(\Omega\)</span>，边界为<span class="math inline">\(\partial \Omega\)</span>。目标图像的像素值和像素位置的关系可以用函数<span class="math inline">\(F\)</span>来描述。而合成后的图像在区域里的像素值和像素位置的关系则用函数f来描述。因此这里的<span class="math inline">\(g, S, \Omega , \partial \Omega, F\)</span>等是已知量，唯有f是待求解的函数（即插入后的图像），这个关系相当直观。</p>
 <p>但是，怎么得到目标函数f呢？</p>
-<p>首先基于上面说的原理，边界处过渡得自然的目标相当于让$f, f^*​$在$\partial \Omega​$上的值相同。论文中给出了数学式描述：</p>
-<script type="math/tex; mode=display">
-\min \limits_f\iint \limits_\Omega |\nabla f -v|^2,\ with\ f|_{\partial \Omega} = f^*|_{\partial \Omega}</script><p>而v 在论文中称为<strong>引导向量场(guidance field)</strong>，在图像融合的问题里其就是原图像g的梯度，这个定义的合理性在于梯度往往可以描述图中信息量大的边界处（例如基于显著性的Seam Removing便是采用梯度寻找边界）。<strong>目标图像可以根据源图像的梯度信息在融合的边界处”生长”出源图像</strong>，于Alpha Blending之类的方法相比其并非简单地直接模糊过渡，而是将源图像变化趋势融入目标图像的对应部分，所以效果更为自然。</p>
-<p>回来看看上述的变分方程，其意味着在边界和目标图像$f^*$的梯度一致的条件下，寻找在$\Omega$的区域内梯度与源图像$g$梯度差最小的函数$f$。</p>
-<p>论文里给出这个方程的解即为以下泊松方程在Dirichlet边界条件的解：$\triangle f = div\ v \ over\  \Omega,\ with\  f|<em>{\partial \Omega} = f^*|</em>{\partial \Omega}​$。由于：</p>
-<script type="math/tex; mode=display">
+<p>首先基于上面说的原理，边界处过渡得自然的目标相当于让<span class="math inline">\(f, f^*​\)</span>在<span class="math inline">\(\partial \Omega​\)</span>上的值相同。论文中给出了数学式描述： <span class="math display">\[
+\min \limits_f\iint \limits_\Omega |\nabla f -v|^2,\ with\ f|_{\partial \Omega} = f^*|_{\partial \Omega}
+\]</span> 而v 在论文中称为<strong>引导向量场(guidance field)</strong>，在图像融合的问题里其就是原图像g的梯度，这个定义的合理性在于梯度往往可以描述图中信息量大的边界处（例如基于显著性的Seam Removing便是采用梯度寻找边界）。<strong>目标图像可以根据源图像的梯度信息在融合的边界处"生长"出源图像</strong>，于Alpha Blending之类的方法相比其并非简单地直接模糊过渡，而是将源图像变化趋势融入目标图像的对应部分，所以效果更为自然。</p>
+<p>回来看看上述的变分方程，其意味着在边界和目标图像<span class="math inline">\(f^*\)</span>的梯度一致的条件下，寻找在<span class="math inline">\(\Omega\)</span>的区域内梯度与源图像<span class="math inline">\(g\)</span>梯度差最小的函数<span class="math inline">\(f\)</span>。</p>
+<p>论文里给出这个方程的解即为以下泊松方程在Dirichlet边界条件的解：<span class="math inline">\(\triangle f = div\ v \ over\  \Omega,\ with\  f|_{\partial \Omega} = f^*|_{\partial \Omega}​\)</span>。由于： <span class="math display">\[
 div\ v = \partial u/\partial x + \partial v/\partial y 
 = \partial^2 g/\partial x^2 + \partial^2 g/\partial y^2 
-= \triangle g</script><p><strong>所以核心公式可以写作：$\triangle f =\triangle g \ over\ \Omega,\ with\ f|<em>{\partial \Omega} = f^*|</em>{\partial \Omega}$</strong></p>
-<p>从图像处理的角度相当于f和g的每个像素的Laplace算子作用一致：$\triangle f_p = \triangle g_p$。Laplace算子即二阶梯度，在像素处理中可以定义为：</p>
-<script type="math/tex; mode=display">
-|\triangle P_(x,y)| = 4P(x,y) - P(x-1,y) - P(x+1,y) - P(x, y-1) - P(x, y+1)</script><p>即(x,y)处像素取值与4个相邻像素的差之和。</p>
-<h3 id="Discrete-Poisson-solver"><a href="#Discrete-Poisson-solver" class="headerlink" title="Discrete Poisson solver"></a>Discrete Poisson solver</h3><p>上面我们知道了Laplace算子的离散定义方法，接下来说明如何进一步地求解离散泊松方程。</p>
-<p>论文里给出了前面所述约束的离散化形式</p>
-<script type="math/tex; mode=display">
-for\ all\ p\in\Omega,\ |N_p|f_p - \sum\limits_{q\in N_p\cap\Omega}f_q = \sum\limits_{q\in N_p\cap \partial\Omega}f_q^* + \sum\limits_{q\in N_p}v_{pq}</script><blockquote>
+= \triangle g
+\]</span> <strong>所以核心公式可以写作：<span class="math inline">\(\triangle f =\triangle g \ over\ \Omega,\ with\ f|_{\partial \Omega} = f^*|_{\partial \Omega}\)</span></strong></p>
+<p>从图像处理的角度相当于f和g的每个像素的Laplace算子作用一致：<span class="math inline">\(\triangle f_p = \triangle g_p\)</span>。Laplace算子即二阶梯度，在像素处理中可以定义为： <span class="math display">\[
+|\triangle P_(x,y)| = 4P(x,y) - P(x-1,y) - P(x+1,y) - P(x, y-1) - P(x, y+1)
+\]</span> 即(x,y)处像素取值与4个相邻像素的差之和。</p>
+<h3 id="discrete-poisson-solver">Discrete Poisson solver</h3>
+<p>上面我们知道了Laplace算子的离散定义方法，接下来说明如何进一步地求解离散泊松方程。</p>
+<p>论文里给出了前面所述约束的离散化形式 <span class="math display">\[
+for\ all\ p\in\Omega,\ |N_p|f_p - \sum\limits_{q\in N_p\cap\Omega}f_q = \sum\limits_{q\in N_p\cap \partial\Omega}f_q^* + \sum\limits_{q\in N_p}v_{pq}
+\]</span></p>
+<blockquote>
 <p>p 为某像素，q为其邻居。式子右侧第一项可以看到，对于边界处的像素直接选取目标图像的函数做计算即可（因为边界约束）</p>
 </blockquote>
-<p>整理成以下形式：</p>
-<script type="math/tex; mode=display">
-for\ all\ p\in\Omega,\ |N_p|f_p - \sum\limits_{q\in N_p\cap\Omega}f_q - \sum\limits_{q\in N_p\cap \partial\Omega}f_q^* = \sum\limits_{q\in N_p}v_{pq}</script><blockquote>
-<p>其中$f^*$是已知部分，$f$是待求的未知函数，$N<em>p$为p的邻居像素，$v</em>{pq}$是已知的相邻像素间的差。</p>
+<p>整理成以下形式： <span class="math display">\[
+for\ all\ p\in\Omega,\ |N_p|f_p - \sum\limits_{q\in N_p\cap\Omega}f_q - \sum\limits_{q\in N_p\cap \partial\Omega}f_q^* = \sum\limits_{q\in N_p}v_{pq}
+\]</span></p>
+<blockquote>
+<p>其中<span class="math inline">\(f^*\)</span>是已知部分，<span class="math inline">\(f\)</span>是待求的未知函数，<span class="math inline">\(N_p\)</span>为p的邻居像素，<span class="math inline">\(v_{pq}\)</span>是已知的相邻像素间的差。</p>
 </blockquote>
-<p>整理完的好处是可以将上式转换成矩阵求解问题，例如把未知区域的$f$看作是未知数x，式子左侧求二阶梯度的矩阵看作是$n*n$的矩阵A（n是待填充的像素数量），已知的源图像的引导向量（二阶梯度）表示为n维向量，则原问题转化为求解$Ax = b$的未知量x。</p>
+<p>整理完的好处是可以将上式转换成矩阵求解问题，例如把未知区域的<span class="math inline">\(f\)</span>看作是未知数x，式子左侧求二阶梯度的矩阵看作是<span class="math inline">\(n*n\)</span>的矩阵A（n是待填充的像素数量），已知的源图像的引导向量（二阶梯度）表示为n维向量，则原问题转化为求解<span class="math inline">\(Ax = b\)</span>的未知量x。</p>
 <p>实际上论文就指出了A是一个稀疏对称正定矩阵，作者使用了Gauss-Seidel迭代求解，但其并未给出该矩阵内容。如果要复现论文结果，显然我们得要进一步推导矩阵形式才能迭代。</p>
 <p>由我们对Laplace算子的理解，其实不难发现其与相邻像素的系数关系应为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">  -1</span><br><span class="line">-1 4 -1</span><br><span class="line">  -1</span><br></pre></td></tr></table></figure>
-<p>由于$x$是像素函数向量，A矩阵应为对角元为4的稀疏矩阵，每一行有小于$|N_p|$个非零元-1，零元对应不属于$\Omega \cup \partial \Omega$的像素，而对于处于目标图像$S$边界的像素p而言，$|N_p| &lt; 4$。至此，我们知道了构造矩阵A的方法，并且已知引导向量b，则可以采取适当的迭代法求解未知量$x$——目标图像中待填充区块的像素值。</p>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>基于上述的原理，可以梳理需要实现的功能有：</p>
-<ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">  -1</span><br><span class="line">-1 4 -1</span><br><span class="line">  -1</span><br></pre></td></tr></table></figure>
+<p>由于<span class="math inline">\(x\)</span>是像素函数向量，A矩阵应为对角元为4的稀疏矩阵，每一行有小于<span class="math inline">\(|N_p|\)</span>个非零元-1，零元对应不属于<span class="math inline">\(\Omega \cup \partial \Omega\)</span>的像素，而对于处于目标图像<span class="math inline">\(S\)</span>边界的像素p而言，<span class="math inline">\(|N_p| &lt; 4\)</span>。至此，我们知道了构造矩阵A的方法，并且已知引导向量b，则可以采取适当的迭代法求解未知量<span class="math inline">\(x\)</span>——目标图像中待填充区块的像素值。</p>
+<h2 id="实现">实现</h2>
+<p>基于上述的原理，可以梳理需要实现的功能有：</p>
+<ol type="1">
 <li>读取源图像、目标图像、遮罩图像</li>
 <li>调整遮罩和源图像在目标图像的位置</li>
-<li>根据遮罩判断源/目标图像的某个像素是否属于$\Omega \cup \partial\Omega$</li>
+<li>根据遮罩判断源/目标图像的某个像素是否属于<span class="math inline">\(\Omega \cup \partial\Omega\)</span></li>
 <li>求解某个像素应用Laplace算子后的结果，由此可以得到引导向量b。</li>
-<li>构造变换矩阵A并求解$Ax = b$。</li>
+<li>构造变换矩阵A并求解<span class="math inline">\(Ax = b\)</span>。</li>
 </ol>
 <p>按照这个思路可以编写相关代码，这里我选用Python实现，相关的库有OpenCV(基本的IO功能)、numpy以及Scipy(稀疏矩阵的存储以及求解)、</p>
-<h3 id="图像IO"><a href="#图像IO" class="headerlink" title="图像IO"></a>图像IO</h3><p>使用<code>cv2.imread()</code>将源图像读入，获得一个(height <em> width </em> channels)的张量。</p>
-<h3 id="遮罩位置调整"><a href="#遮罩位置调整" class="headerlink" title="遮罩位置调整"></a>遮罩位置调整</h3><p>在原始数据中，源图像以及遮罩的长宽是一致的，需要实现让遮罩可以在目标图像中自由调整位置的功能，我用一个二维参数offset来表示这种偏移，将源/遮罩先resize到和目标图像一样大小，偏移mask的位置之后使用新的mask和源文件。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">shiftMask</span><span class="params">(src, target, mask, offset=<span class="params">(<span class="number">0</span>,<span class="number">0</span>)</span>)</span>:</span></span><br><span class="line">    off_h, off_w = offset</span><br><span class="line">    height = src.shape[<span class="number">0</span>]</span><br><span class="line">    width = src.shape[<span class="number">1</span>]</span><br><span class="line">    new_src = np.zeros(target.shape)</span><br><span class="line">    new_mask = np.zeros(target.shape)</span><br><span class="line">    new_mask = new_mask[:,:,<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">for</span> h <span class="keyword">in</span> range(<span class="number">0</span>, height):</span><br><span class="line">        <span class="keyword">for</span> w <span class="keyword">in</span> range(<span class="number">0</span>, width):</span><br><span class="line">            x = h + off_h</span><br><span class="line">            y = w + off_w</span><br><span class="line">            <span class="keyword">if</span> x &lt; target.shape[<span class="number">0</span>] <span class="keyword">and</span> y &lt; target.shape[<span class="number">1</span>] <span class="keyword">and</span> x &gt;= <span class="number">0</span> <span class="keyword">and</span> y &gt;= <span class="number">0</span>:</span><br><span class="line">                new_src[x,y,:] = src[h,w,:]</span><br><span class="line">                new_mask[x,y] = mask[h,w]</span><br><span class="line">    <span class="keyword">return</span> new_src, new_mask</span><br></pre></td></tr></table></figure>
-<h3 id="判断像素位置"><a href="#判断像素位置" class="headerlink" title="判断像素位置"></a>判断像素位置</h3><p>判断算法的核心思路为：</p>
-<ol>
-<li>若 pixel(x, y) 在mask的区域里，则其属于$\Omega$。</li>
-<li>若 pixel(x, y) 属于$\Omega$，但是其邻居像素存在不属于$\Omega$的情形，则pixel(x,y)属于$\partial\Omega$。</li>
+<h3 id="图像io">图像IO</h3>
+<p>使用<code>cv2.imread()</code>将源图像读入，获得一个(height * width * channels)的张量。</p>
+<h3 id="遮罩位置调整">遮罩位置调整</h3>
+<p>在原始数据中，源图像以及遮罩的长宽是一致的，需要实现让遮罩可以在目标图像中自由调整位置的功能，我用一个二维参数offset来表示这种偏移，将源/遮罩先resize到和目标图像一样大小，偏移mask的位置之后使用新的mask和源文件。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">shiftMask</span>(<span class="params">src, target, mask, offset=(<span class="params"><span class="number">0</span>,<span class="number">0</span></span>)</span>):</span><br><span class="line">    off_h, off_w = offset</span><br><span class="line">    height = src.shape[<span class="number">0</span>]</span><br><span class="line">    width = src.shape[<span class="number">1</span>]</span><br><span class="line">    new_src = np.zeros(target.shape)</span><br><span class="line">    new_mask = np.zeros(target.shape)</span><br><span class="line">    new_mask = new_mask[:,:,<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">for</span> h <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, height):</span><br><span class="line">        <span class="keyword">for</span> w <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, width):</span><br><span class="line">            x = h + off_h</span><br><span class="line">            y = w + off_w</span><br><span class="line">            <span class="keyword">if</span> x &lt; target.shape[<span class="number">0</span>] <span class="keyword">and</span> y &lt; target.shape[<span class="number">1</span>] <span class="keyword">and</span> x &gt;= <span class="number">0</span> <span class="keyword">and</span> y &gt;= <span class="number">0</span>:</span><br><span class="line">                new_src[x,y,:] = src[h,w,:]</span><br><span class="line">                new_mask[x,y] = mask[h,w]</span><br><span class="line">    <span class="keyword">return</span> new_src, new_mask</span><br></pre></td></tr></table></figure>
+<h3 id="判断像素位置">判断像素位置</h3>
+<p>判断算法的核心思路为：</p>
+<ol type="1">
+<li>若 pixel(x, y) 在mask的区域里，则其属于<span class="math inline">\(\Omega\)</span>。</li>
+<li>若 pixel(x, y) 属于<span class="math inline">\(\Omega\)</span>，但是其邻居像素存在不属于<span class="math inline">\(\Omega\)</span>的情形，则pixel(x,y)属于<span class="math inline">\(\partial\Omega\)</span>。</li>
 <li>除此之外，其不属于需要融合的区域。</li>
 </ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_neighbor</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> [(x<span class="number">-1</span>, y), (x+<span class="number">1</span>, y), (x, y<span class="number">-1</span>), (x, y+<span class="number">1</span>)]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">in_omega</span><span class="params">(x, y, mask)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> mask[x, y] != <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">on_border</span><span class="params">(x, y, mask)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> in_omega(x, y, mask) == <span class="literal">False</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">for</span> i, j <span class="keyword">in</span> get_neighbor(x, y):</span><br><span class="line">        <span class="keyword">if</span> in_omega(i, j, mask) == <span class="literal">False</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pixel_belong</span><span class="params">(x, y, mask)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> in_omega(x, y, mask) == <span class="literal">False</span>:</span><br><span class="line">        <span class="keyword">return</span> OUTSIDE </span><br><span class="line">    <span class="keyword">elif</span> on_border(x, y, mask):</span><br><span class="line">        <span class="keyword">return</span> BORDER</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> OMEGA</span><br></pre></td></tr></table></figure>
-<h3 id="Laplace-算子"><a href="#Laplace-算子" class="headerlink" title="Laplace 算子"></a>Laplace 算子</h3><p>根据Laplace算子的矩阵形式，可以很容易地写出以下函数，为了实现简单，<strong>对于$\partial\Omega$ 的情形我们在其他地方判断</strong>，此处假定四周用来计算梯度的函数都是源图像$f$。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">laplace_pixel</span><span class="params">(img, x, y)</span>:</span></span><br><span class="line">    value = <span class="number">4</span>*img[x,y]</span><br><span class="line">    <span class="keyword">for</span> i, j <span class="keyword">in</span> get_neighbor(x, y):</span><br><span class="line">        value = value - img[i, j]</span><br><span class="line">    <span class="keyword">return</span> value</span><br></pre></td></tr></table></figure>
-<h3 id="获取mask区域内的像素"><a href="#获取mask区域内的像素" class="headerlink" title="获取mask区域内的像素"></a>获取mask区域内的像素</h3><p>由于b的长度是mask内像素数量，因此编写一个辅助函数得的所有mask内的像素点的坐标，将其存入一个数组中。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_fpoints</span><span class="params">(mask)</span>:</span></span><br><span class="line">    f_points = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, mask.shape[<span class="number">0</span>]):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>, mask.shape[<span class="number">1</span>]):</span><br><span class="line">            <span class="keyword">if</span> in_omega(i, j, mask):</span><br><span class="line">                f_points.append((i, j))</span><br><span class="line">    <span class="keyword">return</span> f_points</span><br></pre></td></tr></table></figure>
-<h3 id="构造转换矩阵A以及引导向量b"><a href="#构造转换矩阵A以及引导向量b" class="headerlink" title="构造转换矩阵A以及引导向量b"></a>构造转换矩阵A以及引导向量b</h3><p>依照着上述的思路，可以实现以下代码。由于A是一个高度稀疏的矩阵，所以不采用np.array而是使用Scipy.sparse中的稀疏矩阵来存储，考虑到增量添加元素的过程，使用lil_matrix，构造完A和b后，用Scipy.sparse里的线性代数求解器即可得到解x。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">poisson_matrix</span><span class="params">(f_points)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    Construct a poisson matrix with non zero points in mask (fpoints).</span></span><br><span class="line"><span class="string">    Considered the sparsity of the matrix (at most 5 non zero element per row),</span></span><br><span class="line"><span class="string">    use lil_matrix in scipy.sparse rather than np.array </span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    N = len(f_points)</span><br><span class="line">    A = lil_matrix((N,N))</span><br><span class="line">    <span class="keyword">for</span> index <span class="keyword">in</span> range(<span class="number">0</span>, N):</span><br><span class="line">        A[index,index] = <span class="number">4</span></span><br><span class="line">        x, y = f_points[index]</span><br><span class="line">        <span class="keyword">for</span> pt <span class="keyword">in</span> get_neighbor(x, y):</span><br><span class="line">            <span class="keyword">if</span> pt <span class="keyword">not</span> <span class="keyword">in</span> f_points:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                A[index, f_points.index(pt)] = <span class="number">-1</span></span><br><span class="line">    <span class="keyword">return</span> A</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">solve_equation</span><span class="params">(src, target, mask)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    This function is used to solve Ax = b equation.</span></span><br><span class="line"><span class="string">    Use linalq in scipy.sparse to get the inverse of a sparse matrix.</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    f_points = get_fpoints(mask)</span><br><span class="line">    N = len(f_points)</span><br><span class="line">    b = np.zeros(N)</span><br><span class="line">    A = poisson_matrix(f_points)</span><br><span class="line">    <span class="keyword">for</span> index <span class="keyword">in</span> range(<span class="number">0</span>, N):</span><br><span class="line">        x, y = f_points[index]</span><br><span class="line">        b[index] = laplace_pixel(src, x, y)</span><br><span class="line">        <span class="comment"># ensure the border condition that the gradiant of f and f* is the same</span></span><br><span class="line">        <span class="keyword">if</span> pixel_belong(x, y, mask) == BORDER:</span><br><span class="line">            <span class="keyword">for</span> i, j <span class="keyword">in</span> get_neighbor(x, y):</span><br><span class="line">                <span class="keyword">if</span> in_omega(i, j, mask) == <span class="literal">False</span>:</span><br><span class="line">                    b[index] += target[i, j]</span><br><span class="line">    A = A.asformat(<span class="string">"csr"</span>)</span><br><span class="line">    x_ans = linalg.spsolve(A, b)</span><br><span class="line">    result = np.copy(target).astype(int)</span><br><span class="line">    <span class="keyword">for</span> index <span class="keyword">in</span> range(<span class="number">0</span>, N):</span><br><span class="line">        x, y = f_points[index]</span><br><span class="line">        result[x, y] = x_ans[index]</span><br><span class="line">    print(x_ans)</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_neighbor</span>(<span class="params">x, y</span>):</span><br><span class="line">    <span class="keyword">return</span> [(x-<span class="number">1</span>, y), (x+<span class="number">1</span>, y), (x, y-<span class="number">1</span>), (x, y+<span class="number">1</span>)]</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">in_omega</span>(<span class="params">x, y, mask</span>):</span><br><span class="line">    <span class="keyword">if</span> mask[x, y] != <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">on_border</span>(<span class="params">x, y, mask</span>):</span><br><span class="line">    <span class="keyword">if</span> in_omega(x, y, mask) == <span class="literal">False</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">for</span> i, j <span class="keyword">in</span> get_neighbor(x, y):</span><br><span class="line">        <span class="keyword">if</span> in_omega(i, j, mask) == <span class="literal">False</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">pixel_belong</span>(<span class="params">x, y, mask</span>):</span><br><span class="line">    <span class="keyword">if</span> in_omega(x, y, mask) == <span class="literal">False</span>:</span><br><span class="line">        <span class="keyword">return</span> OUTSIDE </span><br><span class="line">    <span class="keyword">elif</span> on_border(x, y, mask):</span><br><span class="line">        <span class="keyword">return</span> BORDER</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> OMEGA</span><br></pre></td></tr></table></figure>
+<h3 id="laplace-算子">Laplace 算子</h3>
+<p>根据Laplace算子的矩阵形式，可以很容易地写出以下函数，为了实现简单，<strong>对于<span class="math inline">\(\partial\Omega\)</span> 的情形我们在其他地方判断</strong>，此处假定四周用来计算梯度的函数都是源图像<span class="math inline">\(f\)</span>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">laplace_pixel</span>(<span class="params">img, x, y</span>):</span><br><span class="line">    value = <span class="number">4</span>*img[x,y]</span><br><span class="line">    <span class="keyword">for</span> i, j <span class="keyword">in</span> get_neighbor(x, y):</span><br><span class="line">        value = value - img[i, j]</span><br><span class="line">    <span class="keyword">return</span> value</span><br></pre></td></tr></table></figure>
+<h3 id="获取mask区域内的像素">获取mask区域内的像素</h3>
+<p>由于b的长度是mask内像素数量，因此编写一个辅助函数得的所有mask内的像素点的坐标，将其存入一个数组中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_fpoints</span>(<span class="params">mask</span>):</span><br><span class="line">    f_points = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, mask.shape[<span class="number">0</span>]):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, mask.shape[<span class="number">1</span>]):</span><br><span class="line">            <span class="keyword">if</span> in_omega(i, j, mask):</span><br><span class="line">                f_points.append((i, j))</span><br><span class="line">    <span class="keyword">return</span> f_points</span><br></pre></td></tr></table></figure>
+<h3 id="构造转换矩阵a以及引导向量b">构造转换矩阵A以及引导向量b</h3>
+<p>依照着上述的思路，可以实现以下代码。由于A是一个高度稀疏的矩阵，所以不采用np.array而是使用Scipy.sparse中的稀疏矩阵来存储，考虑到增量添加元素的过程，使用lil_matrix，构造完A和b后，用Scipy.sparse里的线性代数求解器即可得到解x。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">poisson_matrix</span>(<span class="params">f_points</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    Construct a poisson matrix with non zero points in mask (fpoints).</span></span><br><span class="line"><span class="string">    Considered the sparsity of the matrix (at most 5 non zero element per row),</span></span><br><span class="line"><span class="string">    use lil_matrix in scipy.sparse rather than np.array </span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    N = <span class="built_in">len</span>(f_points)</span><br><span class="line">    A = lil_matrix((N,N))</span><br><span class="line">    <span class="keyword">for</span> index <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, N):</span><br><span class="line">        A[index,index] = <span class="number">4</span></span><br><span class="line">        x, y = f_points[index]</span><br><span class="line">        <span class="keyword">for</span> pt <span class="keyword">in</span> get_neighbor(x, y):</span><br><span class="line">            <span class="keyword">if</span> pt <span class="keyword">not</span> <span class="keyword">in</span> f_points:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                A[index, f_points.index(pt)] = -<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> A</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">solve_equation</span>(<span class="params">src, target, mask</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    This function is used to solve Ax = b equation.</span></span><br><span class="line"><span class="string">    Use linalq in scipy.sparse to get the inverse of a sparse matrix.</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    f_points = get_fpoints(mask)</span><br><span class="line">    N = <span class="built_in">len</span>(f_points)</span><br><span class="line">    b = np.zeros(N)</span><br><span class="line">    A = poisson_matrix(f_points)</span><br><span class="line">    <span class="keyword">for</span> index <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, N):</span><br><span class="line">        x, y = f_points[index]</span><br><span class="line">        b[index] = laplace_pixel(src, x, y)</span><br><span class="line">        <span class="comment"># ensure the border condition that the gradiant of f and f* is the same</span></span><br><span class="line">        <span class="keyword">if</span> pixel_belong(x, y, mask) == BORDER:</span><br><span class="line">            <span class="keyword">for</span> i, j <span class="keyword">in</span> get_neighbor(x, y):</span><br><span class="line">                <span class="keyword">if</span> in_omega(i, j, mask) == <span class="literal">False</span>:</span><br><span class="line">                    b[index] += target[i, j]</span><br><span class="line">    A = A.asformat(<span class="string">&quot;csr&quot;</span>)</span><br><span class="line">    x_ans = linalg.spsolve(A, b)</span><br><span class="line">    result = np.copy(target).astype(<span class="built_in">int</span>)</span><br><span class="line">    <span class="keyword">for</span> index <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, N):</span><br><span class="line">        x, y = f_points[index]</span><br><span class="line">        result[x, y] = x_ans[index]</span><br><span class="line">    <span class="built_in">print</span>(x_ans)</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
 <p>至此就实现了Poisson Fusion，Mixing Gradient的方法也可以基于上述实现完成。</p>
-<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p>实验里提供了两组图像，用泊松图像融合的效果如下：</p>
-<h3 id="夕阳"><a href="#夕阳" class="headerlink" title="夕阳"></a>夕阳</h3><p><img src="/2019/04/14/PoissonEditing/test1_src.jpg" alt="源图像"></p>
-<p><img src="/2019/04/14/PoissonEditing/test1_target.jpg" alt="目标图像"></p>
-<p><img src="/2019/04/14/PoissonEditing/test1_result.jpg" alt="结果"></p>
-<h3 id="手部图像"><a href="#手部图像" class="headerlink" title="手部图像"></a>手部图像</h3><p><img src="/2019/04/14/PoissonEditing/test2_src.png" alt></p>
-<p><img src="/2019/04/14/PoissonEditing/test2_target.png" alt></p>
-<p><img src="/2019/04/14/PoissonEditing/test2_result.png" alt></p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
-<li><a href="https://www.zhihu.com/search?q=%E6%B3%8A%E6%9D%BE%E5%9B%BE%E5%83%8F%E7%BC%96%E8%BE%91&amp;type=content" target="_blank" rel="noopener">泊松图像编辑 Wang Hawk | 知乎</a></li>
-<li><a href="http://drustz.com/posts/2015/10/17/poisson/" target="_blank" rel="noopener">计算机视觉：泊松融合</a></li>
+<h2 id="结果">结果</h2>
+<p>实验里提供了两组图像，用泊松图像融合的效果如下：</p>
+<h3 id="夕阳">夕阳</h3>
+<figure>
+<img src="/2019/04/14/PoissonEditing/test1_src.jpg" alt="源图像"><figcaption aria-hidden="true">源图像</figcaption>
+</figure>
+<figure>
+<img src="/2019/04/14/PoissonEditing/test1_target.jpg" alt="目标图像"><figcaption aria-hidden="true">目标图像</figcaption>
+</figure>
+<figure>
+<img src="/2019/04/14/PoissonEditing/test1_result.jpg" alt="结果"><figcaption aria-hidden="true">结果</figcaption>
+</figure>
+<h3 id="手部图像">手部图像</h3>
+<p><img src="/2019/04/14/PoissonEditing/test2_src.png"></p>
+<p><img src="/2019/04/14/PoissonEditing/test2_target.png"></p>
+<p><img src="/2019/04/14/PoissonEditing/test2_result.png"></p>
+<h2 id="参考资料">参考资料</h2>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E6%B3%8A%E6%9D%BE%E5%9B%BE%E5%83%8F%E7%BC%96%E8%BE%91&amp;type=content">泊松图像编辑 Wang Hawk | 知乎</a></li>
+<li><a target="_blank" rel="noopener" href="http://drustz.com/posts/2015/10/17/poisson/">计算机视觉：泊松融合</a></li>
 <li>Perez, P., Gangnet, M., &amp; Blake, A. (2003). Poisson Image Editing. ACM SIGGRAPH 2003.</li>
-<li><a href="https://github.com/willemmanuel/poisson-image-editing" target="_blank" rel="noopener">poisson-image-editing, willemmanuel | Github</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/willemmanuel/poisson-image-editing">poisson-image-editing, willemmanuel | Github</a></li>
 </ol>
 
     </div>
@@ -344,7 +364,7 @@ for\ all\ p\in\Omega,\ |N_p|f_p - \sum\limits_{q\in N_p\cap\Omega}f_q - \sum\lim
   </li>
   <li class="post-copyright-link">
     <strong>Post link: </strong>
-    <a href="https://blogs.hsuanwei.me/2019/04/14/PoissonEditing/" title="泊松图像编辑(Poisson Image Editing)">https://blogs.hsuanwei.me/2019/04/14/PoissonEditing/</a>
+    <a href="https://hsuanwei.me/2019/04/14/PoissonEditing/" title="泊松图像编辑(Poisson Image Editing)">https://hsuanwei.me/2019/04/14/PoissonEditing/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
@@ -433,7 +453,7 @@ for\ all\ p\in\Omega,\ |N_p|f_p - \sum\limits_{q\in N_p\cap\Omega}f_q - \sum\lim
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#原理"><span class="nav-number">1.</span> <span class="nav-text">原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Discrete-Poisson-solver"><span class="nav-number">1.1.</span> <span class="nav-text">Discrete Poisson solver</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现"><span class="nav-number">2.</span> <span class="nav-text">实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#图像IO"><span class="nav-number">2.1.</span> <span class="nav-text">图像IO</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#遮罩位置调整"><span class="nav-number">2.2.</span> <span class="nav-text">遮罩位置调整</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#判断像素位置"><span class="nav-number">2.3.</span> <span class="nav-text">判断像素位置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Laplace-算子"><span class="nav-number">2.4.</span> <span class="nav-text">Laplace 算子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取mask区域内的像素"><span class="nav-number">2.5.</span> <span class="nav-text">获取mask区域内的像素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构造转换矩阵A以及引导向量b"><span class="nav-number">2.6.</span> <span class="nav-text">构造转换矩阵A以及引导向量b</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结果"><span class="nav-number">3.</span> <span class="nav-text">结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#夕阳"><span class="nav-number">3.1.</span> <span class="nav-text">夕阳</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手部图像"><span class="nav-number">3.2.</span> <span class="nav-text">手部图像</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#discrete-poisson-solver"><span class="nav-number">1.1.</span> <span class="nav-text">Discrete Poisson solver</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE%E5%83%8Fio"><span class="nav-number">2.1.</span> <span class="nav-text">图像IO</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%AE%E7%BD%A9%E4%BD%8D%E7%BD%AE%E8%B0%83%E6%95%B4"><span class="nav-number">2.2.</span> <span class="nav-text">遮罩位置调整</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E5%83%8F%E7%B4%A0%E4%BD%8D%E7%BD%AE"><span class="nav-number">2.3.</span> <span class="nav-text">判断像素位置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#laplace-%E7%AE%97%E5%AD%90"><span class="nav-number">2.4.</span> <span class="nav-text">Laplace 算子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96mask%E5%8C%BA%E5%9F%9F%E5%86%85%E7%9A%84%E5%83%8F%E7%B4%A0"><span class="nav-number">2.5.</span> <span class="nav-text">获取mask区域内的像素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E8%BD%AC%E6%8D%A2%E7%9F%A9%E9%98%B5a%E4%BB%A5%E5%8F%8A%E5%BC%95%E5%AF%BC%E5%90%91%E9%87%8Fb"><span class="nav-number">2.6.</span> <span class="nav-text">构造转换矩阵A以及引导向量b</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C"><span class="nav-number">3.</span> <span class="nav-text">结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%95%E9%98%B3"><span class="nav-number">3.1.</span> <span class="nav-text">夕阳</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%8B%E9%83%A8%E5%9B%BE%E5%83%8F"><span class="nav-number">3.2.</span> <span class="nav-text">手部图像</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -442,7 +462,7 @@ for\ all\ p\in\Omega,\ |N_p|f_p - \sum\limits_{q\in N_p\cap\Omega}f_q - \sum\lim
     <img class="site-author-image" itemprop="image" alt="Hsuan-Wei Fan"
       src="/uploads/we.JPG">
   <p class="site-author-name" itemprop="name">Hsuan-Wei Fan</p>
-  <div class="site-description" itemprop="description">B.E in Tsinghua CST, Beijing.<br>Lives in Taiwan.<br>Interested in VR/MR and CG.<br>Coding and thinking.</div>
+  <div class="site-description" itemprop="description">Working, reading, thinking, asking, feeling, loving, so living.</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
@@ -462,7 +482,7 @@ for\ all\ p\in\Omega,\ |N_p|f_p - \sum\limits_{q\in N_p\cap\Omega}f_q - \sum\lim
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -503,13 +523,13 @@ for\ all\ p\in\Omega,\ |N_p|f_p - \sum\limits_{q\in N_p\cap\Omega}f_q - \sum\lim
 <div class="copyright">
   
   &copy; 2019 – 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Hsuan-Wei Fan</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
   </div>
 
 
@@ -517,26 +537,6 @@ for\ all\ p\in\Omega,\ |N_p|f_p - \sum\limits_{q\in N_p\cap\Omega}f_q - \sum\lim
 
 
         
-<div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-user"></i>
-      </span>
-      <span class="site-uv" title="Total Visitors">
-        <span id="busuanzi_value_site_uv"></span>
-      </span>
-    </span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-eye"></i>
-      </span>
-      <span class="site-pv" title="Total Views">
-        <span id="busuanzi_value_site_pv"></span>
-      </span>
-    </span>
-</div>
 
 
 
@@ -553,9 +553,17 @@ for\ all\ p\in\Omega,\ |N_p|f_p - \sum\limits_{q\in N_p\cap\Omega}f_q - \sum\lim
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/muse.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 
@@ -646,7 +654,7 @@ for\ all\ p\in\Omega,\ |N_p|f_p - \sum\limits_{q\in N_p\cap\Omega}f_q - \sum\lim
 </script>
 <script>
   var disqus_config = function() {
-    this.page.url = "https://blogs.hsuanwei.me/2019/04/14/PoissonEditing/";
+    this.page.url = "https://hsuanwei.me/2019/04/14/PoissonEditing/";
     this.page.identifier = "2019/04/14/PoissonEditing/";
     this.page.title = "泊松图像编辑(Poisson Image Editing)";
     };
@@ -663,7 +671,7 @@ for\ all\ p\in\Omega,\ |N_p|f_p - \sum\limits_{q\in N_p\cap\Omega}f_q - \sum\lim
       (d.head || d.body).appendChild(s);
     }
   });
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </body>
 </html>

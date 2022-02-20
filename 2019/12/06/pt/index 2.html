@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en,default">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hsuanwei.me","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="You may understand the fundamental concept of light path tracing and why we often use Monte Carlo integration for it after reading this post.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Monte Carlo Path Tracing">
+<meta property="og:url" content="https://hsuanwei.me/2019/12/06/pt/index.html">
+<meta property="og:site_name" content="HsweiFeed">
+<meta property="og:description" content="You may understand the fundamental concept of light path tracing and why we often use Monte Carlo integration for it after reading this post.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://hsuanwei.me/2019/12/06/pt/bidirectional.png">
+<meta property="og:image" content="https://hsuanwei.me/2019/12/06/pt/form_pic.png">
+<meta property="og:image" content="https://hsuanwei.me/2019/12/06/pt/mcfunc.png">
+<meta property="og:image" content="https://hsuanwei.me/2019/12/06/pt/gterm.png">
+<meta property="og:image" content="https://hsuanwei.me/2019/12/06/pt/pt_ex.png">
+<meta property="og:image" content="https://hsuanwei.me/2019/12/06/pt/pdf.png">
+<meta property="og:image" content="https://hsuanwei.me/2019/12/06/pt/measure_conversion.png">
+<meta property="og:image" content="https://hsuanwei.me/2019/12/06/pt/summary.png">
+<meta property="article:published_time" content="2019-12-06T03:45:16.000Z">
+<meta property="article:modified_time" content="2021-06-14T12:36:02.368Z">
+<meta property="article:author" content="Hsuan-Wei Fan">
+<meta property="article:tag" content="Computer Graphics">
+<meta property="article:tag" content="Path Tracing">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hsuanwei.me/2019/12/06/pt/bidirectional.png">
+
+<link rel="canonical" href="https://hsuanwei.me/2019/12/06/pt/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Monte Carlo Path Tracing | HsweiFeed</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">HsweiFeed</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Act tells.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hsuanwei.me/2019/12/06/pt/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/we.JPG">
+      <meta itemprop="name" content="Hsuan-Wei Fan">
+      <meta itemprop="description" content="Working, reading, thinking, asking, feeling, loving, so living.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HsweiFeed">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Monte Carlo Path Tracing
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-12-06 11:45:16" itemprop="dateCreated datePublished" datetime="2019-12-06T11:45:16+08:00">2019-12-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-06-14 20:36:02" itemprop="dateModified" datetime="2021-06-14T20:36:02+08:00">2021-06-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Computer-Science/" itemprop="url" rel="index"><span itemprop="name">Computer Science</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/12/06/pt/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/12/06/pt/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>You may understand the fundamental concept of light path tracing and why we often use Monte Carlo integration for it after reading this post.<br><span id="more"></span></p>
+<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>This is my note of a chapter “Path Integral Formulation of Light Transport” of <a target="_blank" rel="noopener" href="https://cgg.mff.cuni.cz/~jaroslav/papers/2013-ltscourse/index.htm">Recent Advances in Light Transport Simulation: Theory &amp; Practice</a>, in SIGGRAPH 2013. I think the course is helpful for beginners to form a clearer picture about light path tracing.</p>
+<blockquote>
+<p>Most images and some quotes in this post come from the slides of the course. The original author owns the copyright of them without a doubt.</p>
+</blockquote>
+<p><img src="/2019/12/06/pt/bidirectional.png" alt></p>
+<p>In physical world, the light is emitted from light sources, such as lamps. After reflection, refraction or absorption in the environment, the light could be seen only if it finally reached our eyes (or the camera in the picture). It may be natural to come up with the idea of formulating the process by calculating every ray emitted after defining surface attribute. However, it will result in computation of numerous invisible light, which refers to one that do not reach your eyes, and causes the waste of resources. Fortunately, we could simply reverse the process: emit the light from the eyes, so we will only need to calculate the light that matters. It is absolutely correct due to the phyisical knowledge that light path is reversible.</p>
+<p>Now, let’s get a further step. Try to imagine there are some objects in a house with a single window and you’re standing outside. You are not allowed to get into the house but you want to see what’s in the house, so you can only see them through the window. Apparently, your view is limited due to the window is not infinitely large.</p>
+<p>Ok, and then we replace the words. The window is the <strong>screen</strong>, you are the observer (or the “<strong>camera</strong>“), and the objects compose a <strong>scene</strong>. As I mentioned above, we do path tracing in a reversed way in comparison to real world. In the illustration, the light pass inside (scene) through the window (screen) and then reach your eyes (camera). So its mirror turn should be <strong>“emitting lights from the camera through screen to the scene”</strong>. To be more specific, as the screen is composed of limited pixels, we can descibe the process as <strong>emitting lights from the camera through each pixel of the screen to the scene</strong>.</p>
+<p>This is the most fundamental idea about path tracing. And I will explain later how can we create a beatiful picture with this simple concept.</p>
+<h1 id="Path-Integral-Formulation"><a href="#Path-Integral-Formulation" class="headerlink" title="Path Integral Formulation"></a>Path Integral Formulation</h1><p>Programming is a concise art, and it is hard to solve a question without formal definitions. Path tracing is not an excepction. So let’s first take a look at its mathematical term, which will help you understand why Monte Carlo is crucial.</p>
+<p><img src="/2019/12/06/pt/form_pic.png" alt> </p>
+<p>The picture above shows what a camera sees from a pixel: a collection of lights the reached to the pixel. Now we can define the <strong>camera response</strong> (the synthesis value of the pixel) in this term:</p>
+<script type="math/tex; mode=display">
+I_j = \int_\Omega f_j(\bar x)d\mu(\bar x)</script><p>The formula is called <strong>Path Integral Formulation</strong>, and its meaning is:</p>
+<ol>
+<li>$I_j$: the value of pixel j</li>
+<li>$\Omega$: all possible light paths</li>
+<li>$f_j(\bar x)$: measurement contribution function</li>
+</ol>
+<p>Well, then what’s “measurement contribution function” and what’s $\bar x$? See the lecturer’s first.</p>
+<blockquote>
+<p>The measurement contribution function of a given path encompasses the “amount” of light emitted along the path, the light carrying capacity of the path, and the sensitivity of the sensor to light brought along the path.</p>
+</blockquote>
+<p>Then this is the formal definition of $f(\bar x), \bar x$:</p>
+<script type="math/tex; mode=display">
+\bar x = x_0x_1\cdots x_k \\
+f_j(\bar x) = L_e(x_0 \rightarrow x_1)T(\bar x)W_e^j(x_{k-1}\rightarrow x_k)</script><p>This picture shows what $\bar x$ and $T(\bar x)$ mean clearer:</p>
+<p><img src="/2019/12/06/pt/mcfunc.png" alt></p>
+<p>Now, let’s try to understand the formula. First of all, a light transport path is a polyline with <strong>vertices</strong> corresponding to light scattering on surfaces. Like points on surfaces of walls, tables and desks.</p>
+<ol>
+<li>$x_i$: The i-th vertex</li>
+<li>$\bar x$: All vertices along the path</li>
+<li>$L_e(x_0 \rightarrow x_1)$: Emitted radiance. As we call the light resource $x_0$, it can be understood as the light intensity of the source.</li>
+<li>$W<em>e^j(x</em>{k-1}\rightarrow x_k)$: Sensor sensitivity (or Emitted Importance). It depends on the distance or angle to the pixel, material feature, etc.</li>
+<li><p>$T(\bar x)$: Pass throughput. It is defined as the product of the geometric G and scattering terms associated with the path edges and interior vertices, respectively</p>
+</li>
+<li><p>$G(x\leftrightarrow y)$: Geometry term (or point-to-point form factor) of a path edge expresses the throughput of the edge due to geometry configuration of the scene.</p>
+<script type="math/tex; mode=display">
+G(x\leftrightarrow y) = \frac{|cos\theta_x||cos\theta_y|}{\|x-y\|^2}V(x\leftrightarrow y)</script></li>
+</ol>
+<p>   <img src="/2019/12/06/pt/gterm.png" style="zoom:50%;"></p>
+<ol>
+<li>$\rho_s(x_i)$: It is a abstract expression that means the value of each vertex, which may depend on material.</li>
+</ol>
+<p>Now, let’s read the integral again:</p>
+<script type="math/tex; mode=display">
+I_j = \int_\Omega f_j(\bar x)d\mu(\bar x)</script><p>Oh yes, you understand it now! But wait, can you tell what “all paths ($\Omega$)” mean?</p>
+<p>Though it looks like a simple integral, there are infinite light paths and thus we cannot integrate $\Omega$ directly. It can be rewritten as:</p>
+<script type="math/tex; mode=display">
+I_j = \sum_{k=1}^\infty \int_{M^{k+1}}f_j(x_0\cdots x_k)dA(x_0)\cdots dA(x_k)</script><p>See it, the path integral actually hides an infinite sum over all possible path lengths.</p>
+<blockquote>
+<p>Each summand of this sum is a multiple integral, where we integrate the path contribution over all possible positions of the path vertices. So each of the integrals is taken over the Cartesian product of the surface of the scene with itself, taken k+1 times (=number of vertices for a length-k path.) The integration measure is the area-product measure, i.e. the natural surface area, raised to the power of k+1.</p>
+</blockquote>
+<p>As we all know, the computer is not good at dealing with infinity even if it is a simple form of integral. Thus, we need to find a method to numerically calculate the integral to get the value of each pixel.</p>
+<p>Welcom Monte Carlo.</p>
+<h1 id="Monte-Carlo-Integration"><a href="#Monte-Carlo-Integration" class="headerlink" title="Monte Carlo Integration"></a>Monte Carlo Integration</h1><p>Monte Carlo is a famous concept, if you have learned possibility theory or traditional machine learning methods you should be familiar with it. </p>
+<p>If you didn’t learn Monte Carlo before, let’s take a quick look.</p>
+<blockquote>
+<p>Suppose we are given a real function $f(x)$ and want to compute the integral $\int f(x) dx$ over some domain. The Monte Carlo integration procedure consists in generating a ‘sample’, that is, a random x-value from the integration domain, drawn from some probability distribution with probability density p(x). In the case of path integral, the xvalue is an entire light transport path.</p>
+<p>For this sample $x_i$, we evaluate the integrand $f(x_i)$, and the probability density $p(x_i)$. The ratio $\frac{f(x_i)}{p(x_i)}$ is an estimator of the integrand. To make the estimator more accurate (i.e. to reduce its variance) we repeat the procedure for a number of random samples $x_1 , x_2 , …, x_N$, and average the result as shown in the formula. This procedure provides an <strong>unbiased estimator</strong> of the integrand, which means that “on average”, it produces the correct result i.e. the integral that we want to compute.</p>
+</blockquote>
+<p>The most well-known example of this method is estimating the value of $\pi$ by throwing stones to a circle again and again. If you want to learn more about it or confused by <strong>unbiased estimator</strong>, try to find a statistical textbook.</p>
+<p>Suppose you understood everything mentioned yet, let’s see how to apply Monte Carlo integration to path tracing.</p>
+<p>We can rewrite the Monte Carlo estimator of path integral formula first:</p>
+<script type="math/tex; mode=display">
+\langle I_j\rangle = \frac{f_j(\bar x)}{p(\bar x)}</script><p>Now, for each pixel $j$ we can apply Mote Carlo inegration by these steps:</p>
+<ol>
+<li>Generate a random light transport path $x$ in the scene.</li>
+<li>Evaluate the probability density $p(\bar x)$ of the path and the contribution function.</li>
+<li>Evaluate the integrand $f_j(\bar x)$.</li>
+</ol>
+<h2 id="Path-Sampling"><a href="#Path-Sampling" class="headerlink" title="Path Sampling"></a>Path Sampling</h2><p>We already knew how to calculate $f_j(\bar x)$, so now the question left is the path sampling method and its induced path probability density function (PDF) $p(\bar x)$.</p>
+<blockquote>
+<p>In fact, from the point of view of the path integral formulation, the only difference between many light transport simulation algorithms are the employed path sampling techniques and their PDFs.</p>
+</blockquote>
+<p>A beautiful conclusion induced is that different path sampling algorithms share the same general form of estimator, only PDF $p(\bar x)$ changes. For example, path tracing samples paths by starting at the camera as I mentioned above, and extending the path by <strong>BRDF importance sampling</strong>, and possibly explicitly connecting a to a vertex sampled on the light source. In contract, light tracing starts from the light sources. They share same esitmator form, however.</p>
+<blockquote>
+<p>Without the path integral framework, we would need equations of importance transport to formulate light tracing, which can get messy.</p>
+</blockquote>
+<h2 id="Local-Path-Sampling"><a href="#Local-Path-Sampling" class="headerlink" title="Local Path Sampling"></a>Local Path Sampling</h2><p>I will explain how we exactly sample the paths and comput the PDF in this section. Most practical algorithms rely on local sampling, where paths are build by adding one vertex at a time until a complete path is built. That is, the algorithm concerns vertex by vertex rather than direct calculate a global path.</p>
+<p>There are 3 common basic operations:</p>
+<ol>
+<li>Sampling a path vertex from a prior given distribution over a surface, it is usually used to generate the first vertex on camera or light source.</li>
+<li>Shoot a ray along a direction from a previously sampled vertex to obtain the next path vertex.</li>
+<li>Give two sub-paths, we could connect their end-vertices to form a full light transport path. <strong>It is a simple visibility check to see if the contribution function of the path is non-zero.</strong></li>
+</ol>
+<p><img src="/2019/12/06/pt/pt_ex.png" alt></p>
+<p>The image above shows a simple path tracer. Along the blue path, we generate the first vertex from the priorly distributed camera surface, and then we pick a random direction form this point such that it passes through the image plane to generate new vertices until the path finally hit the light source. (Operation 2)</p>
+<p>You man question how can we guarantee the blue path hit the light source. Actually, we cannot but a light path that do not hit light source contributes nothing to the value so it does not impact the correctness. However, it means there are lots of useless lights calculated, and it results in the waste of time. Thus, we do it in a slightly different way like the yellow path.</p>
+<p>Along the yellow path, we use operation 1 to generate a vertex on camera than use operation 2 to generate new vertices. But at the end, we do not expect it to hit the light source. Instead, we use operation 1 to shoot a light from the light source and then apply operation 3 to connect the sub-paths. With this method, we make sure the light path is visible. It is called bidirectional path tracing.</p>
+<h2 id="Probability-Density-Function"><a href="#Probability-Density-Function" class="headerlink" title="Probability Density Function"></a>Probability Density Function</h2><p>By local sampling, we know how to construct a light path. Now we need to evaluate its PDF  to calculate the Monte Carlo estimator.</p>
+<p><img src="/2019/12/06/pt/pdf.png" alt></p>
+<p>Take the picture above for example. The path PDF can be defined as:</p>
+<script type="math/tex; mode=display">
+p(\bar x) = p(x_0,\cdots,x_3)</script><p>It means the path PDF equals to the <strong>joint PDF</strong> of path vertices. Applied simple path tracing method the image, then we have:</p>
+<script type="math/tex; mode=display">
+p(x_0,\cdots,x_3) = p(x_3)p(x_2|x_3)p(x_1|x_2)p(x_0)</script><p>Because:</p>
+<ol>
+<li>$p(x_3)$: Vertex $x_3$ comes from a prior distribution over the camera lens that is usually uniform. </li>
+<li>$p(x_2|x_3)$: Vertex $x_2$ is sampled by generating a random direction from $x_3$, so it is a conditional possibility. Same for $x_1$.</li>
+<li>$p(x_0)$: Sampled from the light source, so it depends on the uniform distribution over the light source. (Recall the bidirectional path tracing mentioned above)</li>
+</ol>
+<p>It is not hard to find that the product of these conditional vertex PDFs could the rewritten in a simpler form.</p>
+<script type="math/tex; mode=display">
+p(x_0,\cdots, x_3) = p(x_3)p(x_2)p(x_1)p(x_0)</script><blockquote>
+<p>Nonetheless, it is important to keep in mind that the path vertex PDFs for vertices that are not sampled independently are indeed conditional PDFs.</p>
+</blockquote>
+<h2 id="Vertex-Sampling"><a href="#Vertex-Sampling" class="headerlink" title="Vertex Sampling"></a>Vertex Sampling</h2><p>In accordance with the principle of importance sampling, we want to generate full paths paths from a distribution with probability density proportional to the measurement contribution function. That is, high-contribution paths should have proportionally high probability of being sampled. For example, when starting a path on the light source, we usually sample the initial vertex from a distribution proportional to the emitted power. And we usually sample the random direction proportionally to the BRDF at the vertex when extending the path from an existing vertex.</p>
+<blockquote>
+<p>Similarly, when connecting two sub-paths with an edge, we may want to prefer connections with high throughput (though this is rarely done in practice).</p>
+</blockquote>
+<h2 id="Measure-Conversion"><a href="#Measure-Conversion" class="headerlink" title="Measure Conversion"></a>Measure Conversion</h2><p><img src="/2019/12/06/pt/measure_conversion.png" alt></p>
+<p>The lecturer mentioned a technical detail of computing the path PDF for vertcies sampled by basic operation 2. As we are integrating the path integral over the surface of the scene, the direction sampling usually gives the PDF with respect to the (projected) solid angle, however. </p>
+<p>The conversion factor from the projected solid angle measure to the area measure is the <strong>geometry factor</strong>. This means that any vertex sampled by shooting a ray along a picked direction has the geometry factor of the generated edge importance sampled. </p>
+<blockquote>
+<p>The only geometry factor that are not importance sampled actually correspond to the connecting edges (operation 3 in local path sampling).</p>
+</blockquote>
+<h1 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h1><p><img src="/2019/12/06/pt/summary.png" alt></p>
+<blockquote>
+<p>I think the original lecturer already gives a clear summary about all the contents mentioned above. So that I basically copy paste his points here.</p>
+</blockquote>
+<ol>
+<li>The path integral formulation gives the pixel value as an integral over all light transport paths of all lengths.</li>
+<li>A light transport path is the trajectory of a light carrying particle. It is usually a polyline specified by its <strong>vertices</strong>.</li>
+<li>The integrand is the measurement contribution function, which is the product of <strong>emitted radiance, sensor sensitivity, and path throughput</strong>.</li>
+<li>Path throughput is the product of BRDFs at the inner path vertices and geometry factors at the path edges.</li>
+<li>To evaluate the integral, we use Monte Carlo estimator in the form shown at the top right of the slide.</li>
+<li>To evaluate the estimator, we need to sample a random path from a suitable distribution with PDF p(x).</li>
+<li>We usually use <strong>local path sampling</strong> to construct the paths, where we add one vertex at a time. In this case, the full path PDF is given by the product of the (conditional) PDFs for sampling the individual path vertices.</li>
+</ol>
+<p>And the conclusion in my words is:</p>
+<blockquote>
+<p>Because of the contradiction between the infinite light paths and finite time and computation resources, a estimating method to simulate the process is necessary. Monte Carlo is a simple unbiased estimation for this purpose.</p>
+</blockquote>
+<p>It’s the end of the brief introduction, I hope you understand better why we use Monte Carlo method. And remember, considering the computational cost, <strong>path tracing is still an unresolved problem yet</strong>.</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>Hsuan-Wei Fan
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    <a href="https://hsuanwei.me/2019/12/06/pt/" title="Monte Carlo Path Tracing">https://hsuanwei.me/2019/12/06/pt/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Computer-Graphics/" rel="tag"># Computer Graphics</a>
+              <a href="/tags/Path-Tracing/" rel="tag"># Path Tracing</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/08/22/Vue-UnitTest/" rel="prev" title="Vuex 的單元測試（基於 Jest 框架）">
+      <i class="fa fa-chevron-left"></i> Vuex 的單元測試（基於 Jest 框架）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/20/bvh/" rel="next" title="PBRT | Bounding Volume Hierarchies">
+      PBRT | Bounding Volume Hierarchies <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Path-Integral-Formulation"><span class="nav-number">2.</span> <span class="nav-text">Path Integral Formulation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Monte-Carlo-Integration"><span class="nav-number">3.</span> <span class="nav-text">Monte Carlo Integration</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Path-Sampling"><span class="nav-number">3.1.</span> <span class="nav-text">Path Sampling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Local-Path-Sampling"><span class="nav-number">3.2.</span> <span class="nav-text">Local Path Sampling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Probability-Density-Function"><span class="nav-number">3.3.</span> <span class="nav-text">Probability Density Function</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vertex-Sampling"><span class="nav-number">3.4.</span> <span class="nav-text">Vertex Sampling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Measure-Conversion"><span class="nav-number">3.5.</span> <span class="nav-text">Measure Conversion</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Summary"><span class="nav-number">4.</span> <span class="nav-text">Summary</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hsuan-Wei Fan"
+      src="/uploads/we.JPG">
+  <p class="site-author-name" itemprop="name">Hsuan-Wei Fan</p>
+  <div class="site-description" itemprop="description">Working, reading, thinking, asking, feeling, loving, so living.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hsweif" title="GitHub → https://github.com/hsweif" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:f.hsuanwei@gmail.com" title="E-Mail → mailto:f.hsuanwei@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/profile.php?id=100003713956403" title="FB Page → https://www.facebook.com/profile.php?id=100003713956403" rel="noopener" target="_blank"><i class="fa fa-fw fa-facebook"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/hweiphotography" title="Instagram → https://instagram.com/hweiphotography" rel="noopener" target="_blank"><i class="fa fa-fw fa-instagram"></i>Instagram</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hsuan-Wei Fan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://alexfxw.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://hsuanwei.me/2019/12/06/pt/";
+    this.page.identifier = "2019/12/06/pt/";
+    this.page.title = "Monte Carlo Path Tracing";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://alexfxw.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>
